@@ -19,17 +19,13 @@ struct SkipListNode {
   std::string key_;   // 节点存储的键
   std::string value_; // 节点存储的值
   uint64_t tranc_id_; // 事务 id
-  std::vector<std::shared_ptr<SkipListNode>>
-      forward_; // 指向不同层级的下一个节点的指针数组
-  std::vector<std::weak_ptr<SkipListNode>>
-      backward_; // 指向不同层级的下一个节点的指针数组
-  SkipListNode(const std::string &k, const std::string &v, int level,
-               uint64_t tranc_id)
-      : key_(k), value_(v), forward_(level, nullptr),
-        backward_(level, std::weak_ptr<SkipListNode>()), tranc_id_(tranc_id) {}
-  void set_backward(int level, std::shared_ptr<SkipListNode> node) {
-    backward_[level] = std::weak_ptr<SkipListNode>(node);
-  }
+  // TODO: 在此处添加你的私有成员
+  // Hints: SkipListNode中需要维护自身的邻接关系
+
+  SkipListNode(const std::string &k, const std::string &v,
+               uint64_t tranc_id = 0)
+      : key_(k), value_(v) , tranc_id_(tranc_id) {}
+  // TODO: 在此处添加你的辅助函数
 
   bool operator==(const SkipListNode &other) const {
     return key_ == other.key_ && value_ == other.value_ &&
@@ -96,12 +92,8 @@ private:
   int max_level;     // 跳表的最大层级数，限制跳表的高度
   int current_level; // 跳表当前的实际层级数，动态变化
   size_t size_bytes = 0; // 跳表当前占用的内存大小（字节数），用于跟踪内存使用
-  // std::shared_mutex rw_mutex; // ! 目前看起来这个锁是冗余的, 在上层控制即可,
-  // 后续考虑是否需要细粒度的锁
-
-  std::uniform_int_distribution<> dis_01;
-  std::uniform_int_distribution<> dis_level;
-  std::mt19937 gen;
+  
+  // TODO: 在此处添加你的私有成员
 
 private:
   int random_level(); // 生成新节点的随机层级数
@@ -117,13 +109,13 @@ public:
 
   // 插入或更新键值对
   // 这里不对 tranc_id 进行检查，由上层保证 tranc_id 的合法性
-  void put(const std::string &key, const std::string &value, uint64_t tranc_id);
+  void put(const std::string &key, const std::string &value, uint64_t tranc_id = 0);
 
   // 查找键对应的值
   // 事务 id 为0 表示没有开启事务
   // 否则只能查找事务 id 小于等于 tranc_id 的值
   // 返回值: 如果找到，返回 value 和 tranc_id，否则返回空
-  SkipListIterator get(const std::string &key, uint64_t tranc_id);
+  SkipListIterator get(const std::string &key, uint64_t tranc_id = 0);
 
   // !!! 这里的 remove 是跳表本身真实的 remove,  lsm 应该使用 put 空值表示删除
   void remove(const std::string &key); // 删除键值对

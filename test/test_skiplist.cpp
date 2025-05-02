@@ -16,7 +16,7 @@
 #include <vector>
 
 // 测试基本插入、查找和删除
-TEST(SkipListTest, BasicOperations) {
+TEST(SkipListTest, DISABLED_BasicOperations) {
   SkipList skipList;
 
   // 测试插入和查找
@@ -33,7 +33,7 @@ TEST(SkipListTest, BasicOperations) {
 }
 
 // 测试迭代器
-TEST(SkipListTest, Iterator) {
+TEST(SkipListTest, DISABLED_Iterator) {
   SkipList skipList;
   skipList.put("key1", "value1", 0);
   skipList.put("key2", "value2", 0);
@@ -52,7 +52,7 @@ TEST(SkipListTest, Iterator) {
 }
 
 // 测试大量数据插入和查找
-TEST(SkipListTest, LargeScaleInsertAndGet) {
+TEST(SkipListTest, DISABLED_LargeScaleInsertAndGet) {
   SkipList skipList;
   const int num_elements = 10000;
 
@@ -72,7 +72,7 @@ TEST(SkipListTest, LargeScaleInsertAndGet) {
 }
 
 // 测试大量数据删除
-TEST(SkipListTest, LargeScaleRemove) {
+TEST(SkipListTest, DISABLED_LargeScaleRemove) {
   SkipList skipList;
   const int num_elements = 10000;
 
@@ -105,7 +105,7 @@ TEST(SkipListTest, LargeScaleRemove) {
 }
 
 // 测试重复插入
-TEST(SkipListTest, DuplicateInsert) {
+TEST(SkipListTest, DISABLED_DuplicateInsert) {
   SkipList skipList;
 
   // 重复插入相同的key
@@ -118,7 +118,7 @@ TEST(SkipListTest, DuplicateInsert) {
 }
 
 // 测试空跳表
-TEST(SkipListTest, EmptySkipList) {
+TEST(SkipListTest, DISABLED_EmptySkipList) {
   SkipList skipList;
 
   // 验证空跳表的查找和删除
@@ -127,7 +127,7 @@ TEST(SkipListTest, EmptySkipList) {
 }
 
 // 测试随机插入和删除
-TEST(SkipListTest, RandomInsertAndRemove) {
+TEST(SkipListTest, DISABLED_RandomInsertAndRemove) {
   SkipList skipList;
   std::unordered_set<std::string> keys;
   const int num_operations = 10000;
@@ -156,7 +156,7 @@ TEST(SkipListTest, RandomInsertAndRemove) {
 }
 
 // 测试内存大小跟踪
-TEST(SkipListTest, MemorySizeTracking) {
+TEST(SkipListTest, DISABLED_MemorySizeTracking) {
   SkipList skipList;
 
   // 插入数据
@@ -178,7 +178,7 @@ TEST(SkipListTest, MemorySizeTracking) {
   EXPECT_EQ(skipList.get_size(), 0);
 }
 
-TEST(SkipListTest, IteratorPreffix) {
+TEST(SkipListTest, DISABLED_IteratorPreffix) {
   SkipList skipList;
 
   // 插入一些测试数据
@@ -225,7 +225,7 @@ TEST(SkipListTest, IteratorPreffix) {
             skipList.end_preffix("not exist"));
 }
 
-TEST(SkipListTest, ItersPredicate_Base) {
+TEST(SkipListTest, DISABLED_ItersPredicate_Base) {
 
   SkipList skipList;
   skipList.put("prefix1", "value1", 0);
@@ -285,7 +285,7 @@ TEST(SkipListTest, ItersPredicate_Base) {
   EXPECT_EQ(range_begin_iter.get_key(), "midway");
 }
 
-TEST(SkipListTest, ItersPredicate_Large) {
+TEST(SkipListTest, DISABLED_ItersPredicate_Large) {
   SkipList skipList;
   int num = 10000;
 
@@ -326,7 +326,7 @@ TEST(SkipListTest, ItersPredicate_Large) {
 }
 
 // 测试包含事务 id 的插入和查找
-TEST(SkipListTest, TransactionId) {
+TEST(SkipListTest, DISABLED_TransactionId) {
   SkipList skipList;
   skipList.put("key1", "value1", 1);
   skipList.put("key1", "value2", 2);
