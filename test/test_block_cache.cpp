@@ -14,7 +14,7 @@ protected:
   std::unique_ptr<BlockCache> cache;
 };
 
-TEST_F(BlockCacheTest, PutAndGet) {
+TEST_F(BlockCacheTest, DISABLED_PutAndGet) {
   auto block1 = std::make_shared<Block>();
   auto block2 = std::make_shared<Block>();
   auto block3 = std::make_shared<Block>();
@@ -28,7 +28,7 @@ TEST_F(BlockCacheTest, PutAndGet) {
   EXPECT_EQ(cache->get(1, 3), block3);
 }
 
-TEST_F(BlockCacheTest, CacheEviction1) {
+TEST_F(BlockCacheTest, DISABLED_CacheEviction1) {
   auto block1 = std::make_shared<Block>();
   auto block2 = std::make_shared<Block>();
   auto block3 = std::make_shared<Block>();
@@ -51,7 +51,7 @@ TEST_F(BlockCacheTest, CacheEviction1) {
   EXPECT_EQ(cache->get(1, 4), block4);
 }
 
-TEST_F(BlockCacheTest, CacheEviction2) {
+TEST_F(BlockCacheTest, DISABLED_CacheEviction2) {
   auto block1 = std::make_shared<Block>();
   auto block2 = std::make_shared<Block>();
   auto block3 = std::make_shared<Block>();
@@ -75,7 +75,7 @@ TEST_F(BlockCacheTest, CacheEviction2) {
   EXPECT_EQ(cache->get(1, 4), block4);
 }
 
-TEST_F(BlockCacheTest, HitRate) {
+TEST_F(BlockCacheTest, DISABLED_HitRate) {
   auto block1 = std::make_shared<Block>();
   auto block2 = std::make_shared<Block>();
 

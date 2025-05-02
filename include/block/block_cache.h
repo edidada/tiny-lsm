@@ -57,17 +57,7 @@ private:
   size_t k_;                 // LRU-K 中的 K 值
   mutable std::mutex mutex_; // 互斥锁保护缓存池
 
-  // 双向链表存储缓存项
-  std::list<CacheItem> cache_list_greater_k;
-  std::list<CacheItem> cache_list_less_k;
-
-  // 哈希表索引缓存项
-  std::unordered_map<std::pair<int, int>, std::list<CacheItem>::iterator,
-                     pair_hash, pair_equal>
-      cache_map_;
-
-  // 更新缓存项的访问时间
-  void update_access_count(std::list<CacheItem>::iterator it);
+  // TODO: 在此处添加你的成员变量
 
   // 记录请求数和命中数
   mutable size_t total_requests_ = 0;
