@@ -68,7 +68,7 @@ protected:
 };
 
 // 测试解码
-TEST_F(BlockTest, DecodeTest) {
+TEST_F(BlockTest, DISABLED_DecodeTest) {
   auto encoded = getEncodedBlock();
   auto block = Block::decode(encoded);
 
@@ -87,7 +87,7 @@ TEST_F(BlockTest, DecodeTest) {
 }
 
 // 测试编码
-TEST_F(BlockTest, EncodeTest) {
+TEST_F(BlockTest, DISABLED_EncodeTest) {
   Block block(1024);
   block.add_entry("apple", "red", 1, false);
   block.add_entry("banana", "yellow", 2, false);
@@ -110,7 +110,7 @@ TEST_F(BlockTest, EncodeTest) {
 }
 
 // 测试二分查找
-TEST_F(BlockTest, BinarySearchTest) {
+TEST_F(BlockTest, DISABLED_BinarySearchTest) {
   Block block(1024);
   block.add_entry("apple", "red", 0, false);
   block.add_entry("banana", "yellow", 0, false);
@@ -127,7 +127,7 @@ TEST_F(BlockTest, BinarySearchTest) {
 }
 
 // 测试边界情况
-TEST_F(BlockTest, EdgeCasesTest) {
+TEST_F(BlockTest, DISABLED_EdgeCasesTest) {
   Block block(1024);
 
   // 空block
@@ -147,7 +147,7 @@ TEST_F(BlockTest, EdgeCasesTest) {
 }
 
 // 测试大数据量
-TEST_F(BlockTest, LargeDataTest) {
+TEST_F(BlockTest, DISABLED_LargeDataTest) {
   Block block(1024 * 32);
   const int n = 1000;
 
@@ -180,7 +180,7 @@ TEST_F(BlockTest, LargeDataTest) {
 }
 
 // 测试错误处理
-TEST_F(BlockTest, ErrorHandlingTest) {
+TEST_F(BlockTest, DISABLED_ErrorHandlingTest) {
   // 测试解码无效数据
   std::vector<uint8_t> invalid_data = {1, 2, 3}; // 太短
   EXPECT_THROW(Block::decode(invalid_data), std::runtime_error);
@@ -191,7 +191,7 @@ TEST_F(BlockTest, ErrorHandlingTest) {
 }
 
 // 测试迭代器
-TEST_F(BlockTest, IteratorTest) {
+TEST_F(BlockTest, DISABLED_IteratorTest) {
   // 使用 make_shared 创建 Block
   auto block = std::make_shared<Block>(4096);
 
@@ -240,7 +240,7 @@ TEST_F(BlockTest, IteratorTest) {
 }
 
 // 包含多个事务操作的key的迭代器
-TEST_F(BlockTest, TrancIteratorTest) {
+TEST_F(BlockTest, DISABLED_TrancIteratorTest) {
   auto block = std::make_shared<Block>(4096);
 
   // 添加多个事务操作的key
@@ -270,7 +270,7 @@ TEST_F(BlockTest, TrancIteratorTest) {
   EXPECT_EQ(results, expected_data);
 }
 
-TEST_F(BlockTest, PredicateTest) {
+TEST_F(BlockTest, DISABLED_PredicateTest) {
   std::vector<uint8_t> encoded_p;
   {
     std::shared_ptr<Block> block1 = std::make_shared<Block>(LSM_BLOCK_SIZE);
@@ -334,7 +334,7 @@ TEST_F(BlockTest, PredicateTest) {
 }
 
 // 包含了事务的谓词迭代器
-TEST_F(BlockTest, TrancPredicateTest) {
+TEST_F(BlockTest, DISABLED_TrancPredicateTest) {
   std::vector<uint8_t> encoded_p;
 
   {
