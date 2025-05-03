@@ -77,36 +77,7 @@ void SstIterator::seek_first() {
 }
 
 void SstIterator::seek(const std::string &key) {
-  if (!m_sst) {
-    m_block_it = nullptr;
-    return;
-  }
-
-  try {
-    m_block_idx = m_sst->find_block_idx(key);
-    if (m_block_idx == -1 || m_block_idx >= m_sst->num_blocks()) {
-      // 置为 end
-      // TODO: 这个边界情况需要添加单元测试
-      m_block_it = nullptr;
-      m_block_idx = m_sst->num_blocks();
-      return;
-    }
-    auto block = m_sst->read_block(m_block_idx);
-    if (!block) {
-      m_block_it = nullptr;
-      return;
-    }
-    m_block_it = std::make_shared<BlockIterator>(block, key, max_tranc_id_);
-    if (m_block_it->is_end()) {
-      // block 中找不到
-      m_block_idx = m_sst->num_blocks();
-      m_block_it = nullptr;
-      return;
-    }
-  } catch (const std::exception &) {
-    m_block_it = nullptr;
-    return;
-  }
+  // TODO: 实现在sst中偏移迭代器到key的函数
 }
 
 std::string SstIterator::key() {
