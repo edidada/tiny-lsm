@@ -2,7 +2,7 @@
 authors = ["ToniXWD"]
 language = "ch"
 src = "src"
-title = "simple-lsm-lab"
+title = "toni-lsm-lab"
 
 [output.html]
 git-repository-url = "https://github.com/ToniXWD/toni-lsm"

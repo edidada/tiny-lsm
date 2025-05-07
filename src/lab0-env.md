@@ -104,7 +104,7 @@ target("example")
 
 这里有一点需要说明, 如果你安装了`Xmake`插件, 但是在调试时卡死不懂, 建议禁用`Code Runner`和`C/C++ Runner`两个插件, 如果还行不将`CMake`插件也一起禁用了:
 
-<img src="images/lab0/ban-extensions.png" width="500">
+<img src="images/lab0/ban-extensions.png" width="400">
 
 如果你的`Xmake`在调试时进入的是`gdb`的页面, 请在设置中将`Debug Config Type`设置为`lldb`:
 
@@ -112,7 +112,7 @@ target("example")
 
 当然你需要先安装`CodeLLdb`插件:
 
-<img src="images/lab0/CodeLLdb.png" width="500">
+<img src="images/lab0/CodeLLdb.png" width="400">
 
 ## 3.3 代码高亮
 如果你经常用`C++`开发, 那么你可能经常会遇到第三方包导致代码高亮跳转失效的问题:
@@ -134,19 +134,19 @@ CompileFlags:            # 编译标志部分
 ### 3.4.1 Better Comments && TodoTree
 `Better Comments`是一个`VSCode`插件, 它可以提供代码注释高亮和语法高亮功能, 使得代码更加易读。比如像`TODO`, `!`这样的符号:
 
-<img src="images/lab0/Better-Comments.png" width="500">
+<img src="images/lab0/Better-Comments.png" width="400">
 
 当我们实现一个功能但其后续需要更新时, 我们可以在代码中添加`TODO`注释, 以便后续更新时更醒目。
 
 `TodoTree`则会在侧边栏展开我们标记了`TODO`的注释的位置
 
-<img src="images/lab0/TODO.png" width="500">
+<img src="images/lab0/TODO.png" width="400">
 
 ### 3.4.2 AI插件
 如果你有钱, 直接用`Cusor`, `Windsurf`, 他们的体验更好
 
 如果和我一样不够钱, 那么你可以使用`通义灵码`, `Cline`或者`GitHub Copilot`:
 
-<img src="images/lab0/lingma.png" width="500">
-<img src="images/lab0/Copilot.png" width="500">
-<img src="images/lab0/Cline.png" width="500">
+<img src="images/lab0/lingma.png" width="400">
+<img src="images/lab0/Copilot.png" width="400">
+<img src="images/lab0/Cline.png" width="400">
