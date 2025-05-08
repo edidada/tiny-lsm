@@ -25,13 +25,14 @@ bool SkipListIterator::operator!=(const BaseIterator &other) const {
 }
 
 SkipListIterator::value_type SkipListIterator::operator*() const {
-  if (!current)
-    throw std::runtime_error("Dereferencing invalid iterator");
-  return {current->key_, current->value_};
+  // TODO: Lab1.2 任务：实现SkipListIterator的*操作符
+  return {"", ""};
 }
 
 IteratorType SkipListIterator::get_type() const {
-  return IteratorType::SkipListIterator;
+  // TODO: Lab1.2 任务：实现SkipListIterator的get_type
+  // ? 主要是为了熟悉基类的定义和继承关系
+  return IteratorType::Undefined;
 }
 
 bool SkipListIterator::is_valid() const {

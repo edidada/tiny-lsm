@@ -17,6 +17,7 @@ enum class IteratorType {
   TwoMergeIterator,
   ConcactIterator,
   LevelIterator,
+  Undefined,
 };
 
 class BaseIterator {
