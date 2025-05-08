@@ -243,37 +243,6 @@ TEST_F(BlockTest, IteratorTest) {
   }
 }
 
-// 包含多个事务操作的key的迭代器
-TEST_F(BlockTest, TrancIteratorTest) {
-  auto block = std::make_shared<Block>(4096);
-
-  // 添加多个事务操作的key
-  block->add_entry("key1", "value1", 1, false);
-
-  block->add_entry("key2", "value222", 3, false);
-  block->add_entry("key2", "value22", 2, false);
-  block->add_entry("key2", "value2", 1, false);
-
-  block->add_entry("key3", "value3", 1, false);
-  block->add_entry("key4", "value4", 2, false);
-  block->add_entry("key5", "value5", 3, false);
-
-  std::vector<std::pair<std::string, std::string>> expected_data = {
-      {"key1", "value1"},
-      {"key2", "value222"},
-      {"key3", "value3"},
-      {"key4", "value4"},
-      {"key5", "value5"}};
-
-  std::vector<std::pair<std::string, std::string>> results;
-
-  for (auto it = block->begin(); it != block->end(); ++it) {
-    results.emplace_back(it->first, it->second);
-  }
-
-  EXPECT_EQ(results, expected_data);
-}
-
 TEST_F(BlockTest, PredicateTest) {
   std::vector<uint8_t> encoded_p;
   {
@@ -336,6 +305,37 @@ TEST_F(BlockTest, PredicateTest) {
     ++(*it_begin);
   }
   EXPECT_EQ((*it_begin)->first, "key0025");
+}
+
+// 包含多个事务操作的key的迭代器
+TEST_F(BlockTest, TrancIteratorTest) {
+  auto block = std::make_shared<Block>(4096);
+
+  // 添加多个事务操作的key
+  block->add_entry("key1", "value1", 1, false);
+
+  block->add_entry("key2", "value222", 3, false);
+  block->add_entry("key2", "value22", 2, false);
+  block->add_entry("key2", "value2", 1, false);
+
+  block->add_entry("key3", "value3", 1, false);
+  block->add_entry("key4", "value4", 2, false);
+  block->add_entry("key5", "value5", 3, false);
+
+  std::vector<std::pair<std::string, std::string>> expected_data = {
+      {"key1", "value1"},
+      {"key2", "value222"},
+      {"key3", "value3"},
+      {"key4", "value4"},
+      {"key5", "value5"}};
+
+  std::vector<std::pair<std::string, std::string>> results;
+
+  for (auto it = block->begin(); it != block->end(); ++it) {
+    results.emplace_back(it->first, it->second);
+  }
+
+  EXPECT_EQ(results, expected_data);
 }
 
 // 包含了事务的谓词迭代器
