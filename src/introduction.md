@@ -1,3 +1,14 @@
+# Toni-LSM Lab
+![logo](./logo/logo1-compact.jpg)
+
+----
+
+# 0 Toni-LSM是什么?
+[Toni-LSM](https://github.com/ToniXWD/toni-lsm)是一个基于`LSM Tree`的开源教学`KV`存储引擎, 除`LSM Tree`的基础功能外, 还支持`MVCC`、`WAL`、崩溃恢复、`Redis`兼容等功能。本实验是基于作者原本实验的代码进行改造后的`Lab`课程。
+
+### ⭐ 请支持我们的项目！
+> 如果您觉得本`Lab`不错, 请为[Toni-LSM](https://github.com/ToniXWD/toni-lsm)点一个⭐。项目实验制作耗费了我很大精力，作者非常需要您的鼓励❤️, 您的支持是我更新的动力😆
+
 # 1 本实验的目的是什么?
 本实验的最终目标是实现一个基于`LSM Tree`的单机`KV Store`引擎。其功能包括:
 1. 基本的`KV`存储功能，包括`put`、`get`、`remove`等。
@@ -64,7 +75,9 @@
 
 同样类似`CMU 15445`, 后面的`Lab`依赖于前一个`Lab`的正确性, 而实验提供的单元测试知识尽量考虑到了各种边界情况, 但不能完全确保你的代码正确, 因此必要时, 你需要自行进行单元测试补充以及`debug`。
 
+> 在目前的`Lab`中, 你确实可以从原仓库[Toni-LSM](https://github.com/ToniXWD/toni-lsm)的`complete`分支直接查看`Lab`实验的答案, 但作者不希望你如此做, 这样你将无法深刻理解实验设计的思路和相关知识。
+
 在了解完这些以后, 你可以开启下一章[Lab 0 环境准备](./lab0-env.md)的学习。
 
 # 6 项目交流与讨论
-如果你对本`Lab`有疑问, 欢迎在[GitHub Issues](https://github.com/MIT-6.S081-Fall-2021/6.S081-Fall-2021.github.io/issues)中提出问题。
+如果你对本`Lab`有疑问, 欢迎在[GitHub Issues](https://github.com/ToniXWD/toni-lsm/issues)中提出问题。也欢迎加入次实验的[QQ讨论群](https://qm.qq.com/q/wDZQfaNNw6) 。如果你想参与`Lab`的开发, 欢迎通过QQ群或者作者邮件: xwdtoni@126.com 联系。
