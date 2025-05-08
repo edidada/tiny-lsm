@@ -405,6 +405,147 @@ TEST(MemTableTest, PreffixIter) {
   }
 }
 
+TEST(MemTableTest, IteratorPreffix) {
+  MemTable memtable;
+
+  // 插入一些测试数据
+  memtable.put("apple", "0", 0);
+  memtable.put("apple2", "1", 0);
+  memtable.put("apricot", "2", 0);
+  memtable.put("banana", "3", 0);
+  memtable.put("berry", "4", 0);
+  memtable.put("cherry", "5", 0);
+  memtable.put("cherry2", "6", 0);
+
+  // 测试前缀 "ap"
+  auto it = memtable.iters_preffix("ap", 0);
+  EXPECT_EQ(it->first, "apple");
+
+  // 测试前缀 "ba"
+  it = memtable.iters_preffix("ba", 0);
+  EXPECT_EQ(it->first, "banana");
+
+  // 测试前缀 "ch"
+  it = memtable.iters_preffix("ch", 0);
+  EXPECT_EQ(it->first, "cherry");
+
+  // 测试前缀 "z"
+  it = memtable.iters_preffix("z", 0);
+  EXPECT_TRUE(it == memtable.end());
+
+  // 测试前缀 "berr"
+  it = memtable.iters_preffix("berr", 0);
+  EXPECT_EQ(it->first, "berry");
+
+  // 测试前缀 "a"
+  it = memtable.iters_preffix("a", 0);
+  EXPECT_EQ(it->first, "apple");
+
+  EXPECT_TRUE(memtable.iters_preffix("not exist", 0).is_end());
+}
+
+TEST(MemTableTest, ItersPredicate_Base) {
+  MemTable memtable;
+  memtable.put("prefix1", "value1", 0);
+  memtable.put("prefix2", "value2", 0);
+  memtable.put("prefix3", "value3", 0);
+  memtable.put("other", "value4", 0);
+  memtable.put("longerkey", "value5", 0);
+  memtable.put("averylongkey", "value6", 0);
+  memtable.put("medium", "value7", 0);
+  memtable.put("midway", "value8", 0);
+  memtable.put("midpoint", "value9", 0);
+
+  // 测试前缀匹配
+  auto prefix_result =
+      memtable.iters_monotony_predicate(0, [](const std::string &key) {
+        auto match_str = key.substr(0, 3);
+        if (match_str == "pre") {
+          return 0;
+        } else if (match_str < "pre") {
+          return 1;
+        }
+        return -1;
+      });
+  ASSERT_TRUE(prefix_result.has_value());
+  auto [prefix_begin_iter, prefix_end_iter] = prefix_result.value();
+  EXPECT_EQ(prefix_begin_iter->first, "prefix1");
+  EXPECT_TRUE(prefix_end_iter.is_end());
+
+  EXPECT_EQ(prefix_begin_iter->second, "value1");
+  ++prefix_begin_iter;
+  EXPECT_EQ(prefix_begin_iter->second, "value2");
+  ++prefix_begin_iter;
+  EXPECT_EQ(prefix_begin_iter->second, "value3");
+
+  // 测试范围匹配
+  auto range = std::make_pair("l", "n"); // [l, n)
+  auto range_result =
+      memtable.iters_monotony_predicate(0, [&range](const std::string &key) {
+        if (key < range.first) {
+          return 1;
+        } else if (key >= range.second) {
+          return -1;
+        } else {
+          return 0;
+        }
+      });
+  ASSERT_TRUE(range_result.has_value());
+  auto [range_begin_iter, range_end_iter] = range_result.value();
+  EXPECT_EQ(range_begin_iter->first, "longerkey");
+  ++range_begin_iter;
+  EXPECT_EQ(range_begin_iter->first, "medium");
+  ++range_begin_iter;
+  EXPECT_EQ(range_begin_iter->first, "midpoint");
+  ++range_begin_iter;
+  EXPECT_EQ(range_begin_iter->first, "midway");
+  ++range_begin_iter;
+  EXPECT_TRUE(range_begin_iter.is_end());
+}
+
+TEST(MemTableTest, ItersPredicate_Large) {
+  MemTable memtable;
+  int num = 10000;
+
+  for (int i = 0; i < num; ++i) {
+    std::ostringstream oss_key;
+    std::ostringstream oss_value;
+
+    // 设置数字为4位长度，不足的部分用前导零填充
+    oss_key << "key" << std::setw(4) << std::setfill('0') << i;
+    oss_value << "value" << std::setw(4) << std::setfill('0') << i;
+
+    std::string key = oss_key.str();
+    std::string value = oss_value.str();
+
+    memtable.put(key, value, 0);
+  }
+
+  memtable.remove("key1015", 0);
+
+  auto result = memtable.iters_monotony_predicate(0, [](const std::string &key) {
+    if (key < "key1010") {
+      return 1;
+    } else if (key >= "key1020") {
+      return -1;
+    } else {
+      return 0;
+    }
+  });
+
+  ASSERT_TRUE(result.has_value());
+  auto [range_begin_iter, range_end_iter] = result.value();
+  EXPECT_EQ(range_begin_iter->first, "key1010");
+  for (int i = 0; i < 5; i++) {
+    ++range_begin_iter;
+  }
+  EXPECT_EQ(range_begin_iter->first, "key1016");
+  for (int i = 0; i < 5; i++) {
+    ++range_begin_iter;
+  }
+  EXPECT_TRUE(range_begin_iter.is_end());
+}
+
 int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);
   init_spdlog_file();
