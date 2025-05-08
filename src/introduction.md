@@ -3,8 +3,20 @@
 
 ----
 
+
 # 0 Toni-LSM是什么?
 [Toni-LSM](https://github.com/ToniXWD/toni-lsm)是一个基于`LSM Tree`的开源教学`KV`存储引擎, 除`LSM Tree`的基础功能外, 还支持`MVCC`、`WAL`、崩溃恢复、`Redis`兼容等功能。本实验是基于作者原本实验的代码进行改造后的`Lab`课程。
+
+`LSM Tree`（`Log-Structured Merge-Tree`）是一种适用于磁盘存储的数据结构，特别适合于需要高吞吐量的写操作的场景。它由Patrick O'Neil等人于1996年提出，广泛应用于NoSQL数据库和文件系统中，如`LevelDB`、`RocksDB`和`Cassandra`等。`LSM Tree`的主要思想是将数据写入操作日志（Log），然后定期将日志中的数据合并到磁盘上的有序不可变文件（SSTable）中。这些SSTable文件按层次结构组织，数据在多个层次之间逐步合并和压缩，以减少读取时的查找次数和磁盘I/O操作。
+
+有关`LSM Tree`的进一步背景和介绍请参见[LSM Tree 概览](lab0-background.md)
+
+本实现项目`Toni-LSN`完成了包括`内存表（MemTable）`、`不可变表（SSTable）`、`布隆过滤器（Bloom Filter）`、`合并和压缩（Compaction）`等`LSM Tree`的核心组件，并在此基础上添加了额外的功能博客, 包括:
+- 实现了`ACID`事务
+- 实现了`MVCC`多版本并发控制
+- 实现了`WAL`日志和崩溃恢复
+- 基于`KV`存储实现了`Redis`的`Resp`协议兼容层
+- 基于`Resp`协议兼容层实现了`redis-server`服务
 
 ### ⭐ 请支持我们的项目！
 > 如果您觉得本`Lab`不错, 请为[Toni-LSM](https://github.com/ToniXWD/toni-lsm)点一个⭐。项目实验制作耗费了我很大精力，作者非常需要您的鼓励❤️, 您的支持是我更新的动力😆
