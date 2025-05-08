@@ -36,4 +36,44 @@ MemTable::iters_monotony_predicate(
 和`iters_preffix`类似, 只不过查询逻辑从特化的前缀查询变成了适用性更广泛的谓词查询, 注意事项也都差不多, 同样是借助`Skiplist`的`iters_monotony_predicate(predicate)`获取初步的结果, 再用`HeapIterator`区中。
 
 # 4 测试
-TODO： 作者很懒，很没有写对应的单元测试😏
+完成上面的函数后, 你应该可以通过所有的test/test_memtable.cpp的单元测试:
+```bash
+✗ xmake
+✗ xmake run test_memtable
+[==========] Running 12 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 12 tests from MemTableTest
+[ RUN      ] MemTableTest.BasicOperations
+[       OK ] MemTableTest.BasicOperations (0 ms)
+[ RUN      ] MemTableTest.RemoveOperations
+[       OK ] MemTableTest.RemoveOperations (0 ms)
+[ RUN      ] MemTableTest.FrozenTableOperations
+[       OK ] MemTableTest.FrozenTableOperations (0 ms)
+[ RUN      ] MemTableTest.LargeScaleOperations
+[       OK ] MemTableTest.LargeScaleOperations (1 ms)
+[ RUN      ] MemTableTest.MemorySizeTracking
+[       OK ] MemTableTest.MemorySizeTracking (0 ms)
+[ RUN      ] MemTableTest.MultipleFrozenTables
+[       OK ] MemTableTest.MultipleFrozenTables (0 ms)
+[ RUN      ] MemTableTest.IteratorComplexOperations
+[       OK ] MemTableTest.IteratorComplexOperations (0 ms)
+[ RUN      ] MemTableTest.ConcurrentOperations
+[       OK ] MemTableTest.ConcurrentOperations (604 ms)
+[ RUN      ] MemTableTest.PreffixIter
+[       OK ] MemTableTest.PreffixIter (0 ms)
+[ RUN      ] MemTableTest.IteratorPreffix
+[       OK ] MemTableTest.IteratorPreffix (0 ms)
+[ RUN      ] MemTableTest.ItersPredicate_Base
+[       OK ] MemTableTest.ItersPredicate_Base (0 ms)
+[ RUN      ] MemTableTest.ItersPredicate_Large
+[       OK ] MemTableTest.ItersPredicate_Large (13 ms)
+[----------] 12 tests from MemTableTest (620 ms total)
+
+[----------] Global test environment tear-down
+[==========] 12 tests from 1 test suite ran. (620 ms total)
+[  PASSED  ] 12 tests.
+```
+
+到此为止, `Lab2`的实验结束, 恭喜你完成本实验!
+
+
