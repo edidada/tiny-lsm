@@ -207,20 +207,11 @@ MemTable::flush_last(SSTBuilder &builder, std::string &sst_path, size_t sst_id,
 }
 
 void MemTable::frozen_cur_table_() {
-  spdlog::trace("MemTable--frozen_cur_table_(): Freezing current table");
-
-  frozen_bytes += current_table->get_size();
-  frozen_tables.push_front(std::move(current_table));
-  current_table = std::make_shared<SkipList>();
+  // TODO: 冻结活跃表
 }
 
 void MemTable::frozen_cur_table() {
-  spdlog::trace("MemTable--frozen_cur_table(): Acquiring locks and freezing "
-                "current table");
-
-  std::unique_lock<std::shared_mutex> lock1(cur_mtx);
-  std::unique_lock<std::shared_mutex> lock2(frozen_mtx);
-  frozen_cur_table_();
+  // TODO: 冻结活跃表, 有锁版本
 }
 
 size_t MemTable::get_cur_size() {
