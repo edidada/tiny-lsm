@@ -10,4 +10,8 @@
   - [Lab 2.1 简单 CRUD](./lab2/lab2.1-memtabel-crud.md)
   - [Lab 2.2 迭代器](./lab2/lab2.2-iterator.md)
   - [Lab 2.3 范围查询](./lab2/lab2.3-range-query.md)
+- [Lab 3 SST](./lab3/lab3-SST.md)
+  - [Lab 3.1 Block 实现](./lab3/lab3.1-Block.md)
+  - [Lab 3.2 BlockIterator 实现](./lab3/lab3.2-BlockIterator.md)
+
 - [持续更新中...](./undergoing.md)
