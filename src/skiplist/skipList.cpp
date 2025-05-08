@@ -69,7 +69,8 @@ void SkipList::put(const std::string &key, const std::string &value,
 
   // TODO: Lab1.1  任务：实现插入或更新键值对
   // ? Hint: 你需要保证不同`Level`的步长从底层到高层逐渐增加
-  // ? 你可能需要使用到`random_level`函数以确定层数, 其注释中为你通公路一种思路
+  // ? 你可能需要使用到`random_level`函数以确定层数, 其注释中为你提供一种思路
+  // ? tranc_id 为事务id, 现在你不需要关注它, 直接将其传递到 SkipListNode 的构造函数中即可
 }
 
 // 查找键值对
