@@ -231,158 +231,27 @@ size_t MemTable::get_total_size() {
 }
 
 HeapIterator MemTable::begin(uint64_t tranc_id) {
-  std::shared_lock<std::shared_mutex> slock1(cur_mtx);
-  std::shared_lock<std::shared_mutex> slock2(frozen_mtx);
-  std::vector<SearchItem> item_vec;
-
-  for (auto iter = current_table->begin(); iter != current_table->end();
-       ++iter) {
-    if (tranc_id != 0 && iter.get_tranc_id() > tranc_id) {
-      continue;
-    }
-    item_vec.emplace_back(iter.get_key(), iter.get_value(), 0, 0,
-                          iter.get_tranc_id());
-  }
-
-  int table_idx = 1;
-  for (auto ft = frozen_tables.begin(); ft != frozen_tables.end(); ft++) {
-    auto table = *ft;
-    for (auto iter = table->begin(); iter != table->end(); ++iter) {
-      if (tranc_id != 0 && iter.get_tranc_id() > tranc_id) {
-        continue;
-      }
-      item_vec.emplace_back(iter.get_key(), iter.get_value(), table_idx, 0,
-                            iter.get_tranc_id());
-    }
-    table_idx++;
-  }
-
-  return HeapIterator(item_vec, tranc_id);
+  // TODO Lab 2.2 MemTable 的迭代器
+  return {};
 }
 
 HeapIterator MemTable::end() {
-  std::shared_lock<std::shared_mutex> slock1(cur_mtx);
-  std::shared_lock<std::shared_mutex> slock2(frozen_mtx);
+  // TODO Lab 2.2 MemTable 的迭代器
   return HeapIterator{};
 }
 
 HeapIterator MemTable::iters_preffix(const std::string &preffix,
                                      uint64_t tranc_id) {
-  spdlog::trace("MemTable--iters_preffix('{}', tranc_id={})", preffix,
-                tranc_id);
 
-  std::shared_lock<std::shared_mutex> slock1(cur_mtx);
-  std::shared_lock<std::shared_mutex> slock2(frozen_mtx);
-  std::vector<SearchItem> item_vec;
+  // TODO Lab 2.3 MemTable 的前缀迭代器
 
-  for (auto iter = current_table->begin_preffix(preffix);
-       iter != current_table->end_preffix(preffix); ++iter) {
-    if (tranc_id != 0 && iter.get_tranc_id() > tranc_id) {
-      // 如果开启了事务, 比当前事务 id 更大的记录是不可见的
-      continue;
-    }
-    if (!item_vec.empty() && item_vec.back().key_ == iter.get_key()) {
-      // 如果key相同，则只保留最新的事务修改的记录即可
-      // 且这个记录既然已经存在于item_vec中，则其肯定满足了事务的可见性判断
-      continue;
-    }
-    item_vec.emplace_back(iter.get_key(), iter.get_value(), 0, 0,
-                          iter.get_tranc_id());
-
-    spdlog::trace("MemTable--iters_preffix(): get range from curent table");
-  }
-
-  int table_idx = 1;
-  for (auto ft = frozen_tables.begin(); ft != frozen_tables.end(); ft++) {
-    auto table = *ft;
-    for (auto iter = table->begin_preffix(preffix);
-         iter != table->end_preffix(preffix); ++iter) {
-      if (tranc_id != 0 && iter.get_tranc_id() > tranc_id) {
-        // 如果开启了事务, 比当前事务 id 更大的记录是不可见的
-        continue;
-      }
-      if (!item_vec.empty() && item_vec.back().key_ == iter.get_key()) {
-        // 如果key相同，则只保留最新的事务修改的记录即可
-        // 且这个记录既然已经存在于item_vec中，则其肯定满足了事务的可见性判断
-        continue;
-      }
-      item_vec.emplace_back(iter.get_key(), iter.get_value(), table_idx, 0,
-                            iter.get_tranc_id());
-
-      spdlog::trace("MemTable--iters_preffix(): get range from table{}",
-                    table_idx);
-    }
-    table_idx++;
-  }
-
-  return HeapIterator(item_vec, tranc_id);
+  return {};
 }
 
 std::optional<std::pair<HeapIterator, HeapIterator>>
 MemTable::iters_monotony_predicate(
     uint64_t tranc_id, std::function<int(const std::string &)> predicate) {
-  spdlog::trace("MemTable--iters_monotony_predicate(tranc_id={}) called",
-                tranc_id);
-
-  std::shared_lock<std::shared_mutex> slock1(cur_mtx);
-  std::shared_lock<std::shared_mutex> slock2(frozen_mtx);
-
-  std::vector<SearchItem> item_vec;
-
-  auto cur_result = current_table->iters_monotony_predicate(predicate);
-  if (cur_result.has_value()) {
-    auto [begin, end] = cur_result.value();
-    for (auto iter = begin; iter != end; ++iter) {
-      if (tranc_id != 0 && iter.get_tranc_id() > tranc_id) {
-        // 如果开启了事务, 比当前事务 id 更大的记录是不可见的
-        continue;
-      }
-      if (!item_vec.empty() && item_vec.back().key_ == iter.get_key()) {
-        // 如果key相同，则只保留最新的事务修改的记录即可
-        // 且这个记录既然已经存在于item_vec中，则其肯定满足了事务的可见性判断
-        continue;
-      }
-      item_vec.emplace_back(iter.get_key(), iter.get_value(), 0, 0,
-                            iter.get_tranc_id());
-
-      spdlog::trace(
-          "MemTable--iters_monotony_predicate(): get range from curent table");
-    }
-  }
-
-  int table_idx = 1;
-  for (auto ft = frozen_tables.begin(); ft != frozen_tables.end(); ft++) {
-    auto table = *ft;
-    auto result = table->iters_monotony_predicate(predicate);
-    if (result.has_value()) {
-      auto [begin, end] = result.value();
-      for (auto iter = begin; iter != end; ++iter) {
-        if (tranc_id != 0 && iter.get_tranc_id() > tranc_id) {
-          // 如果开启了事务, 比当前事务 id 更大的记录是不可见的
-          continue;
-        }
-        if (!item_vec.empty() && item_vec.back().key_ == iter.get_key()) {
-          // 如果key相同，则只保留最新的事务修改的记录即可
-          // 且这个记录既然已经存在于item_vec中，则其肯定满足了事务的可见性判断
-          continue;
-        }
-        item_vec.emplace_back(iter.get_key(), iter.get_value(), table_idx, 0,
-                              iter.get_tranc_id());
-      }
-
-      spdlog::trace(
-          "MemTable--iters_monotony_predicate(): get range from table{}",
-          table_idx);
-    }
-    table_idx++;
-  }
-
-  if (item_vec.empty()) {
-    spdlog::trace(
-        "MemTable--iters_monotony_predicate(): No matching keys found");
-
-    return std::nullopt;
-  }
-  return std::make_pair(HeapIterator(item_vec, tranc_id), HeapIterator{});
+  // TODO Lab 2.3 MemTable 的谓词查询迭代器起始范围
+  return std::nullopt;
 }
 } // namespace toni_lsm
