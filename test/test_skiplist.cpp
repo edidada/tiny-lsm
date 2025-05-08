@@ -35,25 +35,6 @@ TEST(SkipListTest, BasicOperations) {
   EXPECT_FALSE(skipList.get("key1", 0).is_valid());
 }
 
-// 测试迭代器
-TEST(SkipListTest, Iterator) {
-  SkipList skipList;
-  skipList.put("key1", "value1", 0);
-  skipList.put("key2", "value2", 0);
-  skipList.put("key3", "value3", 0);
-
-  // 测试迭代器
-  std::vector<std::pair<std::string, std::string>> result;
-  for (auto it = skipList.begin(); it != skipList.end(); ++it) {
-    result.push_back(*it);
-  }
-
-  EXPECT_EQ(result.size(), 3);
-  EXPECT_EQ(std::get<0>(result[0]), "key1");
-  EXPECT_EQ(std::get<0>(result[1]), "key2");
-  EXPECT_EQ(std::get<0>(result[2]), "key3");
-}
-
 // 测试大量数据插入和查找
 TEST(SkipListTest, LargeScaleInsertAndGet) {
   SkipList skipList;
@@ -179,6 +160,25 @@ TEST(SkipListTest, MemorySizeTracking) {
 
   skipList.clear();
   EXPECT_EQ(skipList.get_size(), 0);
+}
+
+// 测试迭代器
+TEST(SkipListTest, Iterator) {
+  SkipList skipList;
+  skipList.put("key1", "value1", 0);
+  skipList.put("key2", "value2", 0);
+  skipList.put("key3", "value3", 0);
+
+  // 测试迭代器
+  std::vector<std::pair<std::string, std::string>> result;
+  for (auto it = skipList.begin(); it != skipList.end(); ++it) {
+    result.push_back(*it);
+  }
+
+  EXPECT_EQ(result.size(), 3);
+  EXPECT_EQ(std::get<0>(result[0]), "key1");
+  EXPECT_EQ(std::get<0>(result[1]), "key2");
+  EXPECT_EQ(std::get<0>(result[2]), "key3");
 }
 
 TEST(SkipListTest, IteratorPreffix) {

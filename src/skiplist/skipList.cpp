@@ -78,7 +78,7 @@ SkipListIterator SkipList::get(const std::string &key, uint64_t tranc_id) {
   // ? 日志为输出到你执行二进制所在目录下的log文件夹
 
   // TODO: Lab1.1 任务：实现查找键值对,
-  // TODO: 并且你需要额外实现SkipListIterator中的TODO部分
+  // TODO: 并且你后续需要额外实现SkipListIterator中的TODO部分(Lab1.2)
   return SkipListIterator{};
 }
 
