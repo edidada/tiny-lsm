@@ -3,6 +3,7 @@
 #include "../include/logger/logger.h"
 #include "../include/memtable/memtable.h"
 #include <gtest/gtest.h>
+#include <iomanip>
 #include <string>
 #include <utility>
 #include <vector>
@@ -523,15 +524,16 @@ TEST(MemTableTest, ItersPredicate_Large) {
 
   memtable.remove("key1015", 0);
 
-  auto result = memtable.iters_monotony_predicate(0, [](const std::string &key) {
-    if (key < "key1010") {
-      return 1;
-    } else if (key >= "key1020") {
-      return -1;
-    } else {
-      return 0;
-    }
-  });
+  auto result =
+      memtable.iters_monotony_predicate(0, [](const std::string &key) {
+        if (key < "key1010") {
+          return 1;
+        } else if (key >= "key1020") {
+          return -1;
+        } else {
+          return 0;
+        }
+      });
 
   ASSERT_TRUE(result.has_value());
   auto [range_begin_iter, range_end_iter] = result.value();
