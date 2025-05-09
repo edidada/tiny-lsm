@@ -18,63 +18,9 @@ namespace toni_lsm {
 
 std::shared_ptr<SST> SST::open(size_t sst_id, FileObj file,
                                std::shared_ptr<BlockCache> block_cache) {
-  auto sst = std::make_shared<SST>();
-  sst->sst_id = sst_id;
-  sst->file = std::move(file);
-  sst->block_cache = block_cache;
+  // TODO Lab 3.6 打开一个SST文件, 返回一个描述类
 
-  size_t file_size = sst->file.size();
-  // 读取文件末尾的元数据块
-  if (file_size < sizeof(uint64_t) * 2 + sizeof(uint32_t) * 2) {
-    throw std::runtime_error("Invalid SST file: too small");
-  }
-
-  // 0. 读取最大和最小的事务id
-  auto max_tranc_id =
-      sst->file.read_to_slice(file_size - sizeof(uint64_t), sizeof(uint64_t));
-  memcpy(&sst->max_tranc_id_, max_tranc_id.data(), sizeof(uint64_t));
-
-  auto min_tranc_id = sst->file.read_to_slice(file_size - sizeof(uint64_t) * 2,
-                                              sizeof(uint64_t));
-  memcpy(&sst->min_tranc_id_, min_tranc_id.data(), sizeof(uint64_t));
-
-  // 1. 读取元数据块的偏移量, 最后8字节: 2个 uint32_t,
-  // 分别是 meta 和 bloom 的 offset
-
-  auto bloom_offset_bytes = sst->file.read_to_slice(
-      file_size - sizeof(uint64_t) * 2 - sizeof(uint32_t), sizeof(uint32_t));
-  memcpy(&sst->bloom_offset, bloom_offset_bytes.data(), sizeof(uint32_t));
-
-  auto meta_offset_bytes = sst->file.read_to_slice(
-      file_size - sizeof(uint64_t) * 2 - sizeof(uint32_t) * 2,
-      sizeof(uint32_t));
-  memcpy(&sst->meta_block_offset, meta_offset_bytes.data(), sizeof(uint32_t));
-
-  // 2. 读取 bloom filter
-  if (sst->bloom_offset + 2 * sizeof(uint32_t) + 2 * sizeof(uint64_t) <
-      file_size) {
-    // 布隆过滤器偏移量 + 2*uint32_t 的大小小于文件大小
-    // 表示存在布隆过滤器
-    uint32_t bloom_size = file_size - sizeof(uint64_t) * 2 - sst->bloom_offset -
-                          sizeof(uint32_t) * 2;
-    auto bloom_bytes = sst->file.read_to_slice(sst->bloom_offset, bloom_size);
-
-    auto bloom = BloomFilter::decode(bloom_bytes);
-    sst->bloom_filter = std::make_shared<BloomFilter>(std::move(bloom));
-  }
-
-  // 3. 读取并解码元数据块
-  uint32_t meta_size = sst->bloom_offset - sst->meta_block_offset;
-  auto meta_bytes = sst->file.read_to_slice(sst->meta_block_offset, meta_size);
-  sst->meta_entries = BlockMeta::decode_meta_from_slice(meta_bytes);
-
-  // 4. 设置首尾key
-  if (!sst->meta_entries.empty()) {
-    sst->first_key = sst->meta_entries.front().first_key;
-    sst->last_key = sst->meta_entries.back().last_key;
-  }
-
-  return sst;
+  return nullptr;
 }
 
 void SST::del_sst() { file.del_file(); }
@@ -94,84 +40,22 @@ std::shared_ptr<SST> SST::create_sst_with_meta_only(
 }
 
 std::shared_ptr<Block> SST::read_block(size_t block_idx) {
-  if (block_idx >= meta_entries.size()) {
-    throw std::out_of_range("Block index out of range");
-  }
-
-  // 先从缓存中查找
-  if (block_cache != nullptr) {
-    auto cache_ptr = block_cache->get(this->sst_id, block_idx);
-    if (cache_ptr != nullptr) {
-      return cache_ptr;
-    }
-  } else {
-    throw std::runtime_error("Block cache not set");
-  }
-
-  const auto &meta = meta_entries[block_idx];
-  size_t block_size;
-
-  // 计算block大小
-  if (block_idx == meta_entries.size() - 1) {
-    block_size = meta_block_offset - meta.offset;
-  } else {
-    block_size = meta_entries[block_idx + 1].offset - meta.offset;
-  }
-
-  // 读取block数据
-  auto block_data = file.read_to_slice(meta.offset, block_size);
-  auto block_res = Block::decode(block_data, true);
-
-  // 更新缓存
-  if (block_cache != nullptr) {
-    block_cache->put(this->sst_id, block_idx, block_res);
-  } else {
-    throw std::runtime_error("Block cache not set");
-  }
-  return block_res;
+  // TODO: Lab 3.6 根据 block 的 id 读取一个 `Block`
+  return nullptr;
 }
 
 size_t SST::find_block_idx(const std::string &key) {
   // 先在布隆过滤器判断key是否存在
-  if (bloom_filter != nullptr && !bloom_filter->possibly_contains(key)) {
-    return -1;
-  }
-
-  // 二分查找
-  size_t left = 0;
-  size_t right = meta_entries.size();
-
-  while (left < right) {
-    size_t mid = (left + right) / 2;
-    const auto &meta = meta_entries[mid];
-
-    if (key < meta.first_key) {
-      right = mid;
-    } else if (key > meta.last_key) {
-      left = mid + 1;
-    } else {
-      return mid;
-    }
-  }
-
-  if (left >= meta_entries.size()) {
-    // 如果没有找到完全匹配的块，返回-1
-    return -1;
-  }
-  return left;
+  // TODO: Lab 3.6 二分查找
+  // ? 给定一个 `key`, 返回其所属的 `block` 的索引
+  // ? 如果没有找到包含该 `key` 的 Block，返回-1
+  return 0;
 }
 
 SstIterator SST::get(const std::string &key, uint64_t tranc_id) {
-  if (key < first_key || key > last_key) {
-    return this->end();
-  }
-
-  // 在布隆过滤器判断key是否存在
-  if (bloom_filter != nullptr && !bloom_filter->possibly_contains(key)) {
-    return this->end();
-  }
-
-  return SstIterator(shared_from_this(), key, tranc_id);
+  // TODO: Lab 3.6 根据查询`key`返回一个迭代器
+  // ? 如果`key`不存在, 返回一个无效的迭代器即可
+  throw std::runtime_error("Not implemented");
 }
 
 size_t SST::num_blocks() const { return meta_entries.size(); }
@@ -185,14 +69,13 @@ size_t SST::sst_size() const { return file.size(); }
 size_t SST::get_sst_id() const { return sst_id; }
 
 SstIterator SST::begin(uint64_t tranc_id) {
-  return SstIterator(shared_from_this(), tranc_id);
+  // TODO: Lab 3.6 返回起始位置迭代器
+  throw std::runtime_error("Not implemented");
 }
 
 SstIterator SST::end() {
-  SstIterator res(shared_from_this(), 0);
-  res.m_block_idx = meta_entries.size();
-  res.m_block_it = nullptr;
-  return res;
+  // TODO: Lab 3.6 返回终止位置迭代器
+  throw std::runtime_error("Not implemented");
 }
 
 std::pair<uint64_t, uint64_t> SST::get_tranc_id_range() const {
