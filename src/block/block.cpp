@@ -151,12 +151,12 @@ size_t Block::cur_size() const {
 bool Block::is_empty() const { return offsets.empty(); }
 
 BlockIterator Block::begin(uint64_t tranc_id) {
-  // TODO Lab 3.3 获取begin迭代器
+  // TODO Lab 3.2 获取begin迭代器
   return BlockIterator(nullptr, 0, 0);
 }
 
 BlockIterator Block::end() {
-  // TODO Lab 3.3 获取end迭代器
+  // TODO Lab 3.2 获取end迭代器
   return BlockIterator(nullptr, 0, 0);
 }
 } // namespace toni_lsm
