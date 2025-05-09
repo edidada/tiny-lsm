@@ -111,6 +111,13 @@ std::optional<size_t> Block::get_idx_binary(const std::string &key,
   return std::nullopt;
 }
 
+std::optional<
+    std::pair<std::shared_ptr<BlockIterator>, std::shared_ptr<BlockIterator>>>
+Block::iters_preffix(uint64_t tranc_id, const std::string &preffix) {
+  // TODO Lab 3.3 获取前缀匹配的区间迭代器
+  return std::nullopt;
+}
+
 // 返回第一个满足谓词的位置和最后一个满足谓词的位置
 // 如果不存在, 范围nullptr
 // 谓词作用于key, 且保证满足谓词的结果只在一段连续的区间内, 例如前缀匹配的谓词
@@ -123,7 +130,7 @@ std::optional<
     std::pair<std::shared_ptr<BlockIterator>, std::shared_ptr<BlockIterator>>>
 Block::get_monotony_predicate_iters(
     uint64_t tranc_id, std::function<int(const std::string &)> predicate) {
-  // TODO: Lab 3.2 使用二分查找获取满足谓词的区间迭代器
+  // TODO: Lab 3.3 使用二分查找获取满足谓词的区间迭代器
   return std::nullopt;
 }
 
@@ -144,19 +151,12 @@ size_t Block::cur_size() const {
 bool Block::is_empty() const { return offsets.empty(); }
 
 BlockIterator Block::begin(uint64_t tranc_id) {
-  // TODO Lab 3.2 获取begin迭代器
+  // TODO Lab 3.3 获取begin迭代器
   return BlockIterator(nullptr, 0, 0);
 }
 
-std::optional<
-    std::pair<std::shared_ptr<BlockIterator>, std::shared_ptr<BlockIterator>>>
-Block::iters_preffix(uint64_t tranc_id, const std::string &preffix) {
-  // TODO Lab 3.2 获取前缀匹配的区间迭代器
-  return std::nullopt;
-}
-
 BlockIterator Block::end() {
-  // TODO Lab 3.2 获取end迭代器
+  // TODO Lab 3.3 获取end迭代器
   return BlockIterator(nullptr, 0, 0);
 }
 } // namespace toni_lsm
