@@ -108,5 +108,4 @@ SSTBuilder::build(size_t sst_id, const std::string &path,
 > 这里涉及到文件IO的操作, 作者已经在`include/utils`中封装了一个文件IO管理类`FileObj`, 你需要阅读`include/utils/files.h`即`src/utils/files.cpp`来了解其使用方法
 
 # 3 测试
-待更新...
-
+到目前位置, 我们只是实现了`SST`的构建工具类`SSTBuilder`, 但由于我们很没有实现`SST`的查询功能, 所以现在我们还无法通过查询接口验证我们`SST`构建的正确性, 因此单元测试需要完成后续`SST`相关`Lab`才能实现。

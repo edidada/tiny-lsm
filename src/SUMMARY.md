@@ -19,5 +19,6 @@
   - [阶段2-SST](./lab3/SST.md)
     - [Lab 3.4 BlockMeta](./lab3/lab3.4-BlockMeta.md)
     - [Lab 3.5 SSTBuilder](./lab3/lab3.5-SSTBuilder.md)
+    - [Lab 3.6 SST 查询](./lab3/lab3.6-SST-Query.md)
 
 - [持续更新中...](./undergoing.md)
