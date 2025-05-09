@@ -165,7 +165,7 @@ xmake
 
 ### 项目目录结构
 
-```
+```bash
 toni-lsm/
 ├── doc/           # 项目文档
 ├── example/       # 示例程序
@@ -180,7 +180,7 @@ toni-lsm/
 └── xmake.lua      # xmake 构建配置文件
 ```
 其中src目录下包含以下子目录：
-```
+````bash
 src/
 ├── block/           # 数据块的编码与解码
 ├── iterator/        # 统一的迭代器接口

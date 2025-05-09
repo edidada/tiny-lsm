@@ -27,7 +27,7 @@ public std::enable_shared_from_this<Block>
 
 这里主要对`data`和`offsets`这两个数据结构进行说明, 他们在构建阶段和读取阶段存在一定区别, 首先还是给出架构图:
 
-![Block](../images/lab3/block.png)
+![Block](../images/lab3/Block.png)
 
 **构建阶段**
 当我们从`Skiplist`拿到数据构建一个`SST`时, `SST`需要逐个构建`Block`, 这个`Block`在构建时步骤如下:

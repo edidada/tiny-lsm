@@ -27,7 +27,7 @@
 # 3 Block的结构
 现在我们来看`Block`的结构, `Block`是`SST`中的基本IO单元，即`SST`的每个查询最终是在`Blcok`中定位到具体的键值对的, 其结构为:
 
-![Block](../images/lab3/block.png)
+![Block](../images/lab3/Block.png)
 
 > 上图的`B`表示一个字节
 
