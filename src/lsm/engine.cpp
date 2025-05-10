@@ -110,6 +110,7 @@ void LSMEngine::clear() {
 
 uint64_t LSMEngine::flush() {
   // TODO: Lab 4.1 刷盘形成sst文件
+  return 0;
 }
 
 std::string LSMEngine::get_sst_path(size_t sst_id, size_t target_level) {
@@ -124,6 +125,7 @@ std::optional<std::pair<TwoMergeIterator, TwoMergeIterator>>
 LSMEngine::lsm_iters_monotony_predicate(
     uint64_t tranc_id, std::function<int(const std::string &)> predicate) {
   // TODO: Lab 4.x 谓词查询
+  return std::nullopt;
 }
 
 Level_Iterator LSMEngine::begin(uint64_t tranc_id) {
