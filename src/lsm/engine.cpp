@@ -129,12 +129,12 @@ LSMEngine::lsm_iters_monotony_predicate(
 }
 
 Level_Iterator LSMEngine::begin(uint64_t tranc_id) {
-  // TODO: Lab 4.x
+  // TODO: Lab 4.5
   throw std::runtime_error("Not implemented");
 }
 
 Level_Iterator LSMEngine::end() {
-  // TODO: Lab 4.x
+  // TODO: Lab 4.5
   throw std::runtime_error("Not implemented");
 }
 
