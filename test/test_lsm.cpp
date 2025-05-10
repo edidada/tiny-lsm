@@ -113,6 +113,31 @@ TEST_F(LSMTest, LargeScaleOperations) {
   }
 }
 
+// Test mixed operations
+TEST_F(LSMTest, MixedOperations) {
+  LSM lsm(test_dir);
+  std::map<std::string, std::string> reference;
+
+  // Perform mixed operations
+  lsm.put("key1", "value1");
+  reference["key1"] = "value1";
+
+  lsm.put("key2", "value2");
+  reference["key2"] = "value2";
+
+  lsm.remove("key1");
+  reference.erase("key1");
+
+  lsm.put("key3", "value3");
+  reference["key3"] = "value3";
+
+  // Verify final state
+  for (const auto &[key, value] : reference) {
+    EXPECT_EQ(lsm.get(key).value(), value);
+  }
+  EXPECT_FALSE(lsm.get("key1").has_value());
+}
+
 // Test iterator functionality
 TEST_F(LSMTest, IteratorOperations) {
   LSM lsm(test_dir);
@@ -138,31 +163,6 @@ TEST_F(LSMTest, IteratorOperations) {
   }
 
   EXPECT_EQ(it == lsm.end(), ref_it == reference.end());
-}
-
-// Test mixed operations
-TEST_F(LSMTest, MixedOperations) {
-  LSM lsm(test_dir);
-  std::map<std::string, std::string> reference;
-
-  // Perform mixed operations
-  lsm.put("key1", "value1");
-  reference["key1"] = "value1";
-
-  lsm.put("key2", "value2");
-  reference["key2"] = "value2";
-
-  lsm.remove("key1");
-  reference.erase("key1");
-
-  lsm.put("key3", "value3");
-  reference["key3"] = "value3";
-
-  // Verify final state
-  for (const auto &[key, value] : reference) {
-    EXPECT_EQ(lsm.get(key).value(), value);
-  }
-  EXPECT_FALSE(lsm.get("key1").has_value());
 }
 
 TEST_F(LSMTest, MonotonyPredicate) {

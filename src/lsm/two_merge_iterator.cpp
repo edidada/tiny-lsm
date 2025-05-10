@@ -16,13 +16,8 @@ TwoMergeIterator::TwoMergeIterator(std::shared_ptr<BaseIterator> it_a,
 }
 
 bool TwoMergeIterator::choose_it_a() {
-  if (it_a->is_end()) {
-    return false;
-  }
-  if (it_b->is_end()) {
-    return true;
-  }
-  return (**it_a).first < (**it_b).first; // 比较 key
+  // TODO: Lab 4.4: 实现选择迭代器的逻辑
+  return false;
 }
 
 void TwoMergeIterator::skip_it_b() {
@@ -32,55 +27,26 @@ void TwoMergeIterator::skip_it_b() {
 }
 
 void TwoMergeIterator::skip_by_tranc_id() {
-  if (max_tranc_id_ == 0) {
-    return;
-  }
-  while (it_a->get_tranc_id() > max_tranc_id_) {
-    ++(*it_a);
-  }
-  while (it_b->get_tranc_id() > max_tranc_id_) {
-    ++(*it_b);
-  }
+  // TODO: Lab xx
 }
 
 BaseIterator &TwoMergeIterator::operator++() {
-  if (choose_a) {
-    ++(*it_a);
-  } else {
-    ++(*it_b);
-  }
-  // 先跳过不可见的事务
-  skip_by_tranc_id();
-  skip_it_b();              // 跳过重复的 key
-  choose_a = choose_it_a(); // 重新决定使用哪个迭代器
-  return *this;
+  // TODO: Lab 4.4: 实现 ++ 重载
 }
 
 bool TwoMergeIterator::operator==(const BaseIterator &other) const {
-  if (other.get_type() != IteratorType::TwoMergeIterator) {
-    return false;
-  }
-  auto other2 = dynamic_cast<const TwoMergeIterator &>(other);
-  if (this->is_end() && other2.is_end()) {
-    return true;
-  }
-  if (this->is_end() || other2.is_end()) {
-    return false;
-  }
-  return it_a == other2.it_a && it_b == other2.it_b &&
-         choose_a == other2.choose_a;
+  // TODO: Lab 4.4: 实现 == 重载
+  return false;
 }
 
 bool TwoMergeIterator::operator!=(const BaseIterator &other) const {
-  return !(*this == other);
+  // TODO: Lab 4.4: 实现 != 重载
+  return false;
 }
 
 BaseIterator::value_type TwoMergeIterator::operator*() const {
-  if (choose_a) {
-    return **it_a;
-  } else {
-    return **it_b;
-  }
+  // TODO: Lab 4.4: 实现 * 重载
+  return {};
 }
 
 IteratorType TwoMergeIterator::get_type() const {
@@ -116,15 +82,11 @@ bool TwoMergeIterator::is_valid() const {
 }
 
 TwoMergeIterator::pointer TwoMergeIterator::operator->() const {
-  update_current();
-  return current.get();
+  // TODO: Lab 4.4: 实现 -> 重载
+  return nullptr;
 }
 
 void TwoMergeIterator::update_current() const {
-  if (choose_a) {
-    current = std::make_shared<value_type>(**it_a);
-  } else {
-    current = std::make_shared<value_type>(**it_b);
-  }
+  // TODO: Lab 4.4: 实现更新缓存键值对的辅助函数
 }
 } // namespace toni_lsm
