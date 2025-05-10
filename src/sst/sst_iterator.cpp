@@ -13,38 +13,8 @@ namespace toni_lsm {
 std::optional<std::pair<SstIterator, SstIterator>> sst_iters_monotony_predicate(
     std::shared_ptr<SST> sst, uint64_t tranc_id,
     std::function<int(const std::string &)> predicate) {
-  std::optional<SstIterator> final_begin = std::nullopt;
-  std::optional<SstIterator> final_end = std::nullopt;
-  for (int block_idx = 0; block_idx < sst->meta_entries.size(); block_idx++) {
-    auto block = sst->read_block(block_idx);
-
-    BlockMeta &meta_i = sst->meta_entries[block_idx];
-    if (predicate(meta_i.first_key) < 0 || predicate(meta_i.last_key) > 0) {
-      break;
-    }
-
-    auto result_i = block->get_monotony_predicate_iters(tranc_id, predicate);
-    if (result_i.has_value()) {
-      auto [i_begin, i_end] = result_i.value();
-      if (!final_begin.has_value()) {
-        auto tmp_it = SstIterator(sst, tranc_id);
-        tmp_it.set_block_idx(block_idx);
-        tmp_it.set_block_it(i_begin);
-        final_begin = tmp_it;
-      }
-      auto tmp_it = SstIterator(sst, tranc_id);
-      tmp_it.set_block_idx(block_idx);
-      tmp_it.set_block_it(i_end);
-      if (tmp_it.is_end() && tmp_it.m_block_idx == sst->num_blocks()) {
-        tmp_it.set_block_it(nullptr);
-      }
-      final_end = tmp_it;
-    }
-  }
-  if (!final_begin.has_value() || !final_end.has_value()) {
-    return std::nullopt;
-  }
-  return std::make_pair(final_begin.value(), final_end.value());
+  // TODO: Lab 3.7 实现谓词查询功能
+  return {};
 }
 
 SstIterator::SstIterator(std::shared_ptr<SST> sst, uint64_t tranc_id)
