@@ -46,7 +46,6 @@ SkipList1 (id=1): ("k2", "v2") -> ("k3", "v3") -> ("k4", "v4")
 
 首先是`SearchItem`, 我们来看定义:
 ```cpp
-class SstIterator;
 // *************************** SearchItem ***************************
 struct SearchItem {
   std::string key_;
@@ -70,8 +69,6 @@ bool operator==(const SearchItem &a, const SearchItem &b);
 然后是你要实现的迭代器`HeapIterator`的定义:
 ```cpp
 class HeapIterator : public BaseIterator {
-  friend class SstIterator;
-
 public:
   HeapIterator() = default;
   HeapIterator(std::vector<SearchItem> item_vec, uint64_t max_tranc_id);
