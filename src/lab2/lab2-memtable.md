@@ -2,6 +2,14 @@
 
 本`Lab`中, 你将基于之前实现的`Skiplist`, 将其组织成内存中负责存储键值对的组件`MemTable`。
 
+> 提示: 强烈建议你自己创建一个分组实现`Lab`的内容, 并在每次新的`Lab`开始时进行如下同步操作:
+> ```bash
+> git pull origin lab
+> git checkout your_branch
+> git merge lab
+> ```
+> 如果你发现项目仓库的代码没有指导书中的 TODO 标记的话, 证明你需要运行上述命令更新代码了
+
 ## 1 MemTable的构造原理
 
 再次回顾我们的整体架构图：

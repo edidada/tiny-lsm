@@ -1,8 +1,11 @@
 [book]
 authors = ["ToniXWD"]
-language = "ch"
+language = "zh-CN"
 src = "src"
-title = "toni-lsm-lab"
+title = "Toni-LSM-Lab"
 
 [output.html]
 git-repository-url = "https://github.com/ToniXWD/toni-lsm"
+
+[output.html.search]
+enable = true

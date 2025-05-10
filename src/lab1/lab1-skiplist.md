@@ -1,4 +1,12 @@
-# Lab 1 跳表
+# Lab 1 跳表实现
+
+> 提示: 强烈建议你自己创建一个分组实现`Lab`的内容, 并在每次新的`Lab`开始时进行如下同步操作:
+> ```bash
+> git pull origin lab
+> git checkout your_branch
+> git merge lab
+> ```
+> 如果你发现项目仓库的代码没有指导书中的 TODO 标记的话, 证明你需要运行上述命令更新代码了
 
 ## 1 跳表在 LSM Tree 中的作用
 本`Lab`中, 你将实现内存的基础数据结构作为`MemTable`的容器, 这里使用基于红黑树的`std::map`也是可行的, 但`LSM Tree`的原始论文中使用的是跳表, 因此我们选择使用跳表作为`MemTable`的容器，并且正好实现以下这个数据结构 (造轮子是`C++`的快乐)。
