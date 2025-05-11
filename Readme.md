@@ -3,15 +3,21 @@
 </div>
 <br>
 
-`Toni-LSM` is a educational project to implement a simple kv database from scratch, using lsm-tree as the storage engine. The project manager uses [xmake](https://xmake.io/). The project is inspired by [mini-lsm](https://github.com/skyzh/mini-lsm), [tinykv](https://github.com/talent-plan/tinykv) and [leveldb](https://github.com/google/leveldb). The project is partly compatible with the [Redis Resp protocol](https://redis.io/docs/latest/develop/reference/protocol-spec/), so it can be used as a redis backend and relpace `redis-server`(Just for fun).
+`Toni-LSM` is a educational project to implement a simple kv database from scratch, using lsm-tree as the storage engine. The project manager uses [xmake](https://xmake.io/). The project is inspired by [mini-lsm](https://github.com/skyzh/mini-lsm), [tinykv](https://github.com/talent-plan/tinykv) and [leveldb](https://github.com/google/leveldb). The project is partly compatible with the [Redis Resp protocol](https://redis.io/docs/latest/develop/reference/protocol-spec/), so it can be used as a redis backend and relpace `redis-server`(Just for fun 🎮).
 
 The developing posts can be found in my [blog](https://tonixwd.github.io/categories/%E9%A1%B9%E7%9B%AE/) or [zhihu](https://www.zhihu.com/column/c_1867534978344161280). The is also a recorded video [Course](https://avo6166ew2u.feishu.cn/docx/LXmVdezdsoTBRaxC97WcHwGunOc).
 
-You can also join the QQ group for discussion: 
+You can also join the QQ group 💬 for discussion: 
 
 <img src="./doc/qrcode.jpg" height="400">
 
-## Build Configuration
+## 📚 New: Lab Course Released!
+
+We now offer a complete hands-on **step-by-step Lab course** designed for learners interested in building LSM-based storage engines from scratch.
+
+👉 [**Toni-LSM Lab Course**](https://tonixwd.github.io/toni-lsm/book/)
+
+## 📦 Build Configuration
 
 The project uses xmake as the build system. Below is the xmake configuration for building the project and running tests:
 
@@ -31,7 +37,7 @@ xmake run test_lsm
 xmake install --root lsm_shared
 ```
 
-# Usage
+# 🛠️ Usage
 
 ## Use as a library
 
@@ -103,7 +109,7 @@ int main() {
 ```
 
 ## Use to replace redis-server
-Now the project only partly compatible with the Redis Resp protocol, you can check `TODO` for the supported Redis commands.
+⚠️ Now the project only partly compatible with the Redis Resp protocol, you can check `TODO` for the supported Redis commands.
 ```bash
 xmake run server
 ```
@@ -113,9 +119,9 @@ Then you can use redis-cli to connect to the server:
 
 **The project is under development, and the current version is not stable.**
 
-# Benchmark
+# 📈 Benchmark
 We use the official tool `redis-benchmark` to test the performance of the wrapper redis server. The QPS of commonly used commands are relatively high, considering its IO between memroy and disk.
-> The testing environment is: Win11 WSL Ubuntu 22.04, 32GB 6000 RAM, Intel 12600K. 
+> 🔍 The testing environment is: Win11 WSL Ubuntu 22.04, 32GB 6000 RAM, Intel 12600K. 
 
 ```bash
 (base) ➜  ~ redis-benchmark -h 127.0.0.1 -p 6379 -c 100 -n 100000 -q -t SET,GET,INCR,SADD,HSET,ZADD
@@ -127,12 +133,12 @@ SADD: 131233.59 requests per second, p50=0.519 msec
 HSET: 123456.79 requests per second, p50=0.583 msec
 ZADD: 126422.25 requests per second, p50=0.615 msec
 ```
-> Besides, the QPS of `lpush/rpush` is so slow that its design needs to be optimized.
+> 🔍 Besides, the QPS of `lpush/rpush` is so slow that its design needs to be optimized.
 
 The performance of the wrapper redis server is not very good, but it is still fast enough for most use cases. Howerver, the redis server is built based on the LSM Tree KV engine, so it consists of some redundancy locks. If you use the LSM Tree KV engine directly, you can get much better performance. The reason why we use `redis-benchmark` to test the compatible redis api but not the actual KV engine API is that writing a sophisticated testing tool costs much time so we choose to use the existed `redis-benchmark`.
 
 
-# Features && TODO
+# ✅ Features && TODO
 - [x] SkipList
   - [x] get/put/remove
   - [x] iterator
@@ -187,15 +193,14 @@ The performance of the wrapper redis server is not very good, but it is still fa
   - [x] SDK
     - [x] Python
 
-> Only commonly used redis commands are supported. The other implementations can refer to `src/redis_wrapper/redis_wrapper.cpp`. If you need more commands, please submit a pull request. 
-
-# Develop
-If you want to contribute to the project, please check the [issues](https://github.com/ToniXWD/toni-lsm/issues). Also, you can concat me by emial: xwdtoni@126.com
+> 🔍 Only commonly used redis commands are supported. The other implementations can refer to `src/redis_wrapper/redis_wrapper.cpp`. If you need more commands, please submit a pull request. 
 
 ## Redis Resp
 Currently, the project only supports a subset of the Redis Resp protocol. The supported commands are listed above. You can add more commands by following the existing implementations in `src/redis_wrapper/redis_wrapper.cpp`.
 
-## SDK Development
+
+
+## 🧪 SDK Development
 If you want to develop a new SDK for the project, please refer to the existing SDKs in `src/sdk/`. Curently, we only have a Python SDK. You can use build the python sdk as following:
 ```bash
 cd sdk
@@ -219,10 +224,14 @@ db.get("tomxx")
 ```
 We welcome contributions for developing SDKs in other programming languages.
 
+# 🤝 Contribute
+If you want to contribute to the project, please check the [issues](https://github.com/ToniXWD/toni-lsm/issues). Also, you can concat me by 📧 [xwdtoni@126.com](mailto:xwdtoni@126.com)
+
 ## Lab Construction
-I have a plan to make this project a step-to-step Lab like `CMU15445` or `MIT 6.824`. If you are interested in this project, please feel free to contact me by emial: xwdtoni@126.com.
+I have a plan to make this project a step-to-step Lab like `CMU15445` or `MIT 6.824`. If you are interested in this project, please feel free to contact me by 📧 [xwdtoni@126.com](mailto:xwdtoni@126.com)
 
 Besides, the branch `lab-dev` is a development branch for the lab construction.
 
-# License
+# 📜 License
+
 This project is licensed under the MIT License.

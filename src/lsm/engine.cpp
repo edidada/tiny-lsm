@@ -124,42 +124,45 @@ std::string LSMEngine::get_sst_path(size_t sst_id, size_t target_level) {
 std::optional<std::pair<TwoMergeIterator, TwoMergeIterator>>
 LSMEngine::lsm_iters_monotony_predicate(
     uint64_t tranc_id, std::function<int(const std::string &)> predicate) {
-  // TODO: Lab 4.3 谓词查询
+  // TODO: Lab 4.7 谓词查询
   return std::nullopt;
 }
 
 Level_Iterator LSMEngine::begin(uint64_t tranc_id) {
-  // TODO: Lab 4.5
+  // TODO: Lab 4.7
   throw std::runtime_error("Not implemented");
 }
 
 Level_Iterator LSMEngine::end() {
-  // TODO: Lab 4.5
+  // TODO: Lab 4.7
   throw std::runtime_error("Not implemented");
 }
 
 void LSMEngine::full_compact(size_t src_level) {
-  // TODO: Lab 4.x
+  // TODO: Lab 4.5 负责完成整个 full compact
+  // ? 你可能需要控制`Compact`流程需要递归地进行
 }
 
 std::vector<std::shared_ptr<SST>>
 LSMEngine::full_l0_l1_compact(std::vector<size_t> &l0_ids,
                               std::vector<size_t> &l1_ids) {
-  // TODO: Lab 4.x
+  // TODO: Lab 4.5 负责完成 l0 和 l1 的 full compact
   return {};
 }
 
 std::vector<std::shared_ptr<SST>>
 LSMEngine::full_common_compact(std::vector<size_t> &lx_ids,
                                std::vector<size_t> &ly_ids, size_t level_y) {
-  // TODO: Lab 4.x
+  // TODO: Lab 4.5 负责完成其他相邻 level 的 full compact
+
   return {};
 }
 
 std::vector<std::shared_ptr<SST>>
 LSMEngine::gen_sst_from_iter(BaseIterator &iter, size_t target_sst_size,
                              size_t target_level) {
-  // TODO: Lab 4.x
+  // TODO: Lab 4.5 实现从迭代器构造新的 SST
+
   return {};
 }
 
