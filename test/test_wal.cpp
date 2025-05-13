@@ -96,14 +96,16 @@ TEST_F(WALTest, LogAndFlush) {
     }
   }
 
-  wal.log(records1, false);
-  EXPECT_EQ(wal.get_log_buffer().size(), 8);
+  // ? 下面的测试代码因个人实现不同, 你可自行修改
 
-  wal.log(records2, false);
-  EXPECT_EQ(wal.get_log_buffer().size(), 0);
+  // wal.log(records1, false);
+  // EXPECT_EQ(wal.get_log_buffer().size(), 8);
 
-  wal.flush();
-  EXPECT_EQ(wal.get_log_buffer().size(), 0);
+  // wal.log(records2, false);
+  // EXPECT_EQ(wal.get_log_buffer().size(), 0);
+
+  // wal.flush();
+  // EXPECT_EQ(wal.get_log_buffer().size(), 0);
 }
 
 TEST_F(WALTest, RecoverTest) {
