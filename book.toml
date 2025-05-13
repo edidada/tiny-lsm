@@ -6,6 +6,11 @@ title = "Toni-LSM-Lab"
 
 [output.html]
 git-repository-url = "https://github.com/ToniXWD/toni-lsm"
+mathjax-support = false
+additional-js = ["./src/giscus.js"]
+
+[preprocessor.katex]
 
 [output.html.search]
 enable = true
+

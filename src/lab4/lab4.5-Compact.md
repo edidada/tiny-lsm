@@ -32,7 +32,7 @@
   - 可能导致显著的读放大，因为单次查询可能需要扫描多个层级。
 
 - **示意图**：
-  ```
+  ```text
   Level 0: [SST1] [SST2] [SST3]
   Level 1: [SST4] [SST5]
   Level 2: [SST6]
@@ -60,12 +60,12 @@
   - 频繁的小规模合并导致较高的写放大。
 
 - **示意图**：
-  ```
+  ```text
   Level 0: [SST1] [SST2] [SST3]
   Level 1: [RangeA] [RangeB] [RangeC]
   Level 2: [RangeD] [RangeE]
 
-  压缩后：
+  压缩后:
   Level 0: []
   Level 1: [Merged(SST1,RangeA)] [Merged(SST2,RangeB)] [Merged(SST3,RangeC)]
   Level 2: [RangeD] [RangeE]
@@ -84,7 +84,7 @@
 
 
 # 3 本项目 SST Compact 设计
-本项目的`compact`机制采用了一种混合方法，主要在第0层使用基于大小的分层压缩，而在更高层则转向分层压缩。以下是详细的设计说明：
+本项目的`compact`机制采用了一种混合方法，主要在第0层使用基于大小的分层压缩，而在更高层则转向分层压缩。以下是详细的设计说明
 
 ## 3.1 触发压缩的时机
 
@@ -132,7 +132,7 @@
 假设初始状态如下：
 
 - **压缩前**：
-  ```
+  ```text
   Level 0: [SST1] [SST2] [SST3]
   Level 1: [SST4] [SST5]
   Level 2: [SST6]
@@ -146,11 +146,13 @@
   3. 生成新的 SSTable 并将其分配到 Level 1。
 
 - **压缩后**：
-  ```
+  ```text
   Level 0: []
   Level 1: [NewSST1] [NewSST2]
   Level 2: [SST6]
   ```
+
+> TODO: 后续版本应该在此处添加一张流程图
 
 # 4 本实验 Compact 策略的优势和劣势
 本实验的`Compact`策略属于 `Leveled Compaction` (分层合并) 的一种变体。这种`全层合并`的`Leveled Compaction`策略，与其他主流策略的对比如下
