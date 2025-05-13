@@ -28,15 +28,11 @@ public:
   // 将记录添加到缓冲区
   void log(const std::vector<Record> &records, bool force_flush = false);
 
-  // 强制将缓冲区中的数据写入 WAL 文件
+  // 写入 WAL 文件
   void flush();
-
-  void set_max_finished_tranc_id(uint64_t max_finished_tranc_id);
 
 private:
   void cleaner();
-  void cleanWALFile();
-  void reset_file();
 
 protected:
   std::string active_log_path_;
@@ -47,7 +43,6 @@ protected:
   size_t buffer_size_;
   std::thread cleaner_thread_;
   uint64_t max_finished_tranc_id_;
-  std::atomic<bool> stop_cleaner_;
   uint64_t clean_interval_;
 };
 } // namespace toni_lsm

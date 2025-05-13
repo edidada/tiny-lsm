@@ -121,12 +121,12 @@ std::string TranManager::get_tranc_id_file_path() {
 }
 
 std::map<uint64_t, std::vector<Record>> TranManager::check_recover() {
-  // TODO: Lab 5.x
+  // TODO: Lab 5.5
   return {};
 }
 
 bool TranManager::write_to_wal(const std::vector<Record> &records) {
-  // TODO: Lab 5.x
+  // TODO: Lab 5.4
 
   return true;
 }

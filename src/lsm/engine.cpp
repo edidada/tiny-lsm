@@ -180,7 +180,7 @@ size_t LSMEngine::get_sst_size(size_t level) {
 LSM::LSM(std::string path)
     : engine(std::make_shared<LSMEngine>(path)),
       tran_manager_(std::make_shared<TranManager>(path)) {
-  // TODO: xx
+  // TODO: Lab 5.5 控制WAL重放与组件的初始化
 }
 
 LSM::~LSM() {
