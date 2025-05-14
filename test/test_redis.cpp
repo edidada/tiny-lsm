@@ -200,6 +200,93 @@ TEST_F(RedisCommandsTest, HExpire) {
   EXPECT_EQ(lsm.hget(hget_args), "$6\r\n" + value2 + "\r\n");
 }
 
+TEST_F(RedisCommandsTest, SetOperations) {
+  RedisWrapper lsm(test_dir);
+
+  // 测试 sadd 命令
+  std::vector<std::string> sadd_args1 = {"SADD", "myset", "member1", "member2",
+                                         "member3"};
+  EXPECT_EQ(lsm.sadd(sadd_args1), ":3\r\n");
+
+  // 测试 scard 命令
+  std::vector<std::string> scard_args = {"SCARD", "myset"};
+  EXPECT_EQ(lsm.scard(scard_args), ":3\r\n");
+
+  // 测试 sismember 命令
+  std::vector<std::string> sismember_args1 = {"SISMEMBER", "myset", "member1"};
+  EXPECT_EQ(lsm.sismember(sismember_args1), ":1\r\n");
+  std::vector<std::string> sismember_args2 = {"SISMEMBER", "myset", "member4"};
+  EXPECT_EQ(lsm.sismember(sismember_args2), ":0\r\n");
+
+  // 测试 smembers 命令
+  std::vector<std::string> smembers_args = {"SMEMBERS", "myset"};
+  std::string expected_smembers =
+      "*3\r\n$7\r\nmember1\r\n$7\r\nmember2\r\n$7\r\nmember3\r\n";
+  EXPECT_EQ(lsm.smembers(smembers_args), expected_smembers);
+
+  // 测试 srem 命令
+  std::vector<std::string> srem_args1 = {"SREM", "myset", "member1", "member3"};
+  EXPECT_EQ(lsm.srem(srem_args1), ":2\r\n");
+
+  // 再次测试 scard 命令
+  EXPECT_EQ(lsm.scard(scard_args), ":1\r\n");
+
+  // 再次测试 smembers 命令
+  std::string expected_smembers_after_rem = "*1\r\n$7\r\nmember2\r\n";
+  EXPECT_EQ(lsm.smembers(smembers_args), expected_smembers_after_rem);
+
+  // 再次测试 sismember 命令
+  std::vector<std::string> sismember_args3 = {"SISMEMBER", "myset", "member1"};
+  EXPECT_EQ(lsm.sismember(sismember_args3), ":0\r\n");
+  std::vector<std::string> sismember_args4 = {"SISMEMBER", "myset", "member2"};
+  EXPECT_EQ(lsm.sismember(sismember_args4), ":1\r\n");
+  std::vector<std::string> sismember_args5 = {"SISMEMBER", "myset", "member3"};
+  EXPECT_EQ(lsm.sismember(sismember_args5), ":0\r\n");
+}
+
+TEST_F(RedisCommandsTest, ZSetOperations) {
+  RedisWrapper lsm(test_dir);
+
+  // 1. 使用 ZADD 添加多个成员到有序集合
+  std::vector<std::string> zadd_args1 = {"ZADD", "myzset", "1", "one",
+                                         "2",    "two",    "3", "three"};
+  auto res = lsm.zadd(zadd_args1);
+  EXPECT_EQ(res, ":3\r\n");
+
+  // 2. 使用 ZRANGE 查询有序集合中的成员
+  std::vector<std::string> zrange_args1 = {"ZRANGE", "myzset", "0", "-1"};
+  res = lsm.zrange(zrange_args1);
+  EXPECT_EQ(res, "*3\r\n$3\r\none\r\n$3\r\ntwo\r\n$5\r\nthree\r\n");
+
+  // 3. 使用 ZCARD 获取有序集合的成员数量
+  std::vector<std::string> zcard_args1 = {"ZCARD", "myzset"};
+  res = lsm.zcard(zcard_args1);
+  EXPECT_EQ(res, ":3\r\n");
+
+  // 4. 使用 ZSCORE 获取特定成员的分数
+  std::vector<std::string> zscore_args1 = {"ZSCORE", "myzset", "two"};
+  res = lsm.zscore(zscore_args1);
+  EXPECT_EQ(res, "$1\r\n2\r\n");
+
+  // 5. 使用 ZINCRBY 增加特定成员的分数
+  std::vector<std::string> zincrby_args1 = {"ZINCRBY", "myzset", "2", "two"};
+  res = lsm.zincrby(zincrby_args1);
+  EXPECT_EQ(res, ":4\r\n"); // TODO 需要与实际的 redis-server 返回响应对比
+
+  // 6. 再次使用 ZRANGE 查询有序集合中的成员，验证分数是否更新
+  res = lsm.zrange(zrange_args1);
+  EXPECT_EQ(res, "*3\r\n$3\r\none\r\n$5\r\nthree\r\n$3\r\ntwo\r\n");
+
+  // 7. 使用 ZREM 删除特定成员
+  std::vector<std::string> zrem_args1 = {"ZREM", "myzset", "one"};
+  res = lsm.zrem(zrem_args1);
+  EXPECT_EQ(res, ":1\r\n");
+
+  // 8. 再次使用 ZCARD 获取有序集合的成员数量，验证成员是否被删除
+  res = lsm.zcard(zcard_args1);
+  EXPECT_EQ(res, ":2\r\n");
+}
+
 TEST_F(RedisCommandsTest, ListOperations) {
   RedisWrapper lsm(test_dir);
 
@@ -244,92 +331,7 @@ TEST_F(RedisCommandsTest, ListOperations) {
   std::string expected_lrange2 = "*1\r\n$6\r\nvalue1\r\n";
   EXPECT_EQ(lsm.lrange(lrange_args2), expected_lrange2);
 }
-TEST_F(RedisCommandsTest, ZSetOperations) {
-  RedisWrapper lsm(test_dir);
 
-  // 1. 使用 ZADD 添加多个成员到有序集合
-  std::vector<std::string> zadd_args1 = {"ZADD", "myzset", "1", "one",
-                                         "2",    "two",    "3", "three"};
-  auto res = lsm.zadd(zadd_args1);
-  EXPECT_EQ(res, ":3\r\n");
-
-  // 2. 使用 ZRANGE 查询有序集合中的成员
-  std::vector<std::string> zrange_args1 = {"ZRANGE", "myzset", "0", "-1"};
-  res = lsm.zrange(zrange_args1);
-  EXPECT_EQ(res, "*3\r\n$3\r\none\r\n$3\r\ntwo\r\n$5\r\nthree\r\n");
-
-  // 3. 使用 ZCARD 获取有序集合的成员数量
-  std::vector<std::string> zcard_args1 = {"ZCARD", "myzset"};
-  res = lsm.zcard(zcard_args1);
-  EXPECT_EQ(res, ":3\r\n");
-
-  // 4. 使用 ZSCORE 获取特定成员的分数
-  std::vector<std::string> zscore_args1 = {"ZSCORE", "myzset", "two"};
-  res = lsm.zscore(zscore_args1);
-  EXPECT_EQ(res, "$1\r\n2\r\n");
-
-  // 5. 使用 ZINCRBY 增加特定成员的分数
-  std::vector<std::string> zincrby_args1 = {"ZINCRBY", "myzset", "2", "two"};
-  res = lsm.zincrby(zincrby_args1);
-  EXPECT_EQ(res, ":4\r\n"); // TODO 需要与实际的 redis-server 返回响应对比
-
-  // 6. 再次使用 ZRANGE 查询有序集合中的成员，验证分数是否更新
-  res = lsm.zrange(zrange_args1);
-  EXPECT_EQ(res, "*3\r\n$3\r\none\r\n$5\r\nthree\r\n$3\r\ntwo\r\n");
-
-  // 7. 使用 ZREM 删除特定成员
-  std::vector<std::string> zrem_args1 = {"ZREM", "myzset", "one"};
-  res = lsm.zrem(zrem_args1);
-  EXPECT_EQ(res, ":1\r\n");
-
-  // 8. 再次使用 ZCARD 获取有序集合的成员数量，验证成员是否被删除
-  res = lsm.zcard(zcard_args1);
-  EXPECT_EQ(res, ":2\r\n");
-}
-
-TEST_F(RedisCommandsTest, SetOperations) {
-  RedisWrapper lsm(test_dir);
-
-  // 测试 sadd 命令
-  std::vector<std::string> sadd_args1 = {"SADD", "myset", "member1", "member2",
-                                         "member3"};
-  EXPECT_EQ(lsm.sadd(sadd_args1), ":3\r\n");
-
-  // 测试 scard 命令
-  std::vector<std::string> scard_args = {"SCARD", "myset"};
-  EXPECT_EQ(lsm.scard(scard_args), ":3\r\n");
-
-  // 测试 sismember 命令
-  std::vector<std::string> sismember_args1 = {"SISMEMBER", "myset", "member1"};
-  EXPECT_EQ(lsm.sismember(sismember_args1), ":1\r\n");
-  std::vector<std::string> sismember_args2 = {"SISMEMBER", "myset", "member4"};
-  EXPECT_EQ(lsm.sismember(sismember_args2), ":0\r\n");
-
-  // 测试 smembers 命令
-  std::vector<std::string> smembers_args = {"SMEMBERS", "myset"};
-  std::string expected_smembers =
-      "*3\r\n$7\r\nmember1\r\n$7\r\nmember2\r\n$7\r\nmember3\r\n";
-  EXPECT_EQ(lsm.smembers(smembers_args), expected_smembers);
-
-  // 测试 srem 命令
-  std::vector<std::string> srem_args1 = {"SREM", "myset", "member1", "member3"};
-  EXPECT_EQ(lsm.srem(srem_args1), ":2\r\n");
-
-  // 再次测试 scard 命令
-  EXPECT_EQ(lsm.scard(scard_args), ":1\r\n");
-
-  // 再次测试 smembers 命令
-  std::string expected_smembers_after_rem = "*1\r\n$7\r\nmember2\r\n";
-  EXPECT_EQ(lsm.smembers(smembers_args), expected_smembers_after_rem);
-
-  // 再次测试 sismember 命令
-  std::vector<std::string> sismember_args3 = {"SISMEMBER", "myset", "member1"};
-  EXPECT_EQ(lsm.sismember(sismember_args3), ":0\r\n");
-  std::vector<std::string> sismember_args4 = {"SISMEMBER", "myset", "member2"};
-  EXPECT_EQ(lsm.sismember(sismember_args4), ":1\r\n");
-  std::vector<std::string> sismember_args5 = {"SISMEMBER", "myset", "member3"};
-  EXPECT_EQ(lsm.sismember(sismember_args5), ":0\r\n");
-}
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
   init_spdlog_file();
