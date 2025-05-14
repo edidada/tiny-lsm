@@ -40,7 +40,7 @@
     - [Lab 5.2 事务管理器(Hard)](./lab5/lab5.2-Tranc-ID.md)
   - [阶段2-WAL和崩溃恢复](./lab5/WAL-Recover.md)
     - [Lab 5.3 Record 编解码](./lab5/lab5.3-Record.md)
-    - [Lab 5.4 WAL 运行机制](./lab5/la`b5.4-WAL.md)
+    - [Lab 5.4 WAL 运行机制](./lab5/lab5.4-WAL.md)
     - [Lab 5.5 崩溃恢复](./lab5/lab5.5-Recover.md)
 - [Lab 6 Redis 兼容](./lab6/lab6-Redis.md)
     - [Lab 6.1 简单字符串](./lab6/lab6.1-String.md)

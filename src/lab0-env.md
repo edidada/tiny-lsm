@@ -160,6 +160,7 @@ git clone https://github.com/ToniXWD/toni-lsm.git --depth 1 -b lab
 如果你之前的环境配置没有问题的话, 编译项目能够正常进行:
 ```bash
 cd toni-lsm
+mkdir build
 xmake
 ```
 
