@@ -1,0 +1,296 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Lab 4.6 Level_Iterator - Toni-LSM-Lab</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Toni-LSM-Lab</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/ToniXWD/toni-lsm" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="lab-46-level_iterator"><a class="header" href="#lab-46-level_iterator">Lab 4.6 Level_Iterator</a></h1>
+<h1 id="1-概述"><a class="header" href="#1-概述">1 概述</a></h1>
+<p>为什么要将<code>Level_Iterator</code>放在<code>Compact</code>之后呢? 当然是因为<code>Compact</code>之后, 我们才有了<code>Level</code>的概念, 才能对某个<code>Level</code>的所有键值对进行迭代.</p>
+<p><code>Level_Iterator</code>的实现其实非常简单了, 与<code>TwoMergeIterator</code>非常类似, 只不过整合的迭代器数量是不定的, 用一个<code>vector</code>存储, 我们先简单看看定义:</p>
+<pre><code class="language-cpp">class Level_Iterator : public BaseIterator {
+  // ...
+
+private:
+  std::shared_ptr&lt;LSMEngine&gt; engine_;
+  std::vector&lt;std::shared_ptr&lt;BaseIterator&gt;&gt; iter_vec;
+  size_t cur_idx_;
+  uint64_t max_tranc_id_;
+  mutable std::optional&lt;value_type&gt; cached_value; // 缓存当前值
+  std::shared_lock&lt;std::shared_mutex&gt; rlock_;
+};
+</code></pre>
+<p>这里同样是有上层<code>LSMEngine</code>的智能指针<code>engine_</code>, <code>iter_vec</code>按照索引顺序存储不同优先级的迭代器, 这里的情形就是不同的<code>Level</code>的层间迭代器(<code>ConcactIterator</code>)</p>
+<blockquote>
+<p>当然, 也不一定是<code>ConcactIterator</code>, 只要多个迭代器存在优先级的概念, 都可以用<code>ConcactIterator</code>进行整合。例如我们之前由于<code>Level 0</code>的不同<code>SST</code>存在重叠且为排序, 这种情况也可以用<code>ConcactIterator</code>进行整合, 因为<code>id</code>更大的<code>SST</code>优先级更高, 需要先遍历。同时也看出我们迭代器设计存在强大的复用性，因为这里的<code>BaseIterator</code>是抽象类，只要实现了<code>BaseIterator</code>的接口，都可以作为<code>iter_vec</code>的元素, 从而实现整合逻辑的复用。</p>
+</blockquote>
+<h1 id="2-代码实现"><a class="header" href="#2-代码实现">2 代码实现</a></h1>
+<p>相比上一章, 这一章轻松不少, 只需要实现几个简单的重载和构造函数初始化流程即可</p>
+<p>本小节你需要修改的代码文件:</p>
+<ul>
+<li><code>src/lsm/level_iterator.cpp</code></li>
+<li><code>include/lsm/level_iterator.h</code> (Optional)</li>
+</ul>
+<h2 id="21-迭代器初始化"><a class="header" href="#21-迭代器初始化">2.1 迭代器初始化</a></h2>
+<pre><code class="language-cpp">Level_Iterator::Level_Iterator(std::shared_ptr&lt;LSMEngine&gt; engine,
+                               uint64_t max_tranc_id)
+    : engine_(engine), max_tranc_id_(max_tranc_id), rlock_(engine_-&gt;ssts_mtx) {
+  // TODO: Lab 4.6 Level_Iterator 初始化
+}
+</code></pre>
+<p>这里的初始化流程就是提取每一个<code>Level</code>的迭代器然后放入<code>iter_vec</code>中, 不过同样的, <code>Level 0</code>的<code>SST</code>由于存在重叠且未排序, 需要进行额外处理。</p>
+<blockquote>
+<p>思考: 初始化<code>iter_vec</code>后, 是否需要进行一些额外的判断呢?</p>
+</blockquote>
+<h2 id="22-运算符重载"><a class="header" href="#22-运算符重载">2.2 运算符重载</a></h2>
+<p>接下来就是我们的传统艺能————运算符函数重载了:</p>
+<pre><code class="language-cpp">BaseIterator &amp;Level_Iterator::operator++() {
+  // TODO: Lab 4.6 ++ 重载
+  return *this;
+}
+
+bool Level_Iterator::operator==(const BaseIterator &amp;other) const {
+  // TODO: Lab 4.6 == 重载
+  return false;
+}
+
+bool Level_Iterator::operator!=(const BaseIterator &amp;other) const {
+  // TODO: Lab 4.6 != 重载
+  return false;
+}
+
+BaseIterator::value_type Level_Iterator::operator*() const {
+  // TODO: Lab 4.6 * 重载
+  return {};
+}
+
+BaseIterator::pointer Level_Iterator::operator-&gt;() const {
+  // TODO: Lab 4.6 -&gt; 重载
+  return nullptr;
+}
+</code></pre>
+<p>类似地, 你可以先看看接下来要实现的一些辅助功能函数, 也许你会在实现这些运算符重载时需要用到它们。</p>
+<h2 id="23-辅助函数"><a class="header" href="#23-辅助函数">2.3 辅助函数</a></h2>
+<pre><code class="language-cpp">std::pair&lt;size_t, std::string&gt; Level_Iterator::get_min_key_idx() const {
+  // TODO: Lab 4.6 获取当前 key 最小的迭代器在 iter_vec 中的索引和具体的 key
+  return {};
+}
+
+void Level_Iterator::skip_key(const std::string &amp;key) {
+  // TODO: Lab 4.6 跳过 key 相同的部分(即被当前激活的迭代器覆盖的写入记录)
+}
+
+void Level_Iterator::update_current() const {
+  // TODO: Lab 4.6 更新当前值 cached_value
+  // ? 实现 -&gt; 时你也许会用到 cached_value
+}
+</code></pre>
+<h1 id="3-测试"><a class="header" href="#3-测试">3 测试</a></h1>
+<p>次小节的测试将在实现下一小节 <a href="./lab4.7-Complicated-Query.html">Lab 4.7 复杂查询</a> 后统一进行。</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../lab4/lab4.5-Compact.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../lab4/lab4.7-Complicated-Query.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../lab4/lab4.5-Compact.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../lab4/lab4.7-Complicated-Query.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src=".././src/giscus.js"></script>
+
+
+    </div>
+    </body>
+</html>

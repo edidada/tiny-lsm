@@ -1,0 +1,567 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Lab 4.5 Compact (Hard) - Toni-LSM-Lab</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Toni-LSM-Lab</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/ToniXWD/toni-lsm" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="lab-45-compact"><a class="header" href="#lab-45-compact">Lab 4.5 Compact</a></h1>
+<h1 id="1-概述"><a class="header" href="#1-概述">1 概述</a></h1>
+<p>完成了<code>ConcactIterator</code>和<code>TwoMergeIterator</code>, 我们就已经可以开始实现我们的<code>Compact</code>流程了。</p>
+<p>在LSM（Log-Structured Merge）树中，数据最初写入一个称为 <strong>memtable</strong> 的内存结构。一旦 memtable 达到一定大小限制，其内容会被刷写到磁盘上作为 SSTable（Sorted String Table）。随着时间的推移，可能会在 LSM 树的不同层级积累多个 SSTable。这些 SSTable 可能会导致以下问题：</p>
+<ul>
+<li><strong>读放大</strong>：查询一个键时，系统可能需要搜索多个不同层级的 SSTable。这会增加 I/O 操作次数，从而降低读取性能。</li>
+<li><strong>写放大</strong>：频繁的写操作生成新的 SSTable，最终需要与现有 SSTable 合并。如果没有压缩，这会导致过多的磁盘写入。</li>
+<li><strong>空间放大</strong>：被删除或覆盖的键可能仍然存在于旧的 SSTable 中，直到它们通过压缩被清除。这浪费了磁盘空间。</li>
+</ul>
+<p>为了解决这些问题，需要进行 <strong>压缩（compaction）</strong>。压缩将较小的 SSTable 合并成较大的 SSTable，移除过时的数据（如已删除或覆盖的键），并平衡各层级之间的数据分布。</p>
+<p>由于<code>Compact</code>的策略对<code>LSM Tree</code>的性能有着绝对影响, 因此实际工业界的<code>Compact</code>策略非常多, 我们这一章先介绍不同的<code>Compact</code>策略, 再来实现一种最简单的<code>Compact</code>策略</p>
+<h1 id="2-经典的sst压缩方案"><a class="header" href="#2-经典的sst压缩方案">2. 经典的SST压缩方案</a></h1>
+<p>这里先介绍一些经典的SST压缩方案。</p>
+<h2 id="21-基于大小的分层压缩size-tiered-compaction"><a class="header" href="#21-基于大小的分层压缩size-tiered-compaction">2.1 基于大小的分层压缩（Size-Tiered Compaction）</a></h2>
+<p>这种方案按大小和层级对 SSTable 进行分组。每一层包含大致相同大小的 SSTable。当某一层的 SSTable 数量超过阈值时，它们会被合并成一个或多个 SSTable 并移动到下一层。</p>
+<ul>
+<li>
+<p><strong>流程</strong>：</p>
+<ol>
+<li>将 Level L 的 SSTable 合并成一个或多个 SSTable 并移动到 Level L+1。</li>
+<li>如果必要，递归执行此过程。</li>
+</ol>
+</li>
+<li>
+<p><strong>优点</strong>：</p>
+<ul>
+<li>实现简单。</li>
+<li>高效处理高写入吞吐量。</li>
+</ul>
+</li>
+<li>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li>可能导致显著的读放大，因为单次查询可能需要扫描多个层级。</li>
+</ul>
+</li>
+<li>
+<p><strong>示意图</strong>：</p>
+<pre><code class="language-text">Level 0: [SST1] [SST2] [SST3]
+Level 1: [SST4] [SST5]
+Level 2: [SST6]
+
+压缩后：
+Level 0: []
+Level 1: [Merged(SST1,SST2,SST3)]
+Level 2: [SST6]
+</code></pre>
+</li>
+</ul>
+<h2 id="22-分层压缩leveled-compaction"><a class="header" href="#22-分层压缩leveled-compaction">2.2 分层压缩（Leveled Compaction）</a></h2>
+<p>这种方案将 SSTable 分布在不同的层级，确保每个层级包含固定数量的数据。较低层级的数据以小块形式逐步移动到较高层级。</p>
+<ul>
+<li>
+<p><strong>流程</strong>：</p>
+<ol>
+<li>将 Level L 的 SSTable 按键范围拆分成更小的部分，并与 Level L+1 中重叠的 SSTable 合并。</li>
+<li>每次压缩只影响 Level L+1 中的一小部分 SSTable。</li>
+</ol>
+</li>
+<li>
+<p><strong>优点</strong>：</p>
+<ul>
+<li>相比基于大小的分层压缩，减少了读放大。</li>
+<li>确保每个层级的键范围不重叠。</li>
+</ul>
+</li>
+<li>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li>实现复杂度更高。</li>
+<li>频繁的小规模合并导致较高的写放大。</li>
+</ul>
+</li>
+<li>
+<p><strong>示意图</strong>：</p>
+<pre><code class="language-text">Level 0: [SST1] [SST2] [SST3]
+Level 1: [RangeA] [RangeB] [RangeC]
+Level 2: [RangeD] [RangeE]
+
+压缩后:
+Level 0: []
+Level 1: [Merged(SST1,RangeA)] [Merged(SST2,RangeB)] [Merged(SST3,RangeC)]
+Level 2: [RangeD] [RangeE]
+</code></pre>
+</li>
+</ul>
+<h2 id="23-混合压缩hybrid-compacti23"><a class="header" href="#23-混合压缩hybrid-compacti23">2.3 混合压缩（Hybrid Compacti2.3）</a></h2>
+<p>一些系统结合了基于大小的分层压缩和分层压缩的优点。例如，前几层使用基于大小的分层压缩，而较深层级切换到分层压缩。</p>
+<ul>
+<li>
+<p><strong>优点</strong>：</p>
+<ul>
+<li>在读放大和写放大之间取得平衡。</li>
+<li>根据工作负载特性提供灵活性。</li>
+</ul>
+</li>
+<li>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li>管理多种压缩策略增加了复杂性。</li>
+</ul>
+</li>
+</ul>
+<h1 id="3-本项目-sst-compact-设计"><a class="header" href="#3-本项目-sst-compact-设计">3 本项目 SST Compact 设计</a></h1>
+<p>本项目的<code>compact</code>机制采用了一种混合方法，主要在第0层使用基于大小的分层压缩，而在更高层则转向分层压缩。以下是详细的设计说明</p>
+<h2 id="31-触发压缩的时机"><a class="header" href="#31-触发压缩的时机">3.1 触发压缩的时机</a></h2>
+<ul>
+<li><strong>Level 0</strong>：如果 Level 0 的 SSTable 数量超过一个阈值 <code>LSM_SST_LEVEL_RATIO</code>，则触发全量压缩，将所有 Level 0 的 SSTable 移动到 Level 1。</li>
+<li><strong>更高层</strong>：如果某一层的 SSTable 数量超过 <code>LSM_SST_LEVEL_RATIO</code>，系统会递归检查下一层是否也需要压缩，然后继续执行。</li>
+</ul>
+<blockquote>
+<p><code>LSM_SST_LEVEL_RATIO</code>定义在<code>config.toml</code>中</p>
+</blockquote>
+<p>这里重点解释一下 <code>LSM_SST_LEVEL_RATIO</code>的含义, 它的含义是相邻两层的单个<code>SST</code>容量之比, 同时也是单层<code>SST</code>数量的阈值。这里我为了方便压缩触发的条件判断的便捷性, 规定每一个<code>Level</code>的<code>SST</code>数量阈值恒定。例如， 每层<code>SST</code>数量超过16时就需要进行<code>compact</code>, 这一层16个<code>SST</code>被合并为下一层的单个<code>SST</code>, 因此这个单个<code>SST</code>的容量是上一个<code>Level</code>中单个<code>SST</code>的容量的16倍。这个案例中, <code>LSM_SST_LEVEL_RATIO</code>就是16。</p>
+<h2 id="32-递归压缩"><a class="header" href="#32-递归压缩">3.2 递归压缩</a></h2>
+<ol>
+<li>
+<p><strong>确定源层和目标层</strong>：</p>
+<ul>
+<li>确定源层 (<code>src_level</code>) 和目标层 (<code>src_level + 1</code>)。</li>
+<li>获取这两层的 SSTable ID。</li>
+</ul>
+</li>
+<li>
+<p><strong>判断是否进行递归压缩</strong></p>
+<ul>
+<li>由于<code>src_level</code>层是触发了这一次<code>compact</code>操作, 因此其<code>SST</code>数量肯定大于等于<code>LSM_SST_LEVEL_RATIO</code></li>
+<li>但还需要判断目标层(<code>src_level + 1</code>)的<code>SST</code>数量是否大于等于<code>LSM_SST_LEVEL_RATIO</code>。如果时, 则需要先将<code>src_level + 1</code>层的<code>SST</code>全部压缩到<code>src_level + 2</code>层</li>
+<li>上述的判断递归地在更高的<code>Level</code>中进行</li>
+</ul>
+</li>
+<li>
+<p><strong>合并SSTable</strong>：</p>
+<ul>
+<li>对于 <code>Level 0</code>，由于其不同<code>SST</code>中的<code>key</code>有重叠, 需要使用 <code>full_l0_l1_compact</code> 处理键范围重叠的问题</li>
+<li>对于更高层， 其<code>key</code>本来就是从小大大排布的, 使用 <code>full_common_compact</code> 合并不重叠键范围的 <code>SSTable</code>。</li>
+</ul>
+</li>
+<li>
+<p><strong>生成新SSTable</strong>：</p>
+<ul>
+<li>使用 <code>gen_sst_from_iter</code> 从合并后的迭代器结果生成新的 SSTable。</li>
+<li>确保新 SSTable 的大小符合 <code>get_sst_size</code> 定义的限制。</li>
+</ul>
+</li>
+<li>
+<p><strong>更新元数据</strong>：</p>
+<ul>
+<li>删除旧的 SSTable（从内存和磁盘中移除）。</li>
+<li>将新的 SSTable 添加到适当的目标层。</li>
+<li>更新 <code>level_sst_ids</code> 并对其进行排序以便高效访问。</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>这里的<code>full_l0_l1_compact</code>和<code>full_common_compact</code> 会在后文中介绍</p>
+</blockquote>
+<p><strong>关键特性</strong></p>
+<ul>
+<li><strong>事务处理</strong>：在压缩过程中，确保只将可见记录（基于事务ID）包含在新的 SSTable 中。</li>
+<li><strong>并发控制</strong>：使用锁（<code>std::shared_mutex</code>）防止在访问共享资源（如 <code>ssts_mtx</code>）时发生竞争条件。</li>
+<li><strong>高效迭代</strong>：利用迭代器（<code>TwoMergeIterator</code>、<code>HeapIterator</code>、<code>ConcactIterator</code>）高效遍历和合并来自多个 SSTable 的数据。</li>
+</ul>
+<p><strong>示例流程</strong></p>
+<p>假设初始状态如下：</p>
+<ul>
+<li>
+<p><strong>压缩前</strong>：</p>
+<pre><code class="language-text">Level 0: [SST1] [SST2] [SST3]
+Level 1: [SST4] [SST5]
+Level 2: [SST6]
+</code></pre>
+</li>
+<li>
+<p><strong>触发条件</strong>：Level 0 有三个 SSTable，超过了阈值（<code>LSM_SST_LEVEL_RATIO = 2</code>）。</p>
+</li>
+<li>
+<p><strong>压缩过程</strong>：</p>
+<ol>
+<li>合并 <code>[SST1]</code>、<code>[SST2]</code> 和 <code>[SST3]</code> 成为一个迭代器。</li>
+<li>将该迭代器的结果与 <code>[SST4]</code> 和 <code>[SST5]</code> 从 Level 1 中合并。</li>
+<li>生成新的 SSTable 并将其分配到 Level 1。</li>
+</ol>
+</li>
+<li>
+<p><strong>压缩后</strong>：</p>
+<pre><code class="language-text">Level 0: []
+Level 1: [NewSST1] [NewSST2]
+Level 2: [SST6]
+</code></pre>
+</li>
+</ul>
+<blockquote>
+<p>TODO: 后续版本应该在此处添加一张流程图</p>
+</blockquote>
+<h1 id="4-本实验-compact-策略的优势和劣势"><a class="header" href="#4-本实验-compact-策略的优势和劣势">4 本实验 Compact 策略的优势和劣势</a></h1>
+<p>本实验的<code>Compact</code>策略属于 <code>Leveled Compaction</code> (分层合并) 的一种变体。这种<code>全层合并</code>的<code>Leveled Compaction</code>策略，与其他主流策略的对比如下</p>
+<blockquote>
+<p><strong>Size-Tiered Compaction (STCS - 基于大小分层的合并)</strong></p>
+<p><strong>Classic Leveled Compaction (经典的、更细粒度的分层合并，如LevelDB/RocksDB采用的策略)</strong></p>
+</blockquote>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">特性 (Aspect)</th><th style="text-align: left">本实验策略 (Leveled - 全层合并)</th><th style="text-align: left">Size-Tiered Compaction (STCS)</th><th style="text-align: left">经典Leveled Compaction (细粒度合并)</th></tr></thead><tbody>
+<tr><td style="text-align: left"><strong>读放大 (Read Amplification)</strong></td><td style="text-align: left">L0层: 中等 (需查找多个SSTable)<br>L1+层: <strong>低</strong> (由于SSTable不重叠且有序，每层理论上最多查找一个SSTable)</td><td style="text-align: left"><strong>高</strong> (通常需要在多个层级(Tier)的多个SSTable中查找，因为不同SSTable间的键范围可能大量重叠)</td><td style="text-align: left">L0层: 中等 (需查找多个SSTable)<br>L1+层: <strong>低</strong> (与本实验的策略类似，L1+层SSTable不重叠)</td></tr>
+<tr><td style="text-align: left"><strong>写放大 (Write Amplification)</strong></td><td style="text-align: left"><strong>非常高</strong> (合并Level_N和Level_{N+1}时，两个层级的<em>全部</em>数据都会被读取和重写，即使Level_{N+1}中大部分是“冷”数据)</td><td style="text-align: left"><strong>低</strong> (数据在其生命周期中被重写的次数相对较少，通常是合并固定数量的SSTable)</td><td style="text-align: left"><strong>中等</strong> (比STCS高，但显著低于“全层合并”。仅合并Level_N中少量被选中的SSTable及其在Level_{N+1}中的键范围重叠部分)</td></tr>
+<tr><td style="text-align: left"><strong>空间放大 (Space Amplification)</strong></td><td style="text-align: left"><strong>低</strong> (合并过程频繁且较为彻底地重写数据，有利于快速回收无效数据和墓碑(Tombstone)占用的空间)</td><td style="text-align: left"><strong>高</strong> (旧版本数据和墓碑可能长时间存在于未被合并的SSTable中，导致总体磁盘占用较大，最坏情况一个键的多个版本都存在)</td><td style="text-align: left"><strong>低</strong> (与“全层合并”类似，能较好控制空间。因单次合并范围较小，整体回收速度可能略慢于全层合并，但通常有严格的层级大小限制)</td></tr>
+<tr><td style="text-align: left"><strong>合并I/O成本 (Compaction I/O Cost)</strong></td><td style="text-align: left"><strong>高</strong> (单次合并涉及的数据量通常很大，导致瞬时I/O和CPU压力显著，可能引发性能抖动或“合并风暴”)</td><td style="text-align: left"><strong>中低</strong> (通常合并固定数量（例如N个）的SSTable，单次合并成本相对可控，但合并操作可能更频繁)</td><td style="text-align: left"><strong>中等</strong> (单次合并的数据量介于STCS和“全层合并”之间，致力于平滑I/O负载)</td></tr>
+<tr><td style="text-align: left"><strong>实现复杂度</strong></td><td style="text-align: left"><strong>中等</strong> (比STCS复杂，因为需要维护层级结构和SSTable元数据；但比经典的细粒度Leveled Compaction简单，因为合并整个层级的逻辑较直接)</td><td style="text-align: left"><strong>低</strong> (逻辑相对简单，主要是基于SSTable的大小和数量触发合并，易于实现和维护)</td><td style="text-align: left"><strong>高</strong> (需要复杂的SSTable挑选逻辑(picking logic)来决定哪些SSTable参与合并，键范围管理、并发控制以及避免写暂停等机制都较复杂)</td></tr>
+<tr><td style="text-align: left"><strong>墓碑/旧数据清理效率</strong></td><td style="text-align: left"><strong>高</strong> (由于整个层级的数据会定期参与合并过程，墓碑和旧版本数据能得到较快和较彻底的清理)</td><td style="text-align: left"><strong>低</strong> (清理效率依赖于包含墓碑或旧数据的SSTable何时被选中参与合并，可能存在较长延迟)</td><td style="text-align: left"><strong>中高</strong> (数据也定期参与合并过程，但由于单次合并涉及的数据范围小于全层合并，整体清理速度和彻底性可能稍逊于全层合并，但仍属高效)</td></tr>
+<tr><td style="text-align: left"><strong>查询性能稳定性/可预测性</strong></td><td style="text-align: left">L1+层: <strong>好</strong> (查询路径短且固定，性能稳定)<br>L0层: 一般 (受SSTable数量影响)</td><td style="text-align: left"><strong>差</strong> (查询性能波动较大，取决于数据具体分布在哪些SSTable以及需要检查的SSTable数量)</td><td style="text-align: left">L1+层: <strong>好</strong> (查询路径短且固定，性能稳定)<br>L0层: 一般 (受SSTable数量影响)</td></tr>
+</tbody></table>
+</div>
+<h1 id="5-本实验的代码实现"><a class="header" href="#5-本实验的代码实现">5 本实验的代码实现</a></h1>
+<p>在完成之前的理论学习后, 你可以开始实现本实验的代码了</p>
+<p>本小节你需要更改的代码文件为:</p>
+<ul>
+<li><code>src/lsm/engine.cpp</code></li>
+<li><code>include/lsm/engine.h</code> (Optional)</li>
+</ul>
+<h2 id="51-新sst的构造"><a class="header" href="#51-新sst的构造">5.1 新<code>SST</code>的构造</a></h2>
+<p><code>gen_sst_from_iter</code>从一个迭代器中构造新的<code>SST</code>, 新的<code>SST</code>的容量上限为<code>target_sst_size</code>, 新的<code>SST</code>的层级为<code>target_level</code>。 也就是说, 假设迭代器中所有键值对的容量是<code>128 MB</code>, 而<code>target_sst_size = 32MB</code>, 那么你需要构造4个<code>SST</code>。</p>
+<pre><code class="language-cpp">std::vector&lt;std::shared_ptr&lt;SST&gt;&gt;
+LSMEngine::gen_sst_from_iter(BaseIterator &amp;iter, size_t target_sst_size,
+                             size_t target_level) {
+  // TODO: Lab 4.5 实现从迭代器构造新的 SST
+
+  return {};
+}
+</code></pre>
+<p>这里, <code>SST</code>的命名规则参照<code>get_sst_path</code>:</p>
+<pre><code class="language-cpp">std::string LSMEngine::get_sst_path(size_t sst_id, size_t target_level) {
+  // sst的文件路径格式为: data_dir/sst_&lt;sst_id&gt;，sst_id格式化为32位数字
+  std::stringstream ss;
+  ss &lt;&lt; data_dir &lt;&lt; "/sst_" &lt;&lt; std::setfill('0') &lt;&lt; std::setw(32) &lt;&lt; sst_id
+     &lt;&lt; '.' &lt;&lt; target_level;
+  return ss.str();
+}
+</code></pre>
+<blockquote>
+<p><code>sst</code>的<code>id</code>的分配可以简单地按照如下操作获取:</p>
+<pre><code class="language-cpp">size_t sst_id = next_sst_id++
+</code></pre>
+</blockquote>
+<h2 id="52-full_l0_l1_compact"><a class="header" href="#52-full_l0_l1_compact">5.2 full_l0_l1_compact</a></h2>
+<p><code>full_l0_l1_compact</code>负责将<code>L0</code>层和<code>L1</code>层的<code>SST</code>合并到<code>L1</code>层, 因为<code>L0</code>层的<code>SST</code>之间是不排序且存在重叠的, 因此你需要结合之前实现的迭代器对其进行排序和去重, 并和<code>L1</code>迭代器整合成新的迭代器, 出入你刚刚实现的<code>gen_sst_from_iter</code>函数, 完成新的<code>SST</code>的构造:</p>
+<pre><code class="language-cpp">std::vector&lt;std::shared_ptr&lt;SST&gt;&gt;
+LSMEngine::full_l0_l1_compact(std::vector&lt;size_t&gt; &amp;l0_ids,
+                              std::vector&lt;size_t&gt; &amp;l1_ids) {
+  // TODO: Lab 4.5 负责完成 l0 和 l1 的 full compact
+  return {};
+}
+</code></pre>
+<blockquote>
+<p>根据我们的<code>Compact</code>策略设计, <code>Ln</code>层的<code>SST</code>容量应该是<code>Ln-1</code>层的<code>LSM_SST_LEVEL_RATIO</code>倍, 作者已经提供了<code>get_sst_size</code>帮助你计算任意一层<code>SST</code>的容量</p>
+</blockquote>
+<h2 id="52-full_common_compact"><a class="header" href="#52-full_common_compact">5.2 full_common_compact</a></h2>
+<p><code>full_common_compact</code>负责其他相邻<code>Level</code>的<code>SST</code>合并, 你需要参考<code>full_l0_l1_compact</code>的实现, 完成其他相邻<code>Level</code>的<code>SST</code>合并。这里应该会更简单，因为这里相邻的两个<code>Level</code>的<code>SST</code>之间是排序且不重叠的, 因此单个<code>Level</code>的迭代器都是相同的类型:</p>
+<pre><code class="language-cpp">std::vector&lt;std::shared_ptr&lt;SST&gt;&gt;
+LSMEngine::full_common_compact(std::vector&lt;size_t&gt; &amp;lx_ids,
+                               std::vector&lt;size_t&gt; &amp;ly_ids, size_t level_y) {
+  // TODO: Lab 4.5 负责完成其他相邻 level 的 full compact
+
+  return {};
+}
+</code></pre>
+<h1 id="53-full_compact"><a class="header" href="#53-full_compact">5.3 full_compact</a></h1>
+<p><code>full_compact</code>负责整个<code>Compact</code>流程, 你需要根据<code>Compact</code>策略设计, 完成这个函数。另外, 由于每次<code>compact</code>会导致目标<code>Level</code>的<code>SST</code>数量增加, 因此这个<code>compact</code>流程可能会哦递归地进行, 你需要在<code>full_compact</code>中控制这个递归过程。也就是说，你需要按照我们之前描述的策略控制之前实现的<code>full_common_compact</code>和<code>full_l0_l1_compact</code>的调用:</p>
+<pre><code class="language-cpp">void LSMEngine::full_compact(size_t src_level) {
+  // TODO: Lab 4.5 负责完成整个 full compact
+  // ? 你可能需要控制`Compact`流程需要递归地进行
+}
+</code></pre>
+<details>
+<summary>点击这里展开/折叠提示 (建议你先尝试自己完成)</summary>
+<p>这里给出作者对这个函数的的实现思路:</p>
+<p><code>LSMEngine::full_compact</code> 函数的目标是将指定层级 <code>src_level</code> 的所有 SSTable 压缩到下一层级 <code>src_level + 1</code>，并通过合并和优化减少冗余数据，提升读写性能。其步骤为:</p>
+<p><strong>a. 递归检查下一层是否需要压缩</strong></p>
+<ul>
+<li>在对当前层级（<code>src_level</code>）进行全量压缩之前，先检查下一层级（<code>src_level + 1</code>）是否也需要进行全量压缩。</li>
+<li>如果 <code>src_level + 1</code> 层的 SSTable 数量超过阈值（<code>LSM_SST_LEVEL_RATIO</code>），则递归调用 <code>full_compact(src_level + 1)</code> 对下一层进行压缩。</li>
+<li>这种递归机制确保了在压缩当前层之前，目标层已经处于优化状态。</li>
+</ul>
+<p><strong>b. 获取源层级和目标层级的 SSTable ID</strong></p>
+<ul>
+<li>从 <code>level_sst_ids[src_level]</code> 和 <code>level_sst_ids[src_level + 1]</code> 中分别获取当前层级和目标层级的所有 SSTable ID。</li>
+<li>将这些 ID 转换为两个向量：<code>lx_ids</code>（源层级）和 <code>ly_ids</code>（目标层级），便于后续处理。</li>
+</ul>
+<p><strong>c. 根据层级选择不同的压缩方式</strong></p>
+<ul>
+<li>根据 <code>src_level</code> 是否为 Level 0，选择不同的压缩方法：
+<ul>
+<li><strong>Level 0</strong>：由于 Level 0 的 SSTable 可能存在键范围重叠，调用 <code>full_l0_l1_compact(lx_ids, ly_ids)</code> 处理。</li>
+<li><strong>其他层级</strong>：调用 <code>full_common_compact(lx_ids, ly_ids, src_level + 1)</code> 处理，这些层级的 SSTable 键范围不重叠。</li>
+</ul>
+</li>
+</ul>
+<p><strong>d. 移除旧的 SSTable</strong></p>
+<ul>
+<li>压缩完成后，删除源层级和目标层级中所有旧的 SSTable：
+<ul>
+<li>调用 <code>del_sst()</code> 方法释放磁盘资源。</li>
+<li>从 <code>ssts</code> 映射中移除这些 SSTable。</li>
+</ul>
+</li>
+<li>清空 <code>level_sst_ids[src_level]</code> 和 <code>level_sst_ids[src_level + 1]</code>，为新生成的 SSTable 准备空间。</li>
+</ul>
+<p><strong>e. 更新最大层级</strong></p>
+<ul>
+<li>更新 <code>cur_max_level</code>，确保其始终表示当前 LSM 树中的最大层级。</li>
+</ul>
+<p><strong>f. 添加新的 SSTable</strong></p>
+<ul>
+<li>将新生成的 SSTable 添加到目标层级（<code>src_level + 1</code>）：
+<ul>
+<li>将新 SSTable 的 ID 插入到 <code>level_sst_ids[src_level + 1]</code>。</li>
+<li>将新 SSTable 本身插入到 <code>ssts</code> 映射中。</li>
+</ul>
+</li>
+<li>对 <code>level_sst_ids[src_level + 1]</code> 进行排序，确保 SSTable 按顺序存储，便于高效访问。</li>
+</ul>
+</details>
+<h2 id="54-compact-的触发时机"><a class="header" href="#54-compact-的触发时机">5.4 Compact 的触发时机</a></h2>
+<p>最后, <code>full_compact</code>的调用肯定需要有一个触发时机, 你可以选择在<code>put</code>时候惰性地检查每层<code>Level</code>的<code>SST</code>数量是否达到阈值, 也可以单独创建一个线程进行轮训检查, 具体实现方案取决于你自己, 因此这里就没有对指定的函数进行挖空让你实现了。</p>
+<h1 id="6-测试"><a class="header" href="#6-测试">6 测试</a></h1>
+<p>这一章的测试有一点特别, 由于我们常规测试中为了速度考虑, 不会有大量的键值对插入行为。而测试<code>Compact</code>, 需要数据量较大时, 才会触发多个<code>SST</code>文件的持久化以及超出数量后的<code>compact</code>操作, 因此这里的建议是, 将配置文件中单个<code>L0 SST</code>的大小(也就是单个<code>Skiplist</code>的大小)调小(其他相应参数也一并调小), 然后运行<code>Persistence</code>函数。</p>
+<p>例如我如下调整配置：</p>
+<pre><code class="language-toml">[lsm.core]
+# Memory table size limit (64MB)
+# LSM_TOL_MEM_SIZE_LIMIT = 67108864 # Calculated from 64 * 1024 * 1024 # 原来的 MemTable 容量限制
+LSM_TOL_MEM_SIZE_LIMIT = 65536 # Calculated from 64 * 1024 * 1024
+# Per-memory table size limit (4MB)
+# LSM_PER_MEM_SIZE_LIMIT = 4194304 # Calculated from 4 * 1024 * 1024 # 原来的单个 Skiplist 容量限制
+LSM_PER_MEM_SIZE_LIMIT = 8192 # Calculated from 4 * 1024 * 1024
+# Block size (32KB)
+# LSM_BLOCK_SIZE = 32768 # Calculated from 32 * 1024 # # 原来的单个 Block 容量限制
+LSM_BLOCK_SIZE = 1024 # Calculated from 32 * 1024
+# SST level size ratio
+LSM_SST_LEVEL_RATIO = 4
+</code></pre>
+<blockquote>
+<p>需要注意的是, 单元测试读取配置文件默认是当前目录下的<code>config.toml</code>因此你需要将修改后的配置文件复制到编译单元测试的目录, 一般是:</p>
+<pre><code class="language-bash">./build/linux/x86_64/release # release 版本
+./build/linux/x86_64/debug # debug 版本
+</code></pre>
+</blockquote>
+<p>你只需要关注这个测例:</p>
+<pre><code class="language-cpp">// test/test_lsm.cpp
+TEST_F(LSMTest, Persistence) {
+    // ...
+}
+</code></pre>
+<p>通过这个测试即可</p>
+<blockquote>
+<p>TODO: 后期实验项目书应进行优化, 不应该让学员手动来控制这一过程</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../lab4/lab4.4-TwoMergeIterator.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../lab4/lab4.6-Level_Iterator.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../lab4/lab4.4-TwoMergeIterator.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../lab4/lab4.6-Level_Iterator.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src=".././src/giscus.js"></script>
+
+
+    </div>
+    </body>
+</html>
