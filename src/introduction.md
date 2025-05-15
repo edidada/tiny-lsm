@@ -53,4 +53,4 @@
 在了解完这些以后, 你可以开启下一章[Lab 0 环境准备](./lab0-env.md)的学习。
 
 # 5 项目交流与讨论
-如果你对本`Lab`有疑问, 欢迎在[GitHub Issues](https://github.com/ToniXWD/toni-lsm/issues)中提出问题。也欢迎加入次实验的[QQ讨论群](https://qm.qq.com/q/wDZQfaNNw6) 。如果你想参与`Lab`的开发, 欢迎通过QQ群或者作者邮件: xwdtoni@126.com 联系。
+如果你对本`Lab`有疑问, 欢迎在[GitHub Issues](https://github.com/ToniXWD/toni-lsm/issues)中提出问题。也欢迎加入次实验的[QQ讨论群](https://qm.qq.com/q/wDZQfaNNw6) 。如果你想参与`Lab`的开发, 欢迎通过QQ群或者作者邮件: [📧邮件](mailto:xwdtoni@126.com)  联系。

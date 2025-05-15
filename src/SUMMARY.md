@@ -52,4 +52,4 @@
 - [结语](./conclusion.md)
 - [附录](./appendix/appendix.md)
     - [RESP 常见格式](./appendix/RESP.md)
-- [持续更新中...](./undergoing.md)
+- [后续更新计划](./undergoing.md)
