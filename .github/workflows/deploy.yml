@@ -1,0 +1,27 @@
+name: Deploy mdBook Documentation
+
+on:
+  push:
+    branches:
+      - lab-doc
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source branch
+        uses: actions/checkout@v3
+        with:
+          ref: lab-doc
+
+      - name: Setup mdBook
+        uses: peaceiris/actions-mdbook@v1
+
+      - name: Build documentation
+        run: mdbook builds
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./book
