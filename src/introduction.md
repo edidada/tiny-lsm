@@ -54,3 +54,12 @@
 
 # 5 项目交流与讨论
 如果你对本`Lab`有疑问, 欢迎在[GitHub Issues](https://github.com/ToniXWD/toni-lsm/issues)中提出问题。也欢迎加入次实验的[QQ讨论群](https://qm.qq.com/q/wDZQfaNNw6) 。如果你想参与`Lab`的开发, 欢迎通过QQ群或者作者邮件: [📧邮件](mailto:xwdtoni@126.com)  联系。
+
+# 6 贡献者
+非常感谢本项目贡献过源码的网友:
+
+<a href="https://github.com/ToniXWD/toni-lsm/contributors">
+  <img src="https://contrib.rocks/image?repo=ToniXWD/toni-lsm" />
+</a>
+
+如果你在阅读本教程文档中发现错误, 可以直接点击文档右上角的![edit](./images/intro/edit.png), 其会引导你进入对应分支对当前的`md`文件进行编辑和修改, 然后提交`PR`即可。

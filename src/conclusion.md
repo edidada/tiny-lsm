@@ -1,9 +1,14 @@
 # 结语
 本项目的初衷是作为`LSM Tree`的入门课程, 使参与者入门数据存储领域。这个`Lab`从代码实现, 到最后`Lab`文档的设计, 耗时半年, 花费了作者非常多的心血。因此, 如果您觉得这个`Lab`对您有帮助, 请在`GitHub`上给这个`Lab`一个`Star`。
 
-同时也感谢网友[koi](https://github.com/koi2000)对本项目文档的校正与补全, 让这个`Lab`的文档更加完善。
+# 致谢
+感谢网友[koi](https://github.com/koi2000)对本项目文档的校正与补全, 让这个`Lab`的文档更加完善。
 
-感谢[Goodenough-hu](https://github.com/Goodenough-hub)、[snowcgj](https://github.com/snowcgj)、[mapleFU](https://github.com/mapleFU)对`toni-lsm`代码建设做出的贡献。
+同时感谢以下为本项目贡献过源码的网友:
+
+<a href="https://github.com/ToniXWD/toni-lsm/contributors">
+  <img src="https://contrib.rocks/image?repo=ToniXWD/toni-lsm" />
+</a>
 
 # 下一步？
 当然，这个项目的定位只是让你初步入门`LSM Tree和存储领域`, 如果你想深入理解`LSM Tree`，建议阅读`leveldb/rocksdb`的源码。
