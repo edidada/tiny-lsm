@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+<html lang="zh-CN" class="navy sidebar-visible" dir="ltr">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
@@ -35,7 +35,7 @@
         <!-- Provide site root and default themes to javascript -->
         <script>
             const path_to_root = "";
-            const default_light_theme = "light";
+            const default_light_theme = "navy";
             const default_dark_theme = "navy";
         </script>
         <!-- Start loading toc.js asap -->
@@ -66,7 +66,7 @@
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             const html = document.documentElement;
-            html.classList.remove('light')
+            html.classList.remove('navy')
             html.classList.add(theme);
             html.classList.add("js");
         </script>
@@ -210,6 +210,12 @@
 <p>在了解完这些以后, 你可以开启下一章<a href="./lab0-env.html">Lab 0 环境准备</a>的学习。</p>
 <h1 id="5-项目交流与讨论"><a class="header" href="#5-项目交流与讨论">5 项目交流与讨论</a></h1>
 <p>如果你对本<code>Lab</code>有疑问, 欢迎在<a href="https://github.com/ToniXWD/toni-lsm/issues">GitHub Issues</a>中提出问题。也欢迎加入次实验的<a href="https://qm.qq.com/q/wDZQfaNNw6">QQ讨论群</a> 。如果你想参与<code>Lab</code>的开发, 欢迎通过QQ群或者作者邮件: <a href="mailto:xwdtoni@126.com">📧邮件</a>  联系。</p>
+<h1 id="6-贡献者"><a class="header" href="#6-贡献者">6 贡献者</a></h1>
+<p>非常感谢本项目贡献过源码的网友:</p>
+<a href="https://github.com/ToniXWD/toni-lsm/contributors">
+  <img src="https://contrib.rocks/image?repo=ToniXWD/toni-lsm" />
+</a>
+<p>如果你在阅读本教程文档中发现错误, 可以直接点击文档右上角的<img src="./images/intro/edit.png" alt="edit" />, 其会引导你进入对应分支对当前的<code>md</code>文件进行编辑和修改, 然后提交<code>PR</code>即可。</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="1-lsm-tree-简介"><a class="header" href="#1-lsm-tree-简介">1. LSM Tree 简介</a></h1>
 <p>在具体进入本实验之前，我们先来简单介绍<code>LSM Tree</code>。</p>
 <p><code>LSM Tree</code>是一种<code>KV</code>存储架构。其核心思想是，将<code>KV</code>存储的数据以<code>SSTable</code>的形式进行持久化，并通过<code>MemTable</code>进行内存缓存，当<code>MemTable</code>的数据量达到一定阈值时，将其持久化到磁盘中，并重新创建一个<code>MemTable</code>。<code>LSM Tree</code>的核心思想是，将<code>KV</code>存储的数据以<code>SSTable</code>的形式进行持久化，并通过<code>MemTable</code>进行内存缓存。并且， 数据以追加写入的方式进行，删除数据也是通过更新的数据进行覆盖的方式实现。</p>
@@ -5246,8 +5252,12 @@ xmake run server
 <p><img src="lab6/../images/lab6/redis-example.png" alt="redis-example" /></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="结语"><a class="header" href="#结语">结语</a></h1>
 <p>本项目的初衷是作为<code>LSM Tree</code>的入门课程, 使参与者入门数据存储领域。这个<code>Lab</code>从代码实现, 到最后<code>Lab</code>文档的设计, 耗时半年, 花费了作者非常多的心血。因此, 如果您觉得这个<code>Lab</code>对您有帮助, 请在<code>GitHub</code>上给这个<code>Lab</code>一个<code>Star</code>。</p>
-<p>同时也感谢网友<a href="https://github.com/koi2000">koi</a>对本项目文档的校正与补全, 让这个<code>Lab</code>的文档更加完善。</p>
-<p>感谢<a href="https://github.com/Goodenough-hub">Goodenough-hu</a>、<a href="https://github.com/snowcgj">snowcgj</a>、<a href="https://github.com/mapleFU">mapleFU</a>对<code>toni-lsm</code>代码建设做出的贡献。</p>
+<h1 id="致谢"><a class="header" href="#致谢">致谢</a></h1>
+<p>感谢网友<a href="https://github.com/koi2000">koi</a>对本项目文档的校正与补全, 让这个<code>Lab</code>的文档更加完善。</p>
+<p>同时感谢以下为本项目贡献过源码的网友:</p>
+<a href="https://github.com/ToniXWD/toni-lsm/contributors">
+  <img src="https://contrib.rocks/image?repo=ToniXWD/toni-lsm" />
+</a>
 <h1 id="下一步"><a class="header" href="#下一步">下一步？</a></h1>
 <p>当然，这个项目的定位只是让你初步入门<code>LSM Tree和存储领域</code>, 如果你想深入理解<code>LSM Tree</code>，建议阅读<code>leveldb/rocksdb</code>的源码。</p>
 <p>此外，以下是一些存储领域的开源学习资料和项目，供进一步学习：</p>

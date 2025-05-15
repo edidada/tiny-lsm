@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+<html lang="zh-CN" class="navy sidebar-visible" dir="ltr">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
@@ -34,7 +34,7 @@
         <!-- Provide site root and default themes to javascript -->
         <script>
             const path_to_root = "";
-            const default_light_theme = "light";
+            const default_light_theme = "navy";
             const default_dark_theme = "navy";
         </script>
         <!-- Start loading toc.js asap -->
@@ -65,7 +65,7 @@
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             const html = document.documentElement;
-            html.classList.remove('light')
+            html.classList.remove('navy')
             html.classList.add(theme);
             html.classList.add("js");
         </script>
@@ -212,6 +212,12 @@
 <p>在了解完这些以后, 你可以开启下一章<a href="./lab0-env.html">Lab 0 环境准备</a>的学习。</p>
 <h1 id="5-项目交流与讨论"><a class="header" href="#5-项目交流与讨论">5 项目交流与讨论</a></h1>
 <p>如果你对本<code>Lab</code>有疑问, 欢迎在<a href="https://github.com/ToniXWD/toni-lsm/issues">GitHub Issues</a>中提出问题。也欢迎加入次实验的<a href="https://qm.qq.com/q/wDZQfaNNw6">QQ讨论群</a> 。如果你想参与<code>Lab</code>的开发, 欢迎通过QQ群或者作者邮件: <a href="mailto:xwdtoni@126.com">📧邮件</a>  联系。</p>
+<h1 id="6-贡献者"><a class="header" href="#6-贡献者">6 贡献者</a></h1>
+<p>非常感谢本项目贡献过源码的网友:</p>
+<a href="https://github.com/ToniXWD/toni-lsm/contributors">
+  <img src="https://contrib.rocks/image?repo=ToniXWD/toni-lsm" />
+</a>
+<p>如果你在阅读本教程文档中发现错误, 可以直接点击文档右上角的<img src="./images/intro/edit.png" alt="edit" />, 其会引导你进入对应分支对当前的<code>md</code>文件进行编辑和修改, 然后提交<code>PR</code>即可。</p>
 
                     </main>
 
