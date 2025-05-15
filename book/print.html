@@ -209,7 +209,7 @@
 </blockquote>
 <p>在了解完这些以后, 你可以开启下一章<a href="./lab0-env.html">Lab 0 环境准备</a>的学习。</p>
 <h1 id="5-项目交流与讨论"><a class="header" href="#5-项目交流与讨论">5 项目交流与讨论</a></h1>
-<p>如果你对本<code>Lab</code>有疑问, 欢迎在<a href="https://github.com/ToniXWD/toni-lsm/issues">GitHub Issues</a>中提出问题。也欢迎加入次实验的<a href="https://qm.qq.com/q/wDZQfaNNw6">QQ讨论群</a> 。如果你想参与<code>Lab</code>的开发, 欢迎通过QQ群或者作者邮件: xwdtoni@126.com 联系。</p>
+<p>如果你对本<code>Lab</code>有疑问, 欢迎在<a href="https://github.com/ToniXWD/toni-lsm/issues">GitHub Issues</a>中提出问题。也欢迎加入次实验的<a href="https://qm.qq.com/q/wDZQfaNNw6">QQ讨论群</a> 。如果你想参与<code>Lab</code>的开发, 欢迎通过QQ群或者作者邮件: <a href="mailto:xwdtoni@126.com">📧邮件</a>  联系。</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="1-lsm-tree-简介"><a class="header" href="#1-lsm-tree-简介">1. LSM Tree 简介</a></h1>
 <p>在具体进入本实验之前，我们先来简单介绍<code>LSM Tree</code>。</p>
 <p><code>LSM Tree</code>是一种<code>KV</code>存储架构。其核心思想是，将<code>KV</code>存储的数据以<code>SSTable</code>的形式进行持久化，并通过<code>MemTable</code>进行内存缓存，当<code>MemTable</code>的数据量达到一定阈值时，将其持久化到磁盘中，并重新创建一个<code>MemTable</code>。<code>LSM Tree</code>的核心思想是，将<code>KV</code>存储的数据以<code>SSTable</code>的形式进行持久化，并通过<code>MemTable</code>进行内存缓存。并且， 数据以追加写入的方式进行，删除数据也是通过更新的数据进行覆盖的方式实现。</p>
@@ -5551,7 +5551,19 @@ redis-cli -p 6379 LPUSH mylist item1 item2 item3
 redis-cli -p 6379 LRANGE mylist 0 2
 </code></pre>
 <p>通过这些测试命令，你可以验证你的服务器是否正确实现了这些 Redis 命令。如果有任何问题，请检查日志输出并进行相应的调试。</p>
-<div style="break-before: page; page-break-before: always;"></div><p>TODO</p>
+<div style="break-before: page; page-break-before: always;"></div><p>本实验的<code>1.0</code>版本已经完成，但目前该实验存在以下优化方向:</p>
+<ol>
+<li>自由度提升: <code>1.0</code>版本的<code>Lab</code>, 基本上就是在既有的项目代码下进行关键函数的挖空, 在组件设计层面没有给实验参与者太多的发挥空间, 后续应该添加更多的自由度, 允许实验者自由设计组件, 并且在组件设计中添加更多的测试用例。</li>
+<li>测试用例覆盖率不足: <code>1.0</code>版本的<code>Lab</code>中, 测试用例的覆盖率比较低, 比如对崩溃恢复的各种边界条件的考虑不足, 当然这确实也比较难控制就是了。</li>
+<li>各个<code>Lab</code>工作量不尽相同, 现在的<code>Lab</code>设计是按照功能模块进行划分的, 但这导致<a href="./lab5/lab5-Tranc-MVCC.html">Lab 5</a>和<a href="./lab6/lab6-Redis.html">Lab 6</a>的测代码量和难度远大于之前的<code>Lab</code>, 难度曲线可能不太合理, 后续应考虑对各个<code>Lab</code>进行更加均衡的划分。</li>
+<li>进一步补充一些背景理论知识, 尤其是实际场景中的各种性能优化方案。</li>
+</ol>
+<p>如果你有兴趣参与本实验的建设，欢迎在下面的分支上提交PR:</p>
+<ul>
+<li><a href="https://github.com/ToniXWD/toni-lsm/tree/lab">Lab代码分支</a></li>
+<li><a href="https://github.com/ToniXWD/toni-lsm/tree/lab-doc">Lab文档分支</a></li>
+</ul>
+<p>如果你有什么问题，可以通过 <a href="https://qm.qq.com/q/wDZQfaNNw6">QQ讨论群</a> 或者 <a href="mailto:xwdtoni@126.com">📧邮件</a> 联系到作者。</p>
 
                     </main>
 
