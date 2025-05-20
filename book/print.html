@@ -273,21 +273,66 @@
 <p>接下来对比分析一下LSM Tree 和 B-Tree。B-Tree 和 LSM-Tree 是两种最常用的存储数据结构，广泛应用于各种数据库和存储引擎中。</p>
 <h2 id="21-b-tree-概述"><a class="header" href="#21-b-tree-概述">2.1 B-Tree 概述</a></h2>
 <h3 id="211-基本结构"><a class="header" href="#211-基本结构">2.1.1 基本结构</a></h3>
+<p>B-Tree 是一种多路平衡搜索树，具有如下特点：</p>
 <ul>
-<li><strong>多路搜索树</strong>：每个节点可包含多个键值对及对应子节点指针。</li>
-<li><strong>页（Page）存储</strong>：通常以固定大小页（如 4 KB）为单位，将数据保存在叶子节点或中间节点中。</li>
+<li><strong>多路搜索</strong>：每个节点可包含多个 key 和多个指向子节点的指针，典型的阶为 M 的 B-Tree 每个节点最多包含 M-1 个 key 和 M 个子指针。</li>
+<li><strong>有序性</strong>：节点内的 key 是有序排列的，满足搜索树的性质（左子树所有 key 小于当前 key，右子树所有 key 大于当前 key）。</li>
+<li><strong>节点平衡</strong>：B-Tree 总是保持所有叶子节点在同一深度，避免了不平衡树造成的性能劣化。</li>
+<li><strong>磁盘优化</strong>：B-Tree 节点设计与磁盘页大小（如 4KB）对齐，尽量减少 I/O 次数。一个节点一般映射为一个磁盘页。</li>
 </ul>
-<h3 id="212-读写流程"><a class="header" href="#212-读写流程">2.1.2 读写流程</a></h3>
-<ul>
-<li><strong>查找</strong>：从根节点开始，依次向下比较键值，直到叶子节点。</li>
-<li><strong>写入</strong>：在页内定位并修改；若页已满，则分裂节点并向上调整，保持树的平衡。</li>
-</ul>
+<h3 id="212-操作流程"><a class="header" href="#212-操作流程">2.1.2 操作流程</a></h3>
+<h4 id="查找操作"><a class="header" href="#查找操作">查找操作</a></h4>
+<ol>
+<li>从根节点开始，顺序查找当前节点内的 key；</li>
+<li>若找到对应 key，返回其值；</li>
+<li>若未找到，确定 key 所属范围并跳转到对应子节点；</li>
+<li>重复上述步骤，直到叶子节点。</li>
+</ol>
+<h4 id="插入操作"><a class="header" href="#插入操作">插入操作</a></h4>
+<ol>
+<li>先定位插入位置；</li>
+<li>若目标页未满，直接插入；</li>
+<li>若目标页已满，触发分裂操作，将节点拆分为两个，并将中间 key 上移至父节点；</li>
+<li>如果父节点也满，则递归向上分裂，可能导致树高度加一。</li>
+</ol>
+<h4 id="删除操作简略"><a class="header" href="#删除操作简略">删除操作（简略）</a></h4>
+<ol>
+<li>查找要删除的 key；</li>
+<li>若为叶子节点直接删除，若为内部节点需用前驱/后继替换；</li>
+<li>若删除导致节点 key 数小于最小值（通常是 M/2），需借 key 或合并兄弟节点，保持平衡。</li>
+</ol>
 <h3 id="213-性能特点"><a class="header" href="#213-性能特点">2.1.3 性能特点</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>操作类型</th><th>时间复杂度</th><th>备注</th></tr></thead><tbody>
+<tr><td>查找</td><td>O(logₘN)</td><td>树高取决于扇出 M，M 越大树越矮</td></tr>
+<tr><td>插入</td><td>O(logₘN)</td><td>最多向上分裂至根节点</td></tr>
+<tr><td>删除</td><td>O(logₘN)</td><td>包含调整和合并操作</td></tr>
+</tbody></table>
+</div>
 <ul>
-<li><strong>查找</strong>：时间复杂度 O(log n)，适合读密集型应用。</li>
-<li><strong>写入</strong>：每次随机写与节点分裂会带来较高的 I/O 开销，不利于写密集型场景。</li>
+<li><strong>优势</strong>：查找路径短，适用于 OLTP 事务型数据库；</li>
+<li><strong>劣势</strong>：写入为页内更新和<strong>随机写</strong>， 且可能导致<strong>写放大</strong>,不适合写密集型负载。</li>
 </ul>
-<hr />
+<blockquote>
+<p>🌪️ “随机写”是什么意思？</p>
+<p>在 B-Tree 中，每次写入（插入、更新或删除）都必须找到对应位置，比如一个叶子节点中的第 n 个 key：</p>
+<ol>
+<li>B-Tree 会从根节点一路查找，定位到目标页（也就是磁盘上的一个节点）。</li>
+<li>如果该页满了，还要分裂成两个页，再更新父节点指针，可能一直递归到根。</li>
+<li>每一个操作，可能都要读写不同位置的磁盘页——这些页不在相邻磁盘位置上，就叫“随机写”。</li>
+</ol>
+<p>而磁盘（特别是传统 HDD）最慢的操作就是随机写。</p>
+</blockquote>
+<blockquote>
+<p>🔥 “写放大”又是什么？</p>
+<p>你本来只是想写入一个 key-value 对，结果 B-Tree 却可能会因为：</p>
+<ol>
+<li>页满而分裂；</li>
+<li>父节点也满而再分裂；</li>
+<li>更新多个索引路径节点；</li>
+</ol>
+<p>导致你实际上要写入多个节点、多个页——一次小写入导致多次磁盘写入，这就叫写放大（Write Amplification）。</p>
+<p>比如你写了 1KB 数据，磁盘实际写了 16KB，甚至 64KB，这种浪费，就是放大了。</p>
+</blockquote>
 <h2 id="22-lsm-tree-概述"><a class="header" href="#22-lsm-tree-概述">2.2. LSM-Tree 概述</a></h2>
 <h3 id="221-设计动机"><a class="header" href="#221-设计动机">2.2.1 设计动机</a></h3>
 <p>为了解决传统 B-Tree 在写密集场景下的随机写和高写放大问题，LSM-Tree 采取“先内存写、再后台合并”的思路，以空间换时间，提升写入吞吐。</p>
