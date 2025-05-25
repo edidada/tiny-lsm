@@ -14,7 +14,7 @@
 
 同样地, 我们再一次回顾我们的架构:
 
-![Fig 1](../images/intro/toni-lsm-arch.drawio.png)
+![Fig 1](../images/intro/tiny-lsm-arch.drawio.png)
 
 可以看到, 不同组件之间存在各种交互, 这些交互内容包括:
 1. `MemTable`和`SST`之间进行`Encoded`并刷盘形成`SST文件`

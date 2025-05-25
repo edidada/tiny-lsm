@@ -33,7 +33,7 @@ return "";
 # 3 测试
 你可以安装并使用`redis-cli`来测试你的`Redis`服务器, 过程为
 ```bash
-cd  toni-lsm
+cd  tiny-lsm
 xmake
 xmake run server
 ```

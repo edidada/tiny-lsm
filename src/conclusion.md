@@ -6,8 +6,8 @@
 
 同时感谢以下为本项目贡献过源码的网友:
 
-<a href="https://github.com/ToniXWD/toni-lsm/contributors">
-  <img src="https://contrib.rocks/image?repo=ToniXWD/toni-lsm" />
+<a href="https://github.com/Vanilla-Beauty/tiny-lsm/contributors">
+  <img src="https://contrib.rocks/image?repo=Vanilla-Beauty/tiny-lsm" />
 </a>
 
 # 下一步？

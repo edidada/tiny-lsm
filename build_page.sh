@@ -7,12 +7,12 @@ if [ -z "$1" ]; then
 fi
 
 rm -rf book
-rm -rf ../toni-lsm-web/book
+rm -rf ../tiny-lsm-web/book
 
 mdbook build
 
-mv book/ ../toni-lsm-web/
-cd ../toni-lsm-web
+mv book/ ../tiny-lsm-web/
+cd ../tiny-lsm-web
 git add -A
 git commit -m "$1"
 git push origin gh-pages

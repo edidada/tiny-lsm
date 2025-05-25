@@ -7,9 +7,9 @@
 
 首先给出本章实验后的架构示意图:
 
-![Arch](../images/intro/toni-lsm-arch-full.drawio.png)
+![Arch](../images/intro/tiny-lsm-arch-full.drawio.png)
 
-相比之前实现的`LSM Engine`的基础部分的[架构](../images/intro/toni-lsm-arch.drawio.png), 这里新增了`TrancManager`、`WAL`、`TrancContext`杰哥模块, 其中`TrancManager`用于管理事务, `WAL`用于持久化事务操作, `TrancContext`用于与客户端进行直接交互。
+相比之前实现的`LSM Engine`的基础部分的[架构](../images/intro/tiny-lsm-arch.drawio.png), 这里新增了`TrancManager`、`WAL`、`TrancContext`杰哥模块, 其中`TrancManager`用于管理事务, `WAL`用于持久化事务操作, `TrancContext`用于与客户端进行直接交互。
 
 # 2 KV存储中的事务
 ## 2.1 事务介绍

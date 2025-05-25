@@ -3,7 +3,7 @@
 
 `LSM Tree`是一种`KV`存储架构。其核心思想是，将`KV`存储的数据以`SSTable`的形式进行持久化，并通过`MemTable`进行内存缓存，当`MemTable`的数据量达到一定阈值时，将其持久化到磁盘中，并重新创建一个`MemTable`。`LSM Tree`的核心思想是，将`KV`存储的数据以`SSTable`的形式进行持久化，并通过`MemTable`进行内存缓存。并且， 数据以追加写入的方式进行，删除数据也是通过更新的数据进行覆盖的方式实现。
 
-![Fig 1](images/intro/toni-lsm-arch.drawio.png)
+![Fig 1](images/intro/tiny-lsm-arch.drawio.png)
 
 如图所示为`LSM Tree`的核心架构。我们通过`Put`, `Remove`和`Get`操作的流程对其进行介绍。
 

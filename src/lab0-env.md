@@ -58,7 +58,7 @@ curl -fsSL https://xmake.io/shget.text | bash
 
 ```lua
 -- 定义项目
-set_project("toni-lsm")
+set_project("tiny-lsm")
 set_version("0.0.1")
 set_languages("c++20")
 
@@ -124,8 +124,8 @@ target("example")
 CompileFlags:            # 编译标志部分
   Add:
     - "-std=c++20"      # 添加 C++17 支持
-    - "-isystem/home/toni/proj/vcpkg/installed/x64-linux/include" # 包含头文件, 绝对路径
-    - "-isystem/home/toni/.xmake/packages/m/muduo/2022.11.01/e9382a25649e4e43bf04f01f925d9c2f/include" # 包含头文件, 绝对路径
+    - "-isystem/home/vanilla-beauty/proj/vcpkg/installed/x64-linux/include" # 包含头文件, 绝对路径
+    - "-isystem/home/vanilla-beauty/.xmake/packages/m/muduo/2022.11.01/e9382a25649e4e43bf04f01f925d9c2f/include" # 包含头文件, 绝对路径
 ```
 
 这样一来之前的告警就不复存在了
@@ -154,12 +154,12 @@ CompileFlags:            # 编译标志部分
 # 4 Lab代码仓库说明
 按照下面的命令拉取实验代码仓库:
 ```bash
-git clone https://github.com/ToniXWD/toni-lsm.git --depth 1 -b lab
+git clone https://github.com/Vanilla-Beauty/tiny-lsm.git --depth 1 -b lab
 ```
 
 如果你之前的环境配置没有问题的话, 编译项目能够正常进行:
 ```bash
-cd toni-lsm
+cd tiny-lsm
 mkdir build
 xmake
 ```
@@ -167,7 +167,7 @@ xmake
 ### 项目目录结构
 
 ```bash
-toni-lsm/
+tiny-lsm/
 ├── doc/           # 项目文档
 ├── example/       # 示例程序
 ├── include/       # 公共头文件

@@ -208,7 +208,7 @@ C++ exception with description "bad optional access" thrown in the test body.
 [  FAILED  ] SSTTest.LargeSSTPredicate
 
  1 FAILED TEST
-error: execv(/home/toni/proj/toni-lsm/build/linux/x86_64/release/test_sst ) failed(1)
+error: execv(/home/vanilla-beauty/proj/tiny-lsm/build/linux/x86_64/release/test_sst ) failed(1)
 ```
 
 如果仅仅是得到一个可以跑的`SST`, 那么现在你已经完成的`SST`的大部分功能了。这里的`LargeSSTPredicate`需要你在实现下一小节的谓词查询后才能通过。

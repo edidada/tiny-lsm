@@ -13,7 +13,7 @@
 
 我们再次回顾下面的这张架构图:
 
-![Fig 1](../images/intro/toni-lsm-arch.drawio.png)
+![Fig 1](../images/intro/tiny-lsm-arch.drawio.png)
 
 这里的`MemTable`用于存储内存中的键值对数据, 其存储的基础容器即为`Skiplist`。`SkipList`被划分为2组: `current_table`和`frozen_table`。`current_table`可读可写, 并是唯一写入的`SkipList`, `frozen_table`是只读状态, 用于存储已经写入的键值对数据。`current_table`容量超出阈值即转化为`frozen_table`中的一个。
 

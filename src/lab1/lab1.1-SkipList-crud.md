@@ -116,7 +116,7 @@ SkipListIterator SkipList::get(const std::string &key, uint64_t tranc_id) {
 # 4 测试
 当你完成上述操作后, `test/test_skiplist.cpp`中的部分单元测试你应该能够通过:
 ```bash
-✗ cd toni-lsm
+✗ cd tiny-lsm
 ✗ xmake
 ✗ xmake run test_skiplist
 [==========] Running 12 tests from 1 test suite.

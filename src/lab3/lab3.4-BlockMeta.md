@@ -8,7 +8,7 @@
 - 该`Block`在`SST`中的偏移量
 - 该`Block`的第一个`key`和最后一个`key`的元数据
 
-在`SST`构建完成后, 其文件持久化在文件系统中, 但`Meta Section`会被加载到内存中并解码为控制结构, 因为没有`Meta Section`的元数据, 我们是没法对`SST`按照`Block`进行索引的。在`Toni-LSM`中, 这里的元数据在内存中用类`BlockMeta`来表示, 其定义为:
+在`SST`构建完成后, 其文件持久化在文件系统中, 但`Meta Section`会被加载到内存中并解码为控制结构, 因为没有`Meta Section`的元数据, 我们是没法对`SST`按照`Block`进行索引的。在`Tiny-LSM`中, 这里的元数据在内存中用类`BlockMeta`来表示, 其定义为:
 ```cpp
 class BlockMeta {
   friend class BlockMetaTest;

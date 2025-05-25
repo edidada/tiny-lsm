@@ -2,7 +2,7 @@
 # 1 概述
 这一章的开头我们再次搬出我们的经典架构图:
 
-![Fig 1](../images/intro/toni-lsm-arch.drawio.png)
+![Fig 1](../images/intro/tiny-lsm-arch.drawio.png)
 
 通过[Lab1](../lab1/lab1-skiplist.md)和[Lab2](../lab2/lab2-memtable.md)的学习，我们已经初步完成了`LSM Tree`中内存的基础读写组件, 这一章我们将眼光从内存迁移到磁盘, 实现`SST`相关的内容。
 
@@ -11,7 +11,7 @@
 此外，我们从架构图中还了解到，不同`Level`的`SST`是需要再容量超出阈值时进行合并(`Compact`)的, 但`Compact`在本实验中是由更上层的控制结构实现的, 因此本节实验你不需要担心`Compact`, 这是后续`Lab`的内容, 这里提一嘴只是为了有助于从理论上理解其运行机制。
 
 # 2 SST 的结构
-从架构图中我们了解到，不同`Level`之间的容量呈指数增长, 其中最小的`Level 0`的`SST`也是`SkipList`的大小, 而`SkipList`实例在内存中是由多个链表组成的, 查询速度基本上和红黑树差不多。但假若我们想从`SST`中查一个键值对，总不可能把整个`SST`都解码放到内存中吧? 要知道高层`Level`的`SST`是可以轻易增长到`GB`的大小的。因此，`SST`必须进行内部的切分, 这里切分形成的一块数据我们称之为`Block`。因此对`Block`的组织管理就是`SST`设计的核心内容。`Toni-LSM`的`SST`文件结构如下:
+从架构图中我们了解到，不同`Level`之间的容量呈指数增长, 其中最小的`Level 0`的`SST`也是`SkipList`的大小, 而`SkipList`实例在内存中是由多个链表组成的, 查询速度基本上和红黑树差不多。但假若我们想从`SST`中查一个键值对，总不可能把整个`SST`都解码放到内存中吧? 要知道高层`Level`的`SST`是可以轻易增长到`GB`的大小的。因此，`SST`必须进行内部的切分, 这里切分形成的一块数据我们称之为`Block`。因此对`Block`的组织管理就是`SST`设计的核心内容。`Tiny-LSM`的`SST`文件结构如下:
 
 ![SST-Arch](../images/lab3/SST.drawio.png)
 
