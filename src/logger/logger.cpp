@@ -11,7 +11,7 @@ void init_spdlog_file() {
   std::call_once(spdlog_init_flag, []() {
     auto max_size = 1048576 * 5;
     auto max_files = 3;
-    auto logger = spdlog::rotating_logger_mt("Toni-Lsm", "logs/tiny_lsm.log",
+    auto logger = spdlog::rotating_logger_mt("Tiny-Lsm", "logs/tiny_lsm.log",
                                              max_size, max_files);
     spdlog::set_default_logger(logger);
     spdlog::set_level(spdlog::level::debug);

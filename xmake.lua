@@ -251,7 +251,7 @@ target("lsm_pybind")
     set_targetdir("$(buildir)/lib")
     set_filename("lsm_pybind.so")  -- 确保生成的文件名为 lsm_pybind.so
     add_ldflags("-Wl,-rpath,$ORIGIN")
-    add_defines("TONILSM_EXPORT=__attribute__((visibility(\"default\")))")
+    add_defines("TINYLSM_EXPORT=__attribute__((visibility(\"default\")))")
     add_cxxflags("-fvisibility=hidden")  -- 隐藏非导出符号
 
 task("run-all-tests")

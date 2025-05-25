@@ -5,7 +5,7 @@ from setuptools.command.build_py import build_py
 
 # 版本和基本描述
 VERSION = "0.1.0"
-DESCRIPTION = "A Python binding for Toni's LSM Tree Storage Engine"
+DESCRIPTION = "A Python binding for Tiny LSM Tree Storage Engine"
 
 class CustomBuild(build_py):
     def run(self):
