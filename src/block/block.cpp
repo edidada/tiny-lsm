@@ -9,7 +9,7 @@
 #include <stdexcept>
 #include <string>
 
-namespace toni_lsm {
+namespace tiny_lsm {
 Block::Block(size_t capacity) : capacity(capacity) {}
 
 std::vector<uint8_t> Block::encode() {
@@ -393,4 +393,4 @@ Block::iters_preffix(uint64_t tranc_id, const std::string &preffix) {
 BlockIterator Block::end() {
   return BlockIterator(shared_from_this(), offsets.size(), 0);
 }
-} // namespace toni_lsm
+} // namespace tiny_lsm

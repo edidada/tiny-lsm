@@ -14,7 +14,7 @@
 #include <utility>
 #include <vector>
 
-namespace toni_lsm {
+namespace tiny_lsm {
 
 // Helper functions
 RedisWrapper::RedisWrapper(const std::string &db_path) {
@@ -1307,4 +1307,4 @@ std::string RedisWrapper::redis_smembers(const std::string &key) {
   }
   return oss.str();
 }
-} // namespace toni_lsm
+} // namespace tiny_lsm

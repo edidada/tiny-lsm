@@ -7,7 +7,7 @@
 #include <iostream>
 #include <vector>
 
-namespace toni_lsm {
+namespace tiny_lsm {
 
 // 从零开始的初始化流程
 WAL::WAL(const std::string &log_dir, size_t buffer_size,
@@ -216,4 +216,4 @@ void WAL::reset_file() {
   // log_file_.~FileObj();
   log_file_ = FileObj::create_and_write(active_log_path_, {});
 }
-} // namespace toni_lsm
+} // namespace tiny_lsm

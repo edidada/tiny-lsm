@@ -3,7 +3,7 @@
 #include <functional>
 #include <stdexcept>
 
-namespace toni_lsm {
+namespace tiny_lsm {
 BlockMeta::BlockMeta() : offset(0), first_key(""), last_key("") {}
 
 BlockMeta::BlockMeta(size_t offset, const std::string &first_key,
@@ -128,4 +128,4 @@ BlockMeta::decode_meta_from_slice(const std::vector<uint8_t> &metadata) {
 
   return meta_entries;
 }
-} // namespace toni_lsm
+} // namespace tiny_lsm

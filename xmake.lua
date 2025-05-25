@@ -1,5 +1,5 @@
 -- 定义项目
-set_project("toni-lsm")
+set_project("tiny-lsm")
 set_version("0.0.1")
 set_languages("c++20")
 
@@ -106,7 +106,7 @@ target("lsm_shared")
 
     -- 安装头文件和动态链接库
     on_install(function (target)
-        os.cp("include", path.join(target:installdir(), "include/toni-lsm"))
+        os.cp("include", path.join(target:installdir(), "include/tiny-lsm"))
         os.cp(target:targetfile(), path.join(target:installdir(), "lib"))
     end)
 

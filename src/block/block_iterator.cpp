@@ -6,7 +6,7 @@
 
 class Block;
 
-namespace toni_lsm {
+namespace tiny_lsm {
 BlockIterator::BlockIterator(std::shared_ptr<Block> b, size_t index,
                              uint64_t tranc_id)
     : block(b), current_index(index), tranc_id_(tranc_id),
@@ -119,4 +119,4 @@ void BlockIterator::skip_by_tranc_id() {
   }
   cached_value = std::nullopt;
 }
-} // namespace toni_lsm
+} // namespace tiny_lsm

@@ -7,7 +7,7 @@
 #include <string>
 #include <utility>
 
-namespace toni_lsm {
+namespace tiny_lsm {
 
 enum class IteratorType {
   SkipListIterator,
@@ -88,4 +88,4 @@ private:
   mutable std::shared_ptr<value_type> current; // 用于存储当前元素
   uint64_t max_tranc_id_ = 0;
 };
-} // namespace toni_lsm
+} // namespace tiny_lsm

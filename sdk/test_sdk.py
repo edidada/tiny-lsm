@@ -1,13 +1,13 @@
-import tonilsm
+import tinylsm
 
-db = tonilsm.LSM("test2_db")
+db = tinylsm.LSM("test2_db")
 
 db.put(b"tomxx", b"catxx")
 
 db.get("tomxx")
 # 'catxx'
 
-t = db.begin_tran(isolation_level=tonilsm.IsolationLevel.READ_COMMITTED)
+t = db.begin_tran(isolation_level=tinylsm.IsolationLevel.READ_COMMITTED)
 
 t.get('tomxx')
 # 'catxx'

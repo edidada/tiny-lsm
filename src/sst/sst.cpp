@@ -10,7 +10,7 @@
 #include <memory>
 #include <stdexcept>
 
-namespace toni_lsm {
+namespace tiny_lsm {
 
 // **************************************************
 // SST
@@ -344,4 +344,4 @@ SSTBuilder::build(size_t sst_id, const std::string &path,
 
   return res;
 }
-} // namespace toni_lsm
+} // namespace tiny_lsm

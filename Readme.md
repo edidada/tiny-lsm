@@ -9,14 +9,14 @@
 
 `Toni-LSM` is a educational project to implement a simple kv database from scratch, using lsm-tree as the storage engine. The project manager uses [xmake](https://xmake.io/). The project is inspired by [mini-lsm](https://github.com/skyzh/mini-lsm), [tinykv](https://github.com/talent-plan/tinykv) and [leveldb](https://github.com/google/leveldb). The project is partly compatible with the [Redis Resp protocol](https://redis.io/docs/latest/develop/reference/protocol-spec/), so it can be used as a redis backend and relpace `redis-server`(Just for fun 🎮).
 
-The developing posts can be found in my [blog](https://tonixwd.github.io/categories/%E9%A1%B9%E7%9B%AE/) or [zhihu](https://www.zhihu.com/column/c_1867534978344161280). The is also a recorded video [Course](https://avo6166ew2u.feishu.cn/docx/LXmVdezdsoTBRaxC97WcHwGunOc).
+The developing posts can be found in my [blog](https://tinyxwd.github.io/categories/%E9%A1%B9%E7%9B%AE/) or [zhihu](https://www.zhihu.com/column/c_1867534978344161280). The is also a recorded video [Course](https://avo6166ew2u.feishu.cn/docx/LXmVdezdsoTBRaxC97WcHwGunOc).
 
 ## 📚 New: Lab Course Released!
 > We now offer a complete hands-on **step-by-step Lab course** designed for learners interested in building LSM-based storage engines from scratch.
 > 
 > Project production is not easy, please click star ⭐ to support us ❤️
 > 
-> 👉 [**Toni-LSM Lab Course**](https://tonixwd.github.io/toni-lsm/book/)
+> 👉 [**Toni-LSM Lab Course**](https://tinyxwd.github.io/tiny-lsm/book/)
 
 You can also join the QQ group 💬 for discussion: 
 
@@ -55,7 +55,7 @@ Here is a simple example demonstrating how to use the LSM Tree for basic key-val
 #include <iostream>
 #include <string>
 
-using namespace ::toni_lsm;
+using namespace ::tiny_lsm;
 
 int main() {
   // create lsm instance, data_dir is the directory to store data
@@ -214,9 +214,9 @@ cd sdk
 ```
 Then you can use the SDK in your Python code:
 ```python
-import tonilsm
+import tinylsm
 
-db = tonilsm.LSM("test2_db")
+db = tinylsm.LSM("test2_db")
 db.put(b"tomxx", b"catxx")
 db.get("tomxx")
 
@@ -231,10 +231,10 @@ db.get("tomxx")
 We welcome contributions for developing SDKs in other programming languages.
 
 # 🤝 Contribute
-If you want to contribute to the project, please check the [issues](https://github.com/ToniXWD/toni-lsm/issues). Also, you can concat me by [email📧](mailto:xwdtoni@126.com)
+If you want to contribute to the project, please check the [issues](https://github.com/Vanilla-Beauty/tiny-lsm/issues). Also, you can concat me by [email📧](mailto:xwdtiny@126.com)
 
 ## Lab Construction
-I have a plan to make this project a step-to-step Lab like `CMU15445` or `MIT 6.824`. If you are interested in this project, please feel free to contact me by [email📧](mailto:xwdtoni@126.com)
+I have a plan to make this project a step-to-step Lab like `CMU15445` or `MIT 6.824`. If you are interested in this project, please feel free to contact me by [email📧](mailto:xwdtiny@126.com)
 
 Besides, the branch `lab-dev` is a development branch for the lab construction.
 

@@ -1,10 +1,10 @@
 .vscode
 .xmake
 build
-sdk/tonilsm/dist
-sdk/tonilsm/build
-sdk/tonilsm/tonilsm/core/lib
-sdk/tonilsm/tonilsm.egg-info
+sdk/tinylsm/dist
+sdk/tinylsm/build
+sdk/tinylsm/tinylsm/core/lib
+sdk/tinylsm/tinylsm.egg-info
 *__pycache__*
 book
 coverage*

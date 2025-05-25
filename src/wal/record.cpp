@@ -4,7 +4,7 @@
 #include <cstddef>
 #include <cstring>
 
-namespace toni_lsm {
+namespace tiny_lsm {
 
 Record Record::createRecord(uint64_t tranc_id) {
   Record record;
@@ -189,4 +189,4 @@ bool Record::operator==(const Record &other) const {
 }
 
 bool Record::operator!=(const Record &other) const { return !(*this == other); }
-} // namespace toni_lsm
+} // namespace tiny_lsm

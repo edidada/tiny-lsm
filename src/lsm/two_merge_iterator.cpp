@@ -1,6 +1,6 @@
 #include "../../include/lsm/two_merge_iterator.h"
 
-namespace toni_lsm {
+namespace tiny_lsm {
 
 TwoMergeIterator::TwoMergeIterator() {}
 
@@ -127,4 +127,4 @@ void TwoMergeIterator::update_current() const {
     current = std::make_shared<value_type>(**it_b);
   }
 }
-} // namespace toni_lsm
+} // namespace tiny_lsm

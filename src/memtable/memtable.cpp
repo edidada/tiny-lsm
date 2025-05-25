@@ -15,7 +15,7 @@
 #include <utility>
 #include <vector>
 
-namespace toni_lsm {
+namespace tiny_lsm {
 
 class BlockCache;
 
@@ -479,4 +479,4 @@ MemTable::iters_monotony_predicate(
   }
   return std::make_pair(HeapIterator(item_vec, tranc_id), HeapIterator{});
 }
-} // namespace toni_lsm
+} // namespace tiny_lsm

@@ -7,7 +7,7 @@
 #include <numeric>
 #include <string>
 
-namespace toni_lsm {
+namespace tiny_lsm {
 
 BloomFilter::BloomFilter() {};
 
@@ -161,4 +161,4 @@ BloomFilter BloomFilter::decode(const std::vector<uint8_t> &data) {
 
   return bf;
 }
-} // namespace toni_lsm
+} // namespace tiny_lsm

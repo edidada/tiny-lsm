@@ -13,7 +13,7 @@
 #include <thread>
 #include <vector>
 
-namespace toni_lsm {
+namespace tiny_lsm {
 
 class WAL {
 public:
@@ -50,4 +50,4 @@ protected:
   std::atomic<bool> stop_cleaner_;
   uint64_t clean_interval_;
 };
-} // namespace toni_lsm
+} // namespace tiny_lsm
