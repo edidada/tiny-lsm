@@ -1,5 +1,7 @@
 #! /usr/bin/sh
 
+# ? abandoned after using `.github/workflows/deploy.yml` for deployment
+
 # Check if at least one argument is provided
 if [ -z "$1" ]; then
   echo "Error: No commit message provided."
