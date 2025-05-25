@@ -7,7 +7,7 @@
 ![Version Badge](https://img.shields.io/badge/version-v0%2E1-red)
 
 
-`Toni-LSM` is a educational project to implement a simple kv database from scratch, using lsm-tree as the storage engine. The project manager uses [xmake](https://xmake.io/). The project is inspired by [mini-lsm](https://github.com/skyzh/mini-lsm), [tinykv](https://github.com/talent-plan/tinykv) and [leveldb](https://github.com/google/leveldb). The project is partly compatible with the [Redis Resp protocol](https://redis.io/docs/latest/develop/reference/protocol-spec/), so it can be used as a redis backend and relpace `redis-server`(Just for fun 🎮).
+`Tiny-LSM` is a educational project to implement a simple kv database from scratch, using lsm-tree as the storage engine. The project manager uses [xmake](https://xmake.io/). The project is inspired by [mini-lsm](https://github.com/skyzh/mini-lsm), [tinykv](https://github.com/talent-plan/tinykv) and [leveldb](https://github.com/google/leveldb). The project is partly compatible with the [Redis Resp protocol](https://redis.io/docs/latest/develop/reference/protocol-spec/), so it can be used as a redis backend and relpace `redis-server`(Just for fun 🎮).
 
 The developing posts can be found in my [blog](https://tinyxwd.github.io/categories/%E9%A1%B9%E7%9B%AE/) or [zhihu](https://www.zhihu.com/column/c_1867534978344161280). The is also a recorded video [Course](https://avo6166ew2u.feishu.cn/docx/LXmVdezdsoTBRaxC97WcHwGunOc).
 
@@ -16,7 +16,7 @@ The developing posts can be found in my [blog](https://tinyxwd.github.io/categor
 > 
 > Project production is not easy, please click star ⭐ to support us ❤️
 > 
-> 👉 [**Toni-LSM Lab Course**](https://tinyxwd.github.io/tiny-lsm/book/)
+> 👉 [**Tiny-LSM Lab Course**](https://tinyxwd.github.io/tiny-lsm/book/)
 
 You can also join the QQ group 💬 for discussion: 
 
