@@ -177,7 +177,7 @@
 <p><a href="https://github.com/Vanilla-Beauty/tiny-lsm">Tiny-LSM</a>是一个基于<code>LSM Tree</code>的开源教学<code>KV</code>存储引擎, 除<code>LSM Tree</code>的基础功能外, 还支持<code>MVCC</code>、<code>WAL</code>、崩溃恢复、<code>Redis</code>兼容等功能。本实验是基于作者原本实验的代码进行改造后的<code>Lab</code>课程。</p>
 <p><code>LSM Tree</code>（<code>Log-Structured Merge-Tree</code>）是一种适用于磁盘存储的数据结构，特别适合于需要高吞吐量的写操作的场景。它由Patrick O'Neil等人于1996年提出，广泛应用于NoSQL数据库和文件系统中，如<code>LevelDB</code>、<code>RocksDB</code>和<code>Cassandra</code>等。<code>LSM Tree</code>的主要思想是将数据写入操作日志（Log），然后定期将日志中的数据合并到磁盘上的有序不可变文件（SSTable）中。这些SSTable文件按层次结构组织，数据在多个层次之间逐步合并和压缩，以减少读取时的查找次数和磁盘I/O操作。</p>
 <p>有关<code>LSM Tree</code>的进一步背景和介绍请参见<a href="lab0-background.html">LSM Tree 概览</a></p>
-<p>本实现项目<code>Toni-LSN</code>完成了包括<code>内存表（MemTable）</code>、<code>不可变表（SSTable）</code>、<code>布隆过滤器（Bloom Filter）</code>、<code>合并和压缩（Compaction）</code>等<code>LSM Tree</code>的核心组件，并在此基础上添加了额外的功能博客, 包括:</p>
+<p>本实现项目<code>Tiny-LSM</code>完成了包括<code>内存表（MemTable）</code>、<code>不可变表（SSTable）</code>、<code>布隆过滤器（Bloom Filter）</code>、<code>合并和压缩（Compaction）</code>等<code>LSM Tree</code>的核心组件，并在此基础上添加了额外的功能博客, 包括:</p>
 <ul>
 <li>实现了<code>ACID</code>事务</li>
 <li>实现了<code>MVCC</code>多版本并发控制</li>
