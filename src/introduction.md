@@ -11,7 +11,7 @@
 
 有关`LSM Tree`的进一步背景和介绍请参见[LSM Tree 概览](lab0-background.md)
 
-本实现项目`Toni-LSN`完成了包括`内存表（MemTable）`、`不可变表（SSTable）`、`布隆过滤器（Bloom Filter）`、`合并和压缩（Compaction）`等`LSM Tree`的核心组件，并在此基础上添加了额外的功能博客, 包括:
+本实现项目`Tiny-LSM`完成了包括`内存表（MemTable）`、`不可变表（SSTable）`、`布隆过滤器（Bloom Filter）`、`合并和压缩（Compaction）`等`LSM Tree`的核心组件，并在此基础上添加了额外的功能博客, 包括:
 - 实现了`ACID`事务
 - 实现了`MVCC`多版本并发控制
 - 实现了`WAL`日志和崩溃恢复
