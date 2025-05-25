@@ -5306,6 +5306,161 @@ xmake run server
 <p>此时你就可以在<code>redis-cli</code>中输入我们之前<code>Lab</code>实现的命令和<code>server</code>进行交互了</p>
 <p>预期的结果应该如下所示:</p>
 <p><img src="lab6/../images/lab6/redis-example.png" alt="redis-example" /></p>
+<h1 id="4-redis-benchmark-压测"><a class="header" href="#4-redis-benchmark-压测">4 redis-benchmark 压测</a></h1>
+<p>由于我们已经实现了支持<code>Resp</code>的服务器, 其提供类似官方的<code>redis-server</code>的服务。同时， <code>redis</code>官方提供了压测工具<code>redis-benchmark</code>, 我们可以利用其进行压测。</p>
+<h2 id="41-redis-benchmark-安装"><a class="header" href="#41-redis-benchmark-安装">4.1 redis-benchmark 安装</a></h2>
+<p><code>redis-benchmark</code>是一个官方的压测工具，无论你是从<code>apt/yum</code>等源安装的<code>redis</code>，还是从源码编译的，其默认安装选项中都提供了<code>redis-benchmark</code>。</p>
+<h2 id="42-redis-benchmark-使用"><a class="header" href="#42-redis-benchmark-使用">4.2 redis-benchmark 使用</a></h2>
+<p><code>redis-benchmark</code>的使用非常简单，只需要指定<code>-h</code>参数，指定redis服务器的ip地址，然后就可以进行压测了。</p>
+<p><code>redis-benchmark</code> 是 Redis 官方自带的性能测试工具，用于模拟多个客户端同时向 Redis 服务器发送命令，并评估其性能表现。它可以帮助你了解 Redis 在不同负载下的吞吐量和延迟情况。</p>
+<p>基本的命令格式如下：</p>
+<pre><code class="language-bash">redis-benchmark [选项] [测试]
+</code></pre>
+<p>如果不带任何选项，<code>redis-benchmark</code> 会使用默认设置连接到本地 (127.0.0.1) 的 6379 端口，并执行一组预定义的测试。</p>
+<hr />
+<h3 id="常用选项"><a class="header" href="#常用选项">常用选项</a></h3>
+<p>以下是一些常用的 <code>redis-benchmark</code> 选项：</p>
+<ul>
+<li>
+<p><strong>主机和端口:</strong></p>
+<ul>
+<li><code>-h &lt;hostname&gt;</code>: 指定要连接的 Redis 服务器的主机名或 IP 地址 (默认为 <code>127.0.0.1</code>)。</li>
+<li><code>-p &lt;port&gt;</code>: 指定 Redis 服务器的端口号 (默认为 <code>6379</code>)。</li>
+<li><code>-a &lt;password&gt;</code>: 如果 Redis 服务器设置了密码，使用此选项进行身份验证。</li>
+<li><code>--tls</code>: 如果 Redis 服务器启用了 TLS/SSL 加密，使用此选项。</li>
+</ul>
+</li>
+<li>
+<p><strong>并发和请求数:</strong></p>
+<ul>
+<li><code>-c &lt;clients&gt;</code>: 指定并发客户端的数量 (默认为 <code>50</code>)。这模拟了同时有多少个连接在向 Redis 发送请求。</li>
+<li><code>-n &lt;requests&gt;</code>: 指定总的请求数量 (默认为 <code>100000</code>)。</li>
+</ul>
+</li>
+<li>
+<p><strong>数据大小:</strong></p>
+<ul>
+<li><code>-d &lt;size&gt;</code>: 指定 SET/GET 命令操作的数据大小，单位是字节 (默认为 <code>3</code>)。</li>
+</ul>
+</li>
+<li>
+<p><strong>测试命令:</strong></p>
+<ul>
+<li><code>-t &lt;tests&gt;</code>: 指定要执行的测试命令列表，用逗号分隔。例如 <code>-t SET,GET,LPUSH</code>。如果不指定，则执行默认的测试集 (PING_INLINE, PING_BULK, SET, GET, INCR, LPUSH, RPUSH, LPOP, RPOP, SADD, HSET, SPOP, LRANGE_100, LRANGE_300, LRANGE_500, LRANGE_600, MSET)。</li>
+</ul>
+</li>
+<li>
+<p><strong>Pipeline:</strong></p>
+<ul>
+<li><code>-P &lt;numreq&gt;</code>: 指定每个连接 pipeline 的请求数量 (默认为 <code>1</code>)。Pipeline 可以显著提高吞吐量，因为它允许客户端在等待前一个命令的响应之前发送多个命令。</li>
+</ul>
+</li>
+<li>
+<p><strong>随机性:</strong></p>
+<ul>
+<li><code>-r &lt;keyspacelen&gt;</code>: 对 SET/GET/INCR 等命令使用随机的 key，对 SADD 等命令使用随机的 value。<code>&lt;keyspacelen&gt;</code> 定义了随机 key 的范围后缀。例如，<code>-r 100000</code> 会生成类似 <code>mykey_rand:000000000000</code> 到 <code>mykey_rand:000000099999</code> 这样的 key。这有助于模拟更真实的缓存场景，避免总是命中同一个 key。</li>
+</ul>
+</li>
+<li>
+<p><strong>安静模式:</strong></p>
+<ul>
+<li><code>-q</code>: 安静模式，只输出 QPS (每秒查询数) 结果。</li>
+</ul>
+</li>
+<li>
+<p><strong>线程 (较新版本):</strong></p>
+<ul>
+<li><code>--threads &lt;num&gt;</code>: 指定使用的线程数 (默认为 <code>1</code>)。对于多核 CPU，使用多线程可以更好地压测 Redis。</li>
+</ul>
+</li>
+<li>
+<p><strong>集群模式:</strong></p>
+<ul>
+<li><code>--cluster</code>: 如果测试的是 Redis 集群，需要添加此参数。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3 id="输出结果解析"><a class="header" href="#输出结果解析">输出结果解析</a></h3>
+<p><code>redis-benchmark</code> 会为每个测试的命令输出类似以下的信息：</p>
+<pre><code>====== SET ======
+  100000 requests completed in 1.23 seconds
+  50 parallel clients
+  3 bytes payload
+  keep alive: 1
+
+99.76% &lt;= 1 milliseconds
+100.00% &lt;= 1 milliseconds
+81300.81 requests per second
+</code></pre>
+<p>关键指标包括：</p>
+<ul>
+<li><strong>requests completed in ... seconds</strong>: 完成指定请求数所花费的时间。</li>
+<li><strong>parallel clients</strong>: 并发客户端数量。</li>
+<li><strong>bytes payload</strong>: 数据负载大小。</li>
+<li><strong>...% &lt;= ... milliseconds</strong>: 不同百分位的请求延迟。例如，<code>99.76% &lt;= 1 milliseconds</code> 表示 99.76% 的请求在 1 毫秒内完成。这有助于了解延迟的分布情况。</li>
+<li><strong>requests per second (QPS)</strong>: 每秒处理的请求数。这是衡量 Redis 吞吐量的主要指标。</li>
+</ul>
+<h3 id="示例"><a class="header" href="#示例">示例</a></h3>
+<ul>
+<li>
+<p><strong>测试本地 Redis 默认端口，执行默认测试集：</strong></p>
+<pre><code class="language-bash">redis-benchmark
+</code></pre>
+</li>
+<li>
+<p><strong>测试特定主机和端口，使用 100 个并发连接，总共 100 万个请求：</strong></p>
+<pre><code class="language-bash">redis-benchmark -h myredishost -p 6380 -c 100 -n 1000000
+</code></pre>
+</li>
+<li>
+<p><strong>只测试 SET 和 GET 命令，数据大小为 256 字节，使用 pipeline (每个 pipeline 16 个请求)：</strong></p>
+<pre><code class="language-bash">redis-benchmark -t SET,GET -d 256 -P 16
+</code></pre>
+</li>
+<li>
+<p><strong>安静模式，只看 QPS：</strong></p>
+<pre><code class="language-bash">redis-benchmark -q
+</code></pre>
+</li>
+</ul>
+<h2 id="43-测试结果"><a class="header" href="#43-测试结果">4.3 测试结果</a></h2>
+<p>我们指定如下测试选项:</p>
+<pre><code class="language-bash"># 1. 在一个 Terminal 中启动 server
+➜  ~ xmake run server
+# 2. 在另一个 Terminal 开启 redis-benchmark
+➜  ~ redis-benchmark -h 127.0.0.1 -p 6379 -c 100 -n 100000 -q -t SET,GET,INCR,SADD,HSET,ZADD
+WARNING: Could not fetch server CONFIG
+SET: 142653.36 requests per second, p50=0.527 msec
+GET: 134589.50 requests per second, p50=0.503 msec
+INCR: 132802.12 requests per second, p50=0.503 msec
+SADD: 131233.59 requests per second, p50=0.519 msec
+HSET: 123456.79 requests per second, p50=0.583 msec
+ZADD: 126422.25 requests per second, p50=0.615 msec
+</code></pre>
+<blockquote>
+<p>启动测试时, 你需要确保以下几点:</p>
+<ol>
+<li>使用<code>release</code>模型编译</li>
+<li>更改日志级别为<code>info</code>, 否则会输出大量日志, 影响测试结果。你如果确定代码没有bug，甚至可以关闭日志输出</li>
+<li>日志输出使用<code>reset_log_level</code>进行</li>
+</ol>
+</blockquote>
+<p>这是作者的实现的测试结果, 同时我们可以用官方的<code>redis-server</code>测试进行对比:</p>
+<pre><code class="language-bash"># 1. 在一个 Terminal 中启动 server
+➜  ~ redis-server
+# 2. 在另一个 Terminal 开启 redis-benchmark
+➜  ~  redis-benchmark -h 127.0.0.1 -p 6379 -c 100 -n 100000 -q -t SET,GET,INCR,SADD,HSET,ZADD
+SET: 117647.05 requests per second, p50=0.527 msec
+GET: 134228.19 requests per second, p50=0.527 msec
+INCR: 132450.33 requests per second, p50=0.535 msec
+SADD: 125628.14 requests per second, p50=0.551 msec
+HSET: 128205.13 requests per second, p50=0.527 msec
+ZADD: 137362.64 requests per second, p50=0.535 msec
+</code></pre>
+<p>这里我们对<code>SET,GET,INCR,SADD,HSET,ZADD</code>命令的实现的性能与<code>redis-server</code>的性能相近, 且有些许性能优势。你可以对比你自己的实现和<code>redis-server</code>的QPS, 预期的结果是与<code>redis-server</code>的QPS在同一数量级。</p>
+<p><strong>压测之后呢?</strong>
+这里的压测本身不是我们的目的, 你需要关注的是压测反映出的性能不足问题, 并修改相应代码的实现。</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="结语"><a class="header" href="#结语">结语</a></h1>
 <p>本项目的初衷是作为<code>LSM Tree</code>的入门课程, 使参与者入门数据存储领域。这个<code>Lab</code>从代码实现, 到最后<code>Lab</code>文档的设计, 耗时半年, 花费了作者非常多的心血。因此, 如果您觉得这个<code>Lab</code>对您有帮助, 请在<code>GitHub</code>上给这个<code>Lab</code>一个<code>Star</code>。</p>
 <h1 id="致谢"><a class="header" href="#致谢">致谢</a></h1>
