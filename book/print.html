@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Toni-LSM-Lab</title>
+        <title>Tiny-LSM-Lab</title>
         <meta name="robots" content="noindex">
 
 
@@ -42,6 +42,17 @@
         <script src="toc.js"></script>
     </head>
     <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
     <div id="body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
@@ -119,18 +130,18 @@
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
 
-                    <h1 class="menu-title">Toni-LSM-Lab</h1>
+                    <h1 class="menu-title">Tiny-LSM-Lab</h1>
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
-                        <a href="https://github.com/ToniXWD/toni-lsm" title="Git repository" aria-label="Git repository">
+                        <a href="https://github.com/Vanilla-Beauty/tiny-lsm" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
 
@@ -159,11 +170,11 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="toni-lsm-lab"><a class="header" href="#toni-lsm-lab">Toni-LSM Lab</a></h1>
+                        <h1 id="tiny-lsm-lab"><a class="header" href="#tiny-lsm-lab">Tiny-LSM Lab</a></h1>
 <p><img src="./logo/logo1-compact.jpg" alt="logo" /></p>
 <hr />
-<h1 id="0-toni-lsm是什么"><a class="header" href="#0-toni-lsm是什么">0 Toni-LSM是什么?</a></h1>
-<p><a href="https://github.com/ToniXWD/toni-lsm">Toni-LSM</a>是一个基于<code>LSM Tree</code>的开源教学<code>KV</code>存储引擎, 除<code>LSM Tree</code>的基础功能外, 还支持<code>MVCC</code>、<code>WAL</code>、崩溃恢复、<code>Redis</code>兼容等功能。本实验是基于作者原本实验的代码进行改造后的<code>Lab</code>课程。</p>
+<h1 id="0-tiny-lsm是什么"><a class="header" href="#0-tiny-lsm是什么">0 Tiny-LSM是什么?</a></h1>
+<p><a href="https://github.com/Vanilla-Beauty/tiny-lsm">Tiny-LSM</a>是一个基于<code>LSM Tree</code>的开源教学<code>KV</code>存储引擎, 除<code>LSM Tree</code>的基础功能外, 还支持<code>MVCC</code>、<code>WAL</code>、崩溃恢复、<code>Redis</code>兼容等功能。本实验是基于作者原本实验的代码进行改造后的<code>Lab</code>课程。</p>
 <p><code>LSM Tree</code>（<code>Log-Structured Merge-Tree</code>）是一种适用于磁盘存储的数据结构，特别适合于需要高吞吐量的写操作的场景。它由Patrick O'Neil等人于1996年提出，广泛应用于NoSQL数据库和文件系统中，如<code>LevelDB</code>、<code>RocksDB</code>和<code>Cassandra</code>等。<code>LSM Tree</code>的主要思想是将数据写入操作日志（Log），然后定期将日志中的数据合并到磁盘上的有序不可变文件（SSTable）中。这些SSTable文件按层次结构组织，数据在多个层次之间逐步合并和压缩，以减少读取时的查找次数和磁盘I/O操作。</p>
 <p>有关<code>LSM Tree</code>的进一步背景和介绍请参见<a href="lab0-background.html">LSM Tree 概览</a></p>
 <p>本实现项目<code>Toni-LSN</code>完成了包括<code>内存表（MemTable）</code>、<code>不可变表（SSTable）</code>、<code>布隆过滤器（Bloom Filter）</code>、<code>合并和压缩（Compaction）</code>等<code>LSM Tree</code>的核心组件，并在此基础上添加了额外的功能博客, 包括:</p>
@@ -176,7 +187,7 @@
 </ul>
 <h3 id="-请支持我们的项目"><a class="header" href="#-请支持我们的项目">⭐ 请支持我们的项目！</a></h3>
 <blockquote>
-<p>如果您觉得本<code>Lab</code>不错, 请为<a href="https://github.com/ToniXWD/toni-lsm">Toni-LSM</a>点一个⭐。项目实验制作耗费了我很大精力，作者非常需要您的鼓励❤️, 您的支持是我更新的动力😆</p>
+<p>如果您觉得本<code>Lab</code>不错, 请为<a href="https://github.com/Vanilla-Beauty/tiny-lsm">Tiny-LSM</a>点一个⭐。项目实验制作耗费了我很大精力，作者非常需要您的鼓励❤️, 您的支持是我更新的动力😆</p>
 </blockquote>
 <h1 id="1-本实验的目的是什么"><a class="header" href="#1-本实验的目的是什么">1 本实验的目的是什么?</a></h1>
 <p>本实验的最终目标是实现一个基于<code>LSM Tree</code>的单机<code>KV Store</code>引擎。其功能包括:</p>
@@ -205,21 +216,21 @@
 <p>本实验的组织类似<a href="https://github.com/cmu-db/bustub"><code>CMU15445 bustub</code></a>, <code>Lab</code>提供了整体的代码框架, 并将其中某些组件的关键函数挖空并标记为<code>TODO</code>, 参与<code>Lab</code>的同学需要按照每一个<code>Lab</code>的指南补全缺失的函数, 并通过对应的单元测试。</p>
 <p>同样类似<code>CMU 15445</code>, 后面的<code>Lab</code>依赖于前一个<code>Lab</code>的正确性, 而实验提供的单元测试知识尽量考虑到了各种边界情况, 但不能完全确保你的代码正确, 因此必要时, 你需要自行进行单元测试补充以及<code>debug</code>。</p>
 <blockquote>
-<p>在目前的<code>Lab</code>中, 你确实可以从原仓库<a href="https://github.com/ToniXWD/toni-lsm">Toni-LSM</a>的<code>complete</code>分支直接查看<code>Lab</code>实验的答案, 但作者不希望你如此做, 这样你将无法深刻理解实验设计的思路和相关知识。并且, 作者自己实现的代码中的崩溃恢复部分存在<code>bug</code>, 且其余部分并非最佳方案。（猜猜作者是不是故意的😏）</p>
+<p>在目前的<code>Lab</code>中, 你确实可以从原仓库<a href="https://github.com/Vanilla-Beauty/tiny-lsm">Tiny-LSM</a>的<code>complete</code>分支直接查看<code>Lab</code>实验的答案, 但作者不希望你如此做, 这样你将无法深刻理解实验设计的思路和相关知识。并且, 作者自己实现的代码中的崩溃恢复部分存在<code>bug</code>, 且其余部分并非最佳方案。（猜猜作者是不是故意的😏）</p>
 </blockquote>
 <p>在了解完这些以后, 你可以开启下一章<a href="./lab0-env.html">Lab 0 环境准备</a>的学习。</p>
 <h1 id="5-项目交流与讨论"><a class="header" href="#5-项目交流与讨论">5 项目交流与讨论</a></h1>
-<p>如果你对本<code>Lab</code>有疑问, 欢迎在<a href="https://github.com/ToniXWD/toni-lsm/issues">GitHub Issues</a>中提出问题。也欢迎加入次实验的<a href="https://qm.qq.com/q/wDZQfaNNw6">QQ讨论群</a> 。如果你想参与<code>Lab</code>的开发, 欢迎通过QQ群或者作者邮件: <a href="mailto:xwdtoni@126.com">📧邮件</a>  联系。</p>
+<p>如果你对本<code>Lab</code>有疑问, 欢迎在<a href="https://github.com/Vanilla-Beauty/tiny-lsm/issues">GitHub Issues</a>中提出问题。也欢迎加入次实验的<a href="https://qm.qq.com/q/wDZQfaNNw6">QQ讨论群</a> 。如果你想参与<code>Lab</code>的开发, 欢迎通过QQ群或者作者邮件: <a href="mailto:807077266@qq.com">📧邮件</a>  联系。</p>
 <h1 id="6-贡献者"><a class="header" href="#6-贡献者">6 贡献者</a></h1>
 <p>非常感谢本项目贡献过源码的网友:</p>
-<a href="https://github.com/ToniXWD/toni-lsm/contributors">
-  <img src="https://contrib.rocks/image?repo=ToniXWD/toni-lsm" />
+<a href="https://github.com/Vanilla-Beauty/tiny-lsm/contributors">
+  <img src="https://contrib.rocks/image?repo=Vanilla-Beauty/tiny-lsm" />
 </a>
 <p>如果你在阅读本教程文档中发现错误, 可以直接点击文档右上角的<img src="./images/intro/edit.png" alt="edit" />, 其会引导你进入对应分支对当前的<code>md</code>文件进行编辑和修改, 然后提交<code>PR</code>即可。</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="1-lsm-tree-简介"><a class="header" href="#1-lsm-tree-简介">1. LSM Tree 简介</a></h1>
 <p>在具体进入本实验之前，我们先来简单介绍<code>LSM Tree</code>。</p>
 <p><code>LSM Tree</code>是一种<code>KV</code>存储架构。其核心思想是，将<code>KV</code>存储的数据以<code>SSTable</code>的形式进行持久化，并通过<code>MemTable</code>进行内存缓存，当<code>MemTable</code>的数据量达到一定阈值时，将其持久化到磁盘中，并重新创建一个<code>MemTable</code>。<code>LSM Tree</code>的核心思想是，将<code>KV</code>存储的数据以<code>SSTable</code>的形式进行持久化，并通过<code>MemTable</code>进行内存缓存。并且， 数据以追加写入的方式进行，删除数据也是通过更新的数据进行覆盖的方式实现。</p>
-<p><img src="images/intro/toni-lsm-arch.drawio.png" alt="Fig 1" /></p>
+<p><img src="images/intro/tiny-lsm-arch.drawio.png" alt="Fig 1" /></p>
 <p>如图所示为<code>LSM Tree</code>的核心架构。我们通过<code>Put</code>, <code>Remove</code>和<code>Get</code>操作的流程对其进行介绍。</p>
 <h2 id="11-put-操作流程"><a class="header" href="#11-put-操作流程">1.1 Put 操作流程</a></h2>
 <p><code>Put</code>操作流程如下：</p>
@@ -432,7 +443,7 @@ sudo zypper install clang-tools
 </ul>
 <p>这里说起来比较抽象, 直接看一个示例：</p>
 <pre><code class="language-lua">-- 定义项目
-set_project("toni-lsm")
+set_project("tiny-lsm")
 set_version("0.0.1")
 set_languages("c++20")
 
@@ -479,8 +490,8 @@ target("example")
 <pre><code class="language-yaml">CompileFlags:            # 编译标志部分
   Add:
     - "-std=c++20"      # 添加 C++17 支持
-    - "-isystem/home/toni/proj/vcpkg/installed/x64-linux/include" # 包含头文件, 绝对路径
-    - "-isystem/home/toni/.xmake/packages/m/muduo/2022.11.01/e9382a25649e4e43bf04f01f925d9c2f/include" # 包含头文件, 绝对路径
+    - "-isystem/home/vanilla-beauty/proj/vcpkg/installed/x64-linux/include" # 包含头文件, 绝对路径
+    - "-isystem/home/vanilla-beauty/.xmake/packages/m/muduo/2022.11.01/e9382a25649e4e43bf04f01f925d9c2f/include" # 包含头文件, 绝对路径
 </code></pre>
 <p>这样一来之前的告警就不复存在了</p>
 <h2 id="34-其他实用插件"><a class="header" href="#34-其他实用插件">3.4 其他实用插件</a></h2>
@@ -498,15 +509,15 @@ target("example")
 <img src="images/lab0/Cline.png" width="400">
 <h1 id="4-lab代码仓库说明"><a class="header" href="#4-lab代码仓库说明">4 Lab代码仓库说明</a></h1>
 <p>按照下面的命令拉取实验代码仓库:</p>
-<pre><code class="language-bash">git clone https://github.com/ToniXWD/toni-lsm.git --depth 1 -b lab
+<pre><code class="language-bash">git clone https://github.com/Vanilla-Beauty/tiny-lsm.git --depth 1 -b lab
 </code></pre>
 <p>如果你之前的环境配置没有问题的话, 编译项目能够正常进行:</p>
-<pre><code class="language-bash">cd toni-lsm
+<pre><code class="language-bash">cd tiny-lsm
 mkdir build
 xmake
 </code></pre>
 <h3 id="项目目录结构"><a class="header" href="#项目目录结构">项目目录结构</a></h3>
-<pre><code class="language-bash">toni-lsm/
+<pre><code class="language-bash">tiny-lsm/
 ├── doc/           # 项目文档
 ├── example/       # 示例程序
 ├── include/       # 公共头文件
@@ -543,7 +554,7 @@ git merge lab
 <h2 id="1-跳表在-lsm-tree-中的作用"><a class="header" href="#1-跳表在-lsm-tree-中的作用">1 跳表在 LSM Tree 中的作用</a></h2>
 <p>本<code>Lab</code>中, 你将实现内存的基础数据结构作为<code>MemTable</code>的容器, 这里使用基于红黑树的<code>std::map</code>也是可行的, 但<code>LSM Tree</code>的原始论文中使用的是跳表, 因此我们选择使用跳表作为<code>MemTable</code>的容器，并且正好实现以下这个数据结构 (造轮子是<code>C++</code>的快乐)。</p>
 <p>我们再次回顾下面的这张架构图:</p>
-<p><img src="lab1/../images/intro/toni-lsm-arch.drawio.png" alt="Fig 1" /></p>
+<p><img src="lab1/../images/intro/tiny-lsm-arch.drawio.png" alt="Fig 1" /></p>
 <p>这里的<code>MemTable</code>用于存储内存中的键值对数据, 其存储的基础容器即为<code>Skiplist</code>。<code>SkipList</code>被划分为2组: <code>current_table</code>和<code>frozen_table</code>。<code>current_table</code>可读可写, 并是唯一写入的<code>SkipList</code>, <code>frozen_table</code>是只读状态, 用于存储已经写入的键值对数据。<code>current_table</code>容量超出阈值即转化为<code>frozen_table</code>中的一个。</p>
 <h2 id="2-跳表的原理"><a class="header" href="#2-跳表的原理">2 跳表的原理</a></h2>
 <p>这里简单介绍一下跳表是什么, 跳表就是过个链表, 每个链表的步长不同, 且链表节点是排序的, 查找或插入时, 先使用最大步长层级的链表, 然后定位大区间后, 转入下层低步长层级的链表继续查询, 是不是非常简单? :smile:</p>
@@ -695,7 +706,7 @@ SkipListIterator SkipList::get(const std::string &amp;key, uint64_t tranc_id) {
 </blockquote>
 <h1 id="4-测试"><a class="header" href="#4-测试">4 测试</a></h1>
 <p>当你完成上述操作后, <code>test/test_skiplist.cpp</code>中的部分单元测试你应该能够通过:</p>
-<pre><code class="language-bash">✗ cd toni-lsm
+<pre><code class="language-bash">✗ cd tiny-lsm
 ✗ xmake
 ✗ xmake run test_skiplist
 [==========] Running 12 tests from 1 test suite.
@@ -884,7 +895,7 @@ git merge lab
 </blockquote>
 <h2 id="1-memtable的构造原理"><a class="header" href="#1-memtable的构造原理">1 MemTable的构造原理</a></h2>
 <p>再次回顾我们的整体架构图：</p>
-<p><img src="lab2/../images/intro/toni-lsm-arch.drawio.png" alt="Fig 1" /></p>
+<p><img src="lab2/../images/intro/tiny-lsm-arch.drawio.png" alt="Fig 1" /></p>
 <p><code>MemTable</code>负责存储内存中的键值对数据，其存储的基础容器即为<code>Skiplist</code>。<code>SkipList</code>被划分为2组：<code>current_table</code>和<code>frozen_table</code>。<code>current_table</code>可读可写，并是唯一写入的<code>SkipList</code>，<code>frozen_table</code>是只读状态，用于存储已经写入的键值对数据。<code>current_table</code>容量超出阈值即转化为<code>frozen_table</code>中的一个。</p>
 <p>为什么要如此设计呢? 答案是为了提升并发性, 我们的查询与写入的逻辑如下图所示:</p>
 <p><img src="lab2/../images/lab2/MemTable.drawio.png" alt="Fig 2" /></p>
@@ -1328,12 +1339,12 @@ MemTable::iters_monotony_predicate(
 <div style="break-before: page; page-break-before: always;"></div><h1 id="lab-3-sst"><a class="header" href="#lab-3-sst">Lab 3 SST</a></h1>
 <h1 id="1-概述-2"><a class="header" href="#1-概述-2">1 概述</a></h1>
 <p>这一章的开头我们再次搬出我们的经典架构图:</p>
-<p><img src="lab3/../images/intro/toni-lsm-arch.drawio.png" alt="Fig 1" /></p>
+<p><img src="lab3/../images/intro/tiny-lsm-arch.drawio.png" alt="Fig 1" /></p>
 <p>通过<a href="lab3/../lab1/lab1-skiplist.html">Lab1</a>和<a href="lab3/../lab2/lab2-memtable.html">Lab2</a>的学习，我们已经初步完成了<code>LSM Tree</code>中内存的基础读写组件, 这一章我们将眼光从内存迁移到磁盘, 实现<code>SST</code>相关的内容。</p>
 <p>从架构图中我们知道，<code>SST</code>文件是<code>LSM Tree</code>中持久化的存储文件，其中<code>Level 0</code>的<code>SST</code>存储了<code>MemTable</code>中单个<code>Skiplist</code>的数据，并且提供了<code>LSM Tree</code>中数据的有序性。因此对于一个磁盘中的文件, 我们肯定需要实现文件的编解码设计。其中编码设计用于将内存的<code>Skiplist</code>类的实例转化为<code>SST</code>文件, 而读取<code>SST</code>中的某些键值对时我们需要将文件进行解码并读取数据到内存。因此这一章中编解码是一大主题内容。而且相对之前常驻内存的<code>MemTable</code>而言, 这里的编解码代码的实现更为复杂, 尤其是<code>Debug</code>难度比之前要大上不少。</p>
 <p>此外，我们从架构图中还了解到，不同<code>Level</code>的<code>SST</code>是需要再容量超出阈值时进行合并(<code>Compact</code>)的, 但<code>Compact</code>在本实验中是由更上层的控制结构实现的, 因此本节实验你不需要担心<code>Compact</code>, 这是后续<code>Lab</code>的内容, 这里提一嘴只是为了有助于从理论上理解其运行机制。</p>
 <h1 id="2-sst-的结构"><a class="header" href="#2-sst-的结构">2 SST 的结构</a></h1>
-<p>从架构图中我们了解到，不同<code>Level</code>之间的容量呈指数增长, 其中最小的<code>Level 0</code>的<code>SST</code>也是<code>SkipList</code>的大小, 而<code>SkipList</code>实例在内存中是由多个链表组成的, 查询速度基本上和红黑树差不多。但假若我们想从<code>SST</code>中查一个键值对，总不可能把整个<code>SST</code>都解码放到内存中吧? 要知道高层<code>Level</code>的<code>SST</code>是可以轻易增长到<code>GB</code>的大小的。因此，<code>SST</code>必须进行内部的切分, 这里切分形成的一块数据我们称之为<code>Block</code>。因此对<code>Block</code>的组织管理就是<code>SST</code>设计的核心内容。<code>Toni-LSM</code>的<code>SST</code>文件结构如下:</p>
+<p>从架构图中我们了解到，不同<code>Level</code>之间的容量呈指数增长, 其中最小的<code>Level 0</code>的<code>SST</code>也是<code>SkipList</code>的大小, 而<code>SkipList</code>实例在内存中是由多个链表组成的, 查询速度基本上和红黑树差不多。但假若我们想从<code>SST</code>中查一个键值对，总不可能把整个<code>SST</code>都解码放到内存中吧? 要知道高层<code>Level</code>的<code>SST</code>是可以轻易增长到<code>GB</code>的大小的。因此，<code>SST</code>必须进行内部的切分, 这里切分形成的一块数据我们称之为<code>Block</code>。因此对<code>Block</code>的组织管理就是<code>SST</code>设计的核心内容。<code>Tiny-LSM</code>的<code>SST</code>文件结构如下:</p>
 <p><img src="lab3/../images/lab3/SST.drawio.png" alt="SST-Arch" /></p>
 <p><code>SST</code>文件由多个<code>Block</code>组成，每个<code>Block_x</code>内部暂且看成一个黑箱, 只需要知道其是我们查询的基本IO单元即可。 每个<code>Block_x</code>后会追加32位的哈希值，用于校验。每个<code>Block</code>对应一个<code>Meta</code>, 每个<code>Meta</code>记录这个<code>Block</code>在<code>SST</code>文件中的偏移量、第一个和最后一个<code>key</code>的元数据(长度和大小)。</p>
 <p>这里，<code>Block</code>是基本的IO单元，这就意味着在查询一个<code>key</code>时, 其所在的整个<code>Block</code>的数据都会被解码并加载到内存中的。你可以类比操作系统中的<code>Page</code>, 其是内存和磁盘之间的基本IO单元。</p>
@@ -1762,7 +1773,7 @@ git merge lab
 <li>该<code>Block</code>在<code>SST</code>中的偏移量</li>
 <li>该<code>Block</code>的第一个<code>key</code>和最后一个<code>key</code>的元数据</li>
 </ul>
-<p>在<code>SST</code>构建完成后, 其文件持久化在文件系统中, 但<code>Meta Section</code>会被加载到内存中并解码为控制结构, 因为没有<code>Meta Section</code>的元数据, 我们是没法对<code>SST</code>按照<code>Block</code>进行索引的。在<code>Toni-LSM</code>中, 这里的元数据在内存中用类<code>BlockMeta</code>来表示, 其定义为:</p>
+<p>在<code>SST</code>构建完成后, 其文件持久化在文件系统中, 但<code>Meta Section</code>会被加载到内存中并解码为控制结构, 因为没有<code>Meta Section</code>的元数据, 我们是没法对<code>SST</code>按照<code>Block</code>进行索引的。在<code>Tiny-LSM</code>中, 这里的元数据在内存中用类<code>BlockMeta</code>来表示, 其定义为:</p>
 <pre><code class="language-cpp">class BlockMeta {
   friend class BlockMetaTest;
 
@@ -2140,7 +2151,7 @@ C++ exception with description "bad optional access" thrown in the test body.
 [  FAILED  ] SSTTest.LargeSSTPredicate
 
  1 FAILED TEST
-error: execv(/home/toni/proj/toni-lsm/build/linux/x86_64/release/test_sst ) failed(1)
+error: execv(/home/vanilla-beauty/proj/tiny-lsm/build/linux/x86_64/release/test_sst ) failed(1)
 </code></pre>
 <p>如果仅仅是得到一个可以跑的<code>SST</code>, 那么现在你已经完成的<code>SST</code>的大部分功能了。这里的<code>LargeSSTPredicate</code>需要你在实现下一小节的谓词查询后才能通过。</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="lab-37-范围查询"><a class="header" href="#lab-37-范围查询">Lab 3.7 范围查询</a></h1>
@@ -2222,7 +2233,7 @@ git merge lab
 <h1 id="1-概述-6"><a class="header" href="#1-概述-6">1 概述</a></h1>
 <p>实现了之前的<code>Skiplist</code>, <code>MemTable</code>, <code>SST</code>, <code>Block</code>, 各类<code>Iterator</code>之后, 我们对其进行"简单"地封装, 即可得到一份可以运行的<code>LSM Engine</code>。完成这一章<code>Lab</code>后, 你将得到一个可以被外部结构调用的共享链接库, 其暴露了各种基础的<code>KV</code>存储引擎接口。</p>
 <p>同样地, 我们再一次回顾我们的架构:</p>
-<p><img src="lab4/../images/intro/toni-lsm-arch.drawio.png" alt="Fig 1" /></p>
+<p><img src="lab4/../images/intro/tiny-lsm-arch.drawio.png" alt="Fig 1" /></p>
 <p>可以看到, 不同组件之间存在各种交互, 这些交互内容包括:</p>
 <ol>
 <li><code>MemTable</code>和<code>SST</code>之间进行<code>Encoded</code>并刷盘形成<code>SST文件</code></li>
@@ -3513,8 +3524,8 @@ False positive rate: 0.08
 <h1 id="1-本小节目标"><a class="header" href="#1-本小节目标">1 本小节目标</a></h1>
 <p>之前大家实现的各种函数中, 都是忽略了<code>tranc_id</code>这个参数的, 这一小节之后, <code>tranc_id</code>的神秘面纱将被揭开, 我们将学习事务的基础知识, 并修改之前所有的涉及<code>tranc_id</code>的函数, 使其能够支持事务特性。</p>
 <p>首先给出本章实验后的架构示意图:</p>
-<p><img src="lab5/../images/intro/toni-lsm-arch-full.drawio.png" alt="Arch" /></p>
-<p>相比之前实现的<code>LSM Engine</code>的基础部分的<a href="lab5/../images/intro/toni-lsm-arch.drawio.png">架构</a>, 这里新增了<code>TrancManager</code>、<code>WAL</code>、<code>TrancContext</code>杰哥模块, 其中<code>TrancManager</code>用于管理事务, <code>WAL</code>用于持久化事务操作, <code>TrancContext</code>用于与客户端进行直接交互。</p>
+<p><img src="lab5/../images/intro/tiny-lsm-arch-full.drawio.png" alt="Arch" /></p>
+<p>相比之前实现的<code>LSM Engine</code>的基础部分的<a href="lab5/../images/intro/tiny-lsm-arch.drawio.png">架构</a>, 这里新增了<code>TrancManager</code>、<code>WAL</code>、<code>TrancContext</code>杰哥模块, 其中<code>TrancManager</code>用于管理事务, <code>WAL</code>用于持久化事务操作, <code>TrancContext</code>用于与客户端进行直接交互。</p>
 <h1 id="2-kv存储中的事务"><a class="header" href="#2-kv存储中的事务">2 KV存储中的事务</a></h1>
 <h2 id="21-事务介绍"><a class="header" href="#21-事务介绍">2.1 事务介绍</a></h2>
 <p>在数据库系统中，事务（Transaction）是指一组原子性操作的执行单元，需要满足ACID特性。这里简单介绍下<code>ACID</code>的基本性质:</p>
@@ -5284,7 +5295,7 @@ return "";
 </blockquote>
 <h1 id="3-测试-12"><a class="header" href="#3-测试-12">3 测试</a></h1>
 <p>你可以安装并使用<code>redis-cli</code>来测试你的<code>Redis</code>服务器, 过程为</p>
-<pre><code class="language-bash">cd  toni-lsm
+<pre><code class="language-bash">cd  tiny-lsm
 xmake
 xmake run server
 </code></pre>
@@ -5300,8 +5311,8 @@ xmake run server
 <h1 id="致谢"><a class="header" href="#致谢">致谢</a></h1>
 <p>感谢网友<a href="https://github.com/koi2000">koi</a>对本项目文档的校正与补全, 让这个<code>Lab</code>的文档更加完善。</p>
 <p>同时感谢以下为本项目贡献过源码的网友:</p>
-<a href="https://github.com/ToniXWD/toni-lsm/contributors">
-  <img src="https://contrib.rocks/image?repo=ToniXWD/toni-lsm" />
+<a href="https://github.com/Vanilla-Beauty/tiny-lsm/contributors">
+  <img src="https://contrib.rocks/image?repo=Vanilla-Beauty/tiny-lsm" />
 </a>
 <h1 id="下一步"><a class="header" href="#下一步">下一步？</a></h1>
 <p>当然，这个项目的定位只是让你初步入门<code>LSM Tree和存储领域</code>, 如果你想深入理解<code>LSM Tree</code>，建议阅读<code>leveldb/rocksdb</code>的源码。</p>
@@ -5615,11 +5626,11 @@ redis-cli -p 6379 LRANGE mylist 0 2
 </ol>
 <p>如果你有兴趣参与本实验的建设，欢迎在下面的分支上提交PR:</p>
 <ul>
-<li><a href="https://github.com/ToniXWD/toni-lsm/tree/lab">Lab代码分支</a></li>
-<li><a href="https://github.com/ToniXWD/toni-lsm/tree/lab-doc">Lab文档分支</a></li>
-<li><a href="https://github.com/ToniXWD/toni-lsm/tree/master">代码开发分支</a></li>
+<li><a href="https://github.com/Vanilla-Beauty/tiny-lsm/tree/lab">Lab代码分支</a></li>
+<li><a href="https://github.com/Vanilla-Beauty/tiny-lsm/tree/lab-doc">Lab文档分支</a></li>
+<li><a href="https://github.com/Vanilla-Beauty/tiny-lsm/tree/master">代码开发分支</a></li>
 </ul>
-<p>如果你有什么问题，可以通过 <a href="https://qm.qq.com/q/wDZQfaNNw6">QQ讨论群</a> 或者 <a href="mailto:xwdtoni@126.com">📧邮件</a> 联系到作者。</p>
+<p>如果你有什么问题，可以通过 <a href="https://qm.qq.com/q/wDZQfaNNw6">QQ讨论群</a> 或者 <a href="mailto:807077266@qq.com">📧邮件</a> 联系到作者。</p>
 
                     </main>
 

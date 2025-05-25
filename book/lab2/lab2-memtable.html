@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Lab 2 MemTable - Toni-LSM-Lab</title>
+        <title>Lab 2 MemTable - Tiny-LSM-Lab</title>
 
 
         <!-- Custom HTML head -->
@@ -41,6 +41,17 @@
         <script src="../toc.js"></script>
     </head>
     <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
     <div id="body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
@@ -118,21 +129,21 @@
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
 
-                    <h1 class="menu-title">Toni-LSM-Lab</h1>
+                    <h1 class="menu-title">Tiny-LSM-Lab</h1>
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
-                        <a href="https://github.com/ToniXWD/toni-lsm" title="Git repository" aria-label="Git repository">
+                        <a href="https://github.com/Vanilla-Beauty/tiny-lsm" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/ToniXWD/toni-lsm/edit/lab-doc/src/lab2/lab2-memtable.md" title="Suggest an edit" aria-label="Suggest an edit">
+                        <a href="https://github.com/Vanilla-Beauty/tiny-lsm/edit/lab-doc/src/lab2/lab2-memtable.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
 
@@ -173,7 +184,7 @@ git merge lab
 </blockquote>
 <h2 id="1-memtable的构造原理"><a class="header" href="#1-memtable的构造原理">1 MemTable的构造原理</a></h2>
 <p>再次回顾我们的整体架构图：</p>
-<p><img src="../images/intro/toni-lsm-arch.drawio.png" alt="Fig 1" /></p>
+<p><img src="../images/intro/tiny-lsm-arch.drawio.png" alt="Fig 1" /></p>
 <p><code>MemTable</code>负责存储内存中的键值对数据，其存储的基础容器即为<code>Skiplist</code>。<code>SkipList</code>被划分为2组：<code>current_table</code>和<code>frozen_table</code>。<code>current_table</code>可读可写，并是唯一写入的<code>SkipList</code>，<code>frozen_table</code>是只读状态，用于存储已经写入的键值对数据。<code>current_table</code>容量超出阈值即转化为<code>frozen_table</code>中的一个。</p>
 <p>为什么要如此设计呢? 答案是为了提升并发性, 我们的查询与写入的逻辑如下图所示:</p>
 <p><img src="../images/lab2/MemTable.drawio.png" alt="Fig 2" /></p>

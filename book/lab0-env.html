@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Lab 0 环境准备 - Toni-LSM-Lab</title>
+        <title>Lab 0 环境准备 - Tiny-LSM-Lab</title>
 
 
         <!-- Custom HTML head -->
@@ -41,6 +41,17 @@
         <script src="toc.js"></script>
     </head>
     <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
     <div id="body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
@@ -118,21 +129,21 @@
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
 
-                    <h1 class="menu-title">Toni-LSM-Lab</h1>
+                    <h1 class="menu-title">Tiny-LSM-Lab</h1>
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
-                        <a href="https://github.com/ToniXWD/toni-lsm" title="Git repository" aria-label="Git repository">
+                        <a href="https://github.com/Vanilla-Beauty/tiny-lsm" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/ToniXWD/toni-lsm/edit/lab-doc/src/lab0-env.md" title="Suggest an edit" aria-label="Suggest an edit">
+                        <a href="https://github.com/Vanilla-Beauty/tiny-lsm/edit/lab-doc/src/lab0-env.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
 
@@ -211,7 +222,7 @@ sudo zypper install clang-tools
 </ul>
 <p>这里说起来比较抽象, 直接看一个示例：</p>
 <pre><code class="language-lua">-- 定义项目
-set_project("toni-lsm")
+set_project("tiny-lsm")
 set_version("0.0.1")
 set_languages("c++20")
 
@@ -258,8 +269,8 @@ target("example")
 <pre><code class="language-yaml">CompileFlags:            # 编译标志部分
   Add:
     - "-std=c++20"      # 添加 C++17 支持
-    - "-isystem/home/toni/proj/vcpkg/installed/x64-linux/include" # 包含头文件, 绝对路径
-    - "-isystem/home/toni/.xmake/packages/m/muduo/2022.11.01/e9382a25649e4e43bf04f01f925d9c2f/include" # 包含头文件, 绝对路径
+    - "-isystem/home/vanilla-beauty/proj/vcpkg/installed/x64-linux/include" # 包含头文件, 绝对路径
+    - "-isystem/home/vanilla-beauty/.xmake/packages/m/muduo/2022.11.01/e9382a25649e4e43bf04f01f925d9c2f/include" # 包含头文件, 绝对路径
 </code></pre>
 <p>这样一来之前的告警就不复存在了</p>
 <h2 id="34-其他实用插件"><a class="header" href="#34-其他实用插件">3.4 其他实用插件</a></h2>
@@ -277,15 +288,15 @@ target("example")
 <img src="images/lab0/Cline.png" width="400">
 <h1 id="4-lab代码仓库说明"><a class="header" href="#4-lab代码仓库说明">4 Lab代码仓库说明</a></h1>
 <p>按照下面的命令拉取实验代码仓库:</p>
-<pre><code class="language-bash">git clone https://github.com/ToniXWD/toni-lsm.git --depth 1 -b lab
+<pre><code class="language-bash">git clone https://github.com/Vanilla-Beauty/tiny-lsm.git --depth 1 -b lab
 </code></pre>
 <p>如果你之前的环境配置没有问题的话, 编译项目能够正常进行:</p>
-<pre><code class="language-bash">cd toni-lsm
+<pre><code class="language-bash">cd tiny-lsm
 mkdir build
 xmake
 </code></pre>
 <h3 id="项目目录结构"><a class="header" href="#项目目录结构">项目目录结构</a></h3>
-<pre><code class="language-bash">toni-lsm/
+<pre><code class="language-bash">tiny-lsm/
 ├── doc/           # 项目文档
 ├── example/       # 示例程序
 ├── include/       # 公共头文件

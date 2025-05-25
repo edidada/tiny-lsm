@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Lab 5 事务 &amp;&amp; MVCC &amp;&amp; WAL - Toni-LSM-Lab</title>
+        <title>Lab 5 事务 &amp;&amp; MVCC &amp;&amp; WAL - Tiny-LSM-Lab</title>
 
 
         <!-- Custom HTML head -->
@@ -41,6 +41,17 @@
         <script src="../toc.js"></script>
     </head>
     <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
     <div id="body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
@@ -118,21 +129,21 @@
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
 
-                    <h1 class="menu-title">Toni-LSM-Lab</h1>
+                    <h1 class="menu-title">Tiny-LSM-Lab</h1>
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
-                        <a href="https://github.com/ToniXWD/toni-lsm" title="Git repository" aria-label="Git repository">
+                        <a href="https://github.com/Vanilla-Beauty/tiny-lsm" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/ToniXWD/toni-lsm/edit/lab-doc/src/lab5/lab5-Tranc-MVCC.md" title="Suggest an edit" aria-label="Suggest an edit">
+                        <a href="https://github.com/Vanilla-Beauty/tiny-lsm/edit/lab-doc/src/lab5/lab5-Tranc-MVCC.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
 
@@ -167,8 +178,8 @@
 <h1 id="1-本小节目标"><a class="header" href="#1-本小节目标">1 本小节目标</a></h1>
 <p>之前大家实现的各种函数中, 都是忽略了<code>tranc_id</code>这个参数的, 这一小节之后, <code>tranc_id</code>的神秘面纱将被揭开, 我们将学习事务的基础知识, 并修改之前所有的涉及<code>tranc_id</code>的函数, 使其能够支持事务特性。</p>
 <p>首先给出本章实验后的架构示意图:</p>
-<p><img src="../images/intro/toni-lsm-arch-full.drawio.png" alt="Arch" /></p>
-<p>相比之前实现的<code>LSM Engine</code>的基础部分的<a href="../images/intro/toni-lsm-arch.drawio.png">架构</a>, 这里新增了<code>TrancManager</code>、<code>WAL</code>、<code>TrancContext</code>杰哥模块, 其中<code>TrancManager</code>用于管理事务, <code>WAL</code>用于持久化事务操作, <code>TrancContext</code>用于与客户端进行直接交互。</p>
+<p><img src="../images/intro/tiny-lsm-arch-full.drawio.png" alt="Arch" /></p>
+<p>相比之前实现的<code>LSM Engine</code>的基础部分的<a href="../images/intro/tiny-lsm-arch.drawio.png">架构</a>, 这里新增了<code>TrancManager</code>、<code>WAL</code>、<code>TrancContext</code>杰哥模块, 其中<code>TrancManager</code>用于管理事务, <code>WAL</code>用于持久化事务操作, <code>TrancContext</code>用于与客户端进行直接交互。</p>
 <h1 id="2-kv存储中的事务"><a class="header" href="#2-kv存储中的事务">2 KV存储中的事务</a></h1>
 <h2 id="21-事务介绍"><a class="header" href="#21-事务介绍">2.1 事务介绍</a></h2>
 <p>在数据库系统中，事务（Transaction）是指一组原子性操作的执行单元，需要满足ACID特性。这里简单介绍下<code>ACID</code>的基本性质:</p>

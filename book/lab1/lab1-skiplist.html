@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Lab 1 跳表实现 - Toni-LSM-Lab</title>
+        <title>Lab 1 跳表实现 - Tiny-LSM-Lab</title>
 
 
         <!-- Custom HTML head -->
@@ -41,6 +41,17 @@
         <script src="../toc.js"></script>
     </head>
     <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
     <div id="body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
@@ -118,21 +129,21 @@
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
 
-                    <h1 class="menu-title">Toni-LSM-Lab</h1>
+                    <h1 class="menu-title">Tiny-LSM-Lab</h1>
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
-                        <a href="https://github.com/ToniXWD/toni-lsm" title="Git repository" aria-label="Git repository">
+                        <a href="https://github.com/Vanilla-Beauty/tiny-lsm" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/ToniXWD/toni-lsm/edit/lab-doc/src/lab1/lab1-skiplist.md" title="Suggest an edit" aria-label="Suggest an edit">
+                        <a href="https://github.com/Vanilla-Beauty/tiny-lsm/edit/lab-doc/src/lab1/lab1-skiplist.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
 
@@ -173,7 +184,7 @@ git merge lab
 <h2 id="1-跳表在-lsm-tree-中的作用"><a class="header" href="#1-跳表在-lsm-tree-中的作用">1 跳表在 LSM Tree 中的作用</a></h2>
 <p>本<code>Lab</code>中, 你将实现内存的基础数据结构作为<code>MemTable</code>的容器, 这里使用基于红黑树的<code>std::map</code>也是可行的, 但<code>LSM Tree</code>的原始论文中使用的是跳表, 因此我们选择使用跳表作为<code>MemTable</code>的容器，并且正好实现以下这个数据结构 (造轮子是<code>C++</code>的快乐)。</p>
 <p>我们再次回顾下面的这张架构图:</p>
-<p><img src="../images/intro/toni-lsm-arch.drawio.png" alt="Fig 1" /></p>
+<p><img src="../images/intro/tiny-lsm-arch.drawio.png" alt="Fig 1" /></p>
 <p>这里的<code>MemTable</code>用于存储内存中的键值对数据, 其存储的基础容器即为<code>Skiplist</code>。<code>SkipList</code>被划分为2组: <code>current_table</code>和<code>frozen_table</code>。<code>current_table</code>可读可写, 并是唯一写入的<code>SkipList</code>, <code>frozen_table</code>是只读状态, 用于存储已经写入的键值对数据。<code>current_table</code>容量超出阈值即转化为<code>frozen_table</code>中的一个。</p>
 <h2 id="2-跳表的原理"><a class="header" href="#2-跳表的原理">2 跳表的原理</a></h2>
 <p>这里简单介绍一下跳表是什么, 跳表就是过个链表, 每个链表的步长不同, 且链表节点是排序的, 查找或插入时, 先使用最大步长层级的链表, 然后定位大区间后, 转入下层低步长层级的链表继续查询, 是不是非常简单? :smile:</p>

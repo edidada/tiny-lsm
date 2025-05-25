@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Lab 4 LSM Engine - Toni-LSM-Lab</title>
+        <title>Lab 4 LSM Engine - Tiny-LSM-Lab</title>
 
 
         <!-- Custom HTML head -->
@@ -41,6 +41,17 @@
         <script src="../toc.js"></script>
     </head>
     <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
     <div id="body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
@@ -118,21 +129,21 @@
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
 
-                    <h1 class="menu-title">Toni-LSM-Lab</h1>
+                    <h1 class="menu-title">Tiny-LSM-Lab</h1>
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
-                        <a href="https://github.com/ToniXWD/toni-lsm" title="Git repository" aria-label="Git repository">
+                        <a href="https://github.com/Vanilla-Beauty/tiny-lsm" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/ToniXWD/toni-lsm/edit/lab-doc/src/lab4/lab4-LSM-Engine.md" title="Suggest an edit" aria-label="Suggest an edit">
+                        <a href="https://github.com/Vanilla-Beauty/tiny-lsm/edit/lab-doc/src/lab4/lab4-LSM-Engine.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
 
@@ -174,7 +185,7 @@ git merge lab
 <h1 id="1-概述"><a class="header" href="#1-概述">1 概述</a></h1>
 <p>实现了之前的<code>Skiplist</code>, <code>MemTable</code>, <code>SST</code>, <code>Block</code>, 各类<code>Iterator</code>之后, 我们对其进行"简单"地封装, 即可得到一份可以运行的<code>LSM Engine</code>。完成这一章<code>Lab</code>后, 你将得到一个可以被外部结构调用的共享链接库, 其暴露了各种基础的<code>KV</code>存储引擎接口。</p>
 <p>同样地, 我们再一次回顾我们的架构:</p>
-<p><img src="../images/intro/toni-lsm-arch.drawio.png" alt="Fig 1" /></p>
+<p><img src="../images/intro/tiny-lsm-arch.drawio.png" alt="Fig 1" /></p>
 <p>可以看到, 不同组件之间存在各种交互, 这些交互内容包括:</p>
 <ol>
 <li><code>MemTable</code>和<code>SST</code>之间进行<code>Encoded</code>并刷盘形成<code>SST文件</code></li>

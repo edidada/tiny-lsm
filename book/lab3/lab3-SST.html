@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Lab 3 SST - Toni-LSM-Lab</title>
+        <title>Lab 3 SST - Tiny-LSM-Lab</title>
 
 
         <!-- Custom HTML head -->
@@ -41,6 +41,17 @@
         <script src="../toc.js"></script>
     </head>
     <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
     <div id="body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
@@ -118,21 +129,21 @@
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
 
-                    <h1 class="menu-title">Toni-LSM-Lab</h1>
+                    <h1 class="menu-title">Tiny-LSM-Lab</h1>
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
-                        <a href="https://github.com/ToniXWD/toni-lsm" title="Git repository" aria-label="Git repository">
+                        <a href="https://github.com/Vanilla-Beauty/tiny-lsm" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/ToniXWD/toni-lsm/edit/lab-doc/src/lab3/lab3-SST.md" title="Suggest an edit" aria-label="Suggest an edit">
+                        <a href="https://github.com/Vanilla-Beauty/tiny-lsm/edit/lab-doc/src/lab3/lab3-SST.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
 
@@ -164,12 +175,12 @@
                         <h1 id="lab-3-sst"><a class="header" href="#lab-3-sst">Lab 3 SST</a></h1>
 <h1 id="1-概述"><a class="header" href="#1-概述">1 概述</a></h1>
 <p>这一章的开头我们再次搬出我们的经典架构图:</p>
-<p><img src="../images/intro/toni-lsm-arch.drawio.png" alt="Fig 1" /></p>
+<p><img src="../images/intro/tiny-lsm-arch.drawio.png" alt="Fig 1" /></p>
 <p>通过<a href="../lab1/lab1-skiplist.html">Lab1</a>和<a href="../lab2/lab2-memtable.html">Lab2</a>的学习，我们已经初步完成了<code>LSM Tree</code>中内存的基础读写组件, 这一章我们将眼光从内存迁移到磁盘, 实现<code>SST</code>相关的内容。</p>
 <p>从架构图中我们知道，<code>SST</code>文件是<code>LSM Tree</code>中持久化的存储文件，其中<code>Level 0</code>的<code>SST</code>存储了<code>MemTable</code>中单个<code>Skiplist</code>的数据，并且提供了<code>LSM Tree</code>中数据的有序性。因此对于一个磁盘中的文件, 我们肯定需要实现文件的编解码设计。其中编码设计用于将内存的<code>Skiplist</code>类的实例转化为<code>SST</code>文件, 而读取<code>SST</code>中的某些键值对时我们需要将文件进行解码并读取数据到内存。因此这一章中编解码是一大主题内容。而且相对之前常驻内存的<code>MemTable</code>而言, 这里的编解码代码的实现更为复杂, 尤其是<code>Debug</code>难度比之前要大上不少。</p>
 <p>此外，我们从架构图中还了解到，不同<code>Level</code>的<code>SST</code>是需要再容量超出阈值时进行合并(<code>Compact</code>)的, 但<code>Compact</code>在本实验中是由更上层的控制结构实现的, 因此本节实验你不需要担心<code>Compact</code>, 这是后续<code>Lab</code>的内容, 这里提一嘴只是为了有助于从理论上理解其运行机制。</p>
 <h1 id="2-sst-的结构"><a class="header" href="#2-sst-的结构">2 SST 的结构</a></h1>
-<p>从架构图中我们了解到，不同<code>Level</code>之间的容量呈指数增长, 其中最小的<code>Level 0</code>的<code>SST</code>也是<code>SkipList</code>的大小, 而<code>SkipList</code>实例在内存中是由多个链表组成的, 查询速度基本上和红黑树差不多。但假若我们想从<code>SST</code>中查一个键值对，总不可能把整个<code>SST</code>都解码放到内存中吧? 要知道高层<code>Level</code>的<code>SST</code>是可以轻易增长到<code>GB</code>的大小的。因此，<code>SST</code>必须进行内部的切分, 这里切分形成的一块数据我们称之为<code>Block</code>。因此对<code>Block</code>的组织管理就是<code>SST</code>设计的核心内容。<code>Toni-LSM</code>的<code>SST</code>文件结构如下:</p>
+<p>从架构图中我们了解到，不同<code>Level</code>之间的容量呈指数增长, 其中最小的<code>Level 0</code>的<code>SST</code>也是<code>SkipList</code>的大小, 而<code>SkipList</code>实例在内存中是由多个链表组成的, 查询速度基本上和红黑树差不多。但假若我们想从<code>SST</code>中查一个键值对，总不可能把整个<code>SST</code>都解码放到内存中吧? 要知道高层<code>Level</code>的<code>SST</code>是可以轻易增长到<code>GB</code>的大小的。因此，<code>SST</code>必须进行内部的切分, 这里切分形成的一块数据我们称之为<code>Block</code>。因此对<code>Block</code>的组织管理就是<code>SST</code>设计的核心内容。<code>Tiny-LSM</code>的<code>SST</code>文件结构如下:</p>
 <p><img src="../images/lab3/SST.drawio.png" alt="SST-Arch" /></p>
 <p><code>SST</code>文件由多个<code>Block</code>组成，每个<code>Block_x</code>内部暂且看成一个黑箱, 只需要知道其是我们查询的基本IO单元即可。 每个<code>Block_x</code>后会追加32位的哈希值，用于校验。每个<code>Block</code>对应一个<code>Meta</code>, 每个<code>Meta</code>记录这个<code>Block</code>在<code>SST</code>文件中的偏移量、第一个和最后一个<code>key</code>的元数据(长度和大小)。</p>
 <p>这里，<code>Block</code>是基本的IO单元，这就意味着在查询一个<code>key</code>时, 其所在的整个<code>Block</code>的数据都会被解码并加载到内存中的。你可以类比操作系统中的<code>Page</code>, 其是内存和磁盘之间的基本IO单元。</p>
