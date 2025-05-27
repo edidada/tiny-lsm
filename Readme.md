@@ -16,7 +16,7 @@ The developing posts can be found in my [blog](https://tinyxwd.github.io/categor
 > 
 > Project production is not easy, please click star ⭐ to support us ❤️
 > 
-> 👉 [**Tiny-LSM Lab Course**](https://tinyxwd.github.io/tiny-lsm/book/)
+> 👉 [**Tiny-LSM Lab Course**](https://vanilla-beauty.github.io/tiny-lsm/book/)
 
 You can also join the QQ group 💬 for discussion: 
 
