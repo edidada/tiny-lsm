@@ -9,3 +9,4 @@ sdk/tinylsm/tinylsm.egg-info
 book
 coverage*
 .clangd
+*.log*
