@@ -1016,7 +1016,7 @@ void MemTable::remove_batch(const std::vector&lt;std::string&gt; &amp;keys,
 </code></pre>
 <h1 id="5-冻结活跃表"><a class="header" href="#5-冻结活跃表">5 冻结活跃表</a></h1>
 <p><code>Skiplist</code>的容量超出阈值需要进行冻结时需要调用下述函数。</p>
-<p>至于这个函数的调用实际，作者建议是在每次<code>put</code>后检查容量是否超出阈值, 然后同步地嗲用该函数, 当然你也可以启用一个后台线程进行周期性检查。</p>
+<p>至于这个函数的调用实际，作者建议是在每次<code>put</code>后检查容量是否超出阈值, 然后同步地调用该函数, 当然你也可以启用一个后台线程进行周期性检查。</p>
 <pre><code class="language-cpp">void MemTable::frozen_cur_table_() {
   // TODO: 冻结活跃表
 }
