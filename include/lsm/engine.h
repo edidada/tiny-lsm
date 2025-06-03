@@ -25,6 +25,7 @@ public:
   std::unordered_map<size_t, std::shared_ptr<SST>> ssts;
   std::shared_mutex ssts_mtx;
   std::shared_ptr<BlockCache> block_cache;
+  std::weak_ptr<TranManager> tran_manager;
   size_t next_sst_id = 0;
   size_t cur_max_level = 0;
 
@@ -65,6 +66,8 @@ public:
   Level_Iterator end();
 
   static size_t get_sst_size(size_t level);
+
+  void set_tran_manager(std::shared_ptr<TranManager> tran_manager);
 
 private:
   void full_compact(size_t src_level);

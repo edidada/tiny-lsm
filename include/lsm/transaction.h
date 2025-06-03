@@ -4,6 +4,7 @@
 #include "../wal/wal.h"
 #include <atomic>
 #include <map>
+#include <set>
 #include <memory>
 #include <mutex>
 #include <optional>
@@ -18,6 +19,11 @@ enum class IsolationLevel {
   READ_COMMITTED,
   REPEATABLE_READ,
   SERIALIZABLE
+};
+
+enum class TransactionState {
+  COMMITTED,
+  ABORTED
 };
 
 inline std::string isolation_level_to_string(const IsolationLevel &level);
@@ -70,10 +76,12 @@ public:
 
   uint64_t getNextTransactionId();
   uint64_t get_max_flushed_tranc_id();
-  uint64_t get_max_finished_tranc_id_();
+  uint64_t get_checkpoint_tranc_id();
+  std::set<uint64_t>& get_flushed_tranc_ids();
 
-  void update_max_finished_tranc_id(uint64_t tranc_id);
-  void update_max_flushed_tranc_id(uint64_t tranc_id);
+  void add_ready_to_flush_tranc_id(uint64_t tranc_id, TransactionState state);
+  void add_flushed_tranc_id(uint64_t tranc_id);
+  // void remove_active_tranc_id(uint64_t tranc_id);
 
   bool write_to_wal(const std::vector<Record> &records);
 
@@ -91,9 +99,9 @@ private:
   std::string data_dir_;
   // std::atomic<bool> flush_thread_running_ = true;
   std::atomic<uint64_t> nextTransactionId_ = 1;
-  std::atomic<uint64_t> max_flushed_tranc_id_ = 0;
-  std::atomic<uint64_t> max_finished_tranc_id_ = 0;
   std::map<uint64_t, std::shared_ptr<TranContext>> activeTrans_;
+  std::map<uint64_t, TransactionState> readyToFlushTrancIds_;
+  std::set<uint64_t> flushedTrancIds_;
   FileObj tranc_id_file_;
 };
 

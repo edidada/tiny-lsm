@@ -468,15 +468,21 @@ uint64_t LSMEngine::flush() {
                      true); // 4KB block size
 
   // 4. 将 memtable 中最旧的表写入 SST
+  std::vector<uint64_t> flushed_tranc_ids;
   auto sst_path = get_sst_path(new_sst_id, 0);
   auto new_sst =
-      memtable.flush_last(builder, sst_path, new_sst_id, block_cache);
+      memtable.flush_last(builder, sst_path, new_sst_id, flushed_tranc_ids, block_cache);
 
   // 5. 更新内存索引
   ssts[new_sst_id] = new_sst;
 
   // 6. 更新 sst_ids
   level_sst_ids[0].push_front(new_sst_id);
+
+  // 7. 添加到 flushed 集合
+  for (auto& id : flushed_tranc_ids) {
+    tran_manager.lock()->add_flushed_tranc_id(id);
+  }
 
   // 返回新刷入的 sst 的最大的 tranc_id
   spdlog::info("LSMEngine--"
@@ -731,14 +737,21 @@ size_t LSMEngine::get_sst_size(size_t level) {
   }
 }
 
+void LSMEngine::set_tran_manager(std::shared_ptr<TranManager> tran_manager) {
+  this->tran_manager = tran_manager;
+}
+
 // *********************** LSM ***********************
 LSM::LSM(std::string path)
     : engine(std::make_shared<LSMEngine>(path)),
       tran_manager_(std::make_shared<TranManager>(path)) {
   tran_manager_->set_engine(engine);
+  engine->set_tran_manager(tran_manager_);
   auto check_recover_res = tran_manager_->check_recover();
   for (auto &[tranc_id, records] : check_recover_res) {
-    tran_manager_->update_max_finished_tranc_id(tranc_id);
+    if (tran_manager_->get_flushed_tranc_ids().count(tranc_id)) {
+      continue;
+    }
     for (auto &record : records) {
       if (record.getOperationType() == OperationType::PUT) {
         engine->put(record.getKey(), record.getValue(), tranc_id);
@@ -816,7 +829,7 @@ void LSM::flush() { auto max_tranc_id = engine->flush(); }
 void LSM::flush_all() {
   while (engine->memtable.get_total_size() > 0) {
     auto max_tranc_id = engine->flush();
-    tran_manager_->update_max_flushed_tranc_id(max_tranc_id);
+    // tran_manager_->update_checkpoint_tranc_id(max_tranc_id);
   }
 }
 

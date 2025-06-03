@@ -11,9 +11,9 @@ namespace tiny_lsm {
 
 // 从零开始的初始化流程
 WAL::WAL(const std::string &log_dir, size_t buffer_size,
-         uint64_t max_finished_tranc_id, uint64_t clean_interval,
+         uint64_t checkpoint_tranc_id, uint64_t clean_interval,
          uint64_t file_size_limit)
-    : buffer_size_(buffer_size), max_finished_tranc_id_(max_finished_tranc_id),
+    : buffer_size_(buffer_size), checkpoint_tranc_id_(checkpoint_tranc_id),
       stop_cleaner_(false), clean_interval_(clean_interval),
       file_size_limit_(file_size_limit) {
   active_log_path_ = log_dir + "/wal.0";
@@ -37,7 +37,7 @@ WAL::~WAL() {
 }
 
 std::map<uint64_t, std::vector<Record>>
-WAL::recover(const std::string &log_dir, uint64_t max_flushed_tranc_id) {
+WAL::recover(const std::string &log_dir, uint64_t checkpoint_tranc_id) {
   std::map<uint64_t, std::vector<Record>> tranc_records{};
 
   // 引擎启动时判断
@@ -73,8 +73,8 @@ WAL::recover(const std::string &log_dir, uint64_t max_flushed_tranc_id) {
     auto wal_records_slice = wal_file.read_to_slice(0, wal_file.size());
     auto records = Record::decode(wal_records_slice);
     for (const auto &record : records) {
-      if (record.getTrancId() > max_flushed_tranc_id) {
-        // 如果记录的 tranc_id 大于 max_finished_tranc_id, 才需要尝试恢复
+      if (record.getTrancId() > checkpoint_tranc_id) {
+        // 如果记录的 tranc_id 大于 checkpoint_tranc_id, 才需要尝试恢复
         tranc_records[record.getTrancId()].push_back(record);
       }
     }
@@ -86,9 +86,9 @@ WAL::recover(const std::string &log_dir, uint64_t max_flushed_tranc_id) {
 // commit 时 强制写入
 void WAL::flush() { std::lock_guard<std::mutex> lock(mutex_); }
 
-void WAL::set_max_finished_tranc_id(uint64_t max_finished_tranc_id) {
+void WAL::set_checkpoint_tranc_id(uint64_t checkpoint_tranc_id) {
   std::lock_guard<std::mutex> lock(mutex_);
-  max_finished_tranc_id_ = max_finished_tranc_id;
+  checkpoint_tranc_id_ = checkpoint_tranc_id;
 }
 
 void WAL::log(const std::vector<Record> &records, bool force_flush) {
@@ -177,13 +177,13 @@ void WAL::cleanWALFile() {
     auto cur_path = wal_paths[idx].second;
     auto cur_file = FileObj::open(cur_path, false);
     // 遍历文件记录, 读取所有的tranc_id,
-    // 判断是否都小于等于max_finished_tranc_id_
+    // 判断是否都小于等于checkpoint_tranc_id_
     size_t offset = 0;
     bool has_unfinished = false;
     while (offset + sizeof(uint16_t) < cur_file.size()) {
       uint16_t record_size = cur_file.read_uint16(offset);
       uint64_t tranc_id = cur_file.read_uint64(offset + sizeof(uint16_t));
-      if (tranc_id > max_finished_tranc_id_) {
+      if (tranc_id > checkpoint_tranc_id_) {
         has_unfinished = true;
         break;
       }
