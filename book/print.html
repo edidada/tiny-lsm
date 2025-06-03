@@ -898,7 +898,7 @@ git merge lab
 <p><img src="lab2/../images/intro/tiny-lsm-arch.drawio.png" alt="Fig 1" /></p>
 <p><code>MemTable</code>负责存储内存中的键值对数据，其存储的基础容器即为<code>Skiplist</code>。<code>SkipList</code>被划分为2组：<code>current_table</code>和<code>frozen_table</code>。<code>current_table</code>可读可写，并是唯一写入的<code>SkipList</code>，<code>frozen_table</code>是只读状态，用于存储已经写入的键值对数据。<code>current_table</code>容量超出阈值即转化为<code>frozen_table</code>中的一个。</p>
 <p>为什么要如此设计呢? 答案是为了提升并发性, 我们的查询与写入的逻辑如下图所示:</p>
-<p><img src="lab2/../images/lab2/MemTable.drawio.png" alt="Fig 2" /></p>
+<p><img src="lab2/../images/Lab2/MemTable.drawio.png" alt="Fig 2" /></p>
 <p>我们在写入时始终只对活跃的<code>current_table</code>进行写入，而查询时则同时对<code>current_table</code>和<code>frozen_table</code>进行查询。这样, 如果我们不将内存表进行划分的话, 查询和写入将同时对一张大的<code>SkipList</code>进行操作, 这将导致并发度降低。反之, 我们将<code>MemTable</code>划分为<code>current_table</code>和<code>frozen_tables</code>后, 我们可以在写入<code>current_table</code>的同时对<code>frozen table</code>进行查询, 大幅度提升了并发量。</p>
 <h2 id="2-skiplist查询的优先级"><a class="header" href="#2-skiplist查询的优先级">2 <code>SkipList</code>查询的优先级</a></h2>
 <p>由之前的理论描述所知, 我们的<code>frozen_tables</code>包含多份<code>Skiplist</code>, 而<code>LSM Tree</code>的写入是追加写入, 后写入的数据会覆盖前面的数据。因此，查询时，我们应该按照从新到旧的顺序查询<code>frozen_tables</code>。如同架构图中<code>Get</code>的查询路径中<code>Path 1.1, Path 1.2, Path 1.3, Path 1.4</code>分别按照从新到旧的顺序查询<code>Skiplist</code>, 一旦查询成功即返回。</p>
