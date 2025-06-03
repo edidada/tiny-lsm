@@ -20,7 +20,7 @@
 
 为什么要如此设计呢? 答案是为了提升并发性, 我们的查询与写入的逻辑如下图所示:
 
-![Fig 2](../images/lab2/MemTable.drawio.png)
+![Fig 2](../images/Lab2/MemTable.drawio.png)
 
 我们在写入时始终只对活跃的`current_table`进行写入，而查询时则同时对`current_table`和`frozen_table`进行查询。这样, 如果我们不将内存表进行划分的话, 查询和写入将同时对一张大的`SkipList`进行操作, 这将导致并发度降低。反之, 我们将`MemTable`划分为`current_table`和`frozen_tables`后, 我们可以在写入`current_table`的同时对`frozen table`进行查询, 大幅度提升了并发量。
 
