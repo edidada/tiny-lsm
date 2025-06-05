@@ -1064,7 +1064,7 @@ void MemTable::frozen_cur_table() {
 <pre><code class="language-bash">SkipList0: ("k1", "v1") -&gt; ("k4", "") -&gt; ("k5", "v3")
 SkipList1: ("k2", "v2") -&gt; ("k3", "v3") -&gt; ("k4", "v4")
 </code></pre>
-<p><code>SkipList0</code>中的<code>("k4", "")</code>表示删除了<code>"k4"</code>, 因此如果我们先消耗了<code>SkipList0</code>的迭代器, 那么<code>SkipList1</code>中就无法获取<code>"k3"</code>的不合法性, 因此需要对不同<code>SkipList</code>的迭代器进行<code>merge</code>操作来删除这些无效的元素。</p>
+<p><code>SkipList0</code>中的<code>("k4", "")</code>表示删除了<code>"k4"</code>, 因此如果我们先消耗了<code>SkipList0</code>的迭代器, 那么<code>SkipList1</code>中就无法获取<code>"k4"</code>的不合法性, 因此需要对不同<code>SkipList</code>的迭代器进行<code>merge</code>操作来删除这些无效的元素。</p>
 <p>本实验的建议方案是:
 可以维护一个堆，堆首先根据<code>key</code>排序, 然后根据<code>SkipList id</code>排序, 因此相同的<code>key</code>, 后插入的记录肯定更靠近堆顶(因为<code>SkipList id</code>越小表示其越新), 因此堆顶的某个<code>key</code>一定是整个<code>MemTable</code>中该<code>key</code>的最新记录, 迭代器对该<code>key</code>只需要堆顶的这一个元素, 其余在取出堆顶后即可全部移除(因为首先按照<code>key</code>排序, 所以他们一定连续出现在堆顶)</p>
 <h1 id="2-堆去重的原理"><a class="header" href="#2-堆去重的原理">2 堆去重的原理</a></h1>
