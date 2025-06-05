@@ -1,3 +1,5 @@
 book
 .xmake
 build
+sdk
+logs
