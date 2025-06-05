@@ -30,7 +30,6 @@
         <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="./src/css/fontawesome.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -227,7 +226,7 @@
 <a href="https://github.com/Vanilla-Beauty/tiny-lsm/contributors">
   <img src="https://contrib.rocks/image?repo=Vanilla-Beauty/tiny-lsm" />
 </a>
-<p>如果你在阅读本教程文档中发现错误, 可以直接点击文档右上角的 <i class="fa-solid fa-pen-to-square"></i>, 其会引导你进入对应分支对当前的<code>md</code>文件进行编辑和修改, 然后提交<code>PR</code>即可。</p>
+<p>如果你在阅读本教程文档中发现错误, 可以直接点击文档右上角的<img src="./images/intro/edit.png" alt="edit" />, 其会引导你进入对应分支对当前的<code>md</code>文件进行编辑和修改, 然后提交<code>PR</code>即可。</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="1-lsm-tree-简介"><a class="header" href="#1-lsm-tree-简介">1. LSM Tree 简介</a></h1>
 <p>在具体进入本实验之前，我们先来简单介绍<code>LSM Tree</code>。</p>
 <p><code>LSM Tree</code>是一种<code>KV</code>存储架构。其核心思想是，将<code>KV</code>存储的数据以<code>SSTable</code>的形式进行持久化，并通过<code>MemTable</code>进行内存缓存，当<code>MemTable</code>的数据量达到一定阈值时，将其持久化到磁盘中，并重新创建一个<code>MemTable</code>。<code>LSM Tree</code>的核心思想是，将<code>KV</code>存储的数据以<code>SSTable</code>的形式进行持久化，并通过<code>MemTable</code>进行内存缓存。并且， 数据以追加写入的方式进行，删除数据也是通过更新的数据进行覆盖的方式实现。</p>
