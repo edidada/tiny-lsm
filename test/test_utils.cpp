@@ -36,103 +36,132 @@ protected:
 };
 
 // 测试基本的写入和读取
-// TEST_F(FileTest, BasicWriteAndRead) {
-//   const std::string path = "test_data/basic.dat";
-//   std::vector<uint8_t> data = {1, 2, 3, 4, 5};
+TEST_F(FileTest, BasicWriteAndRead) {
+  const std::string path = "test_data/basic.dat";
+  std::vector<uint8_t> data = {1, 2, 3, 4, 5};
 
-//   // 写入文件
-//   auto file = FileObj::create_and_write(path, data);
-//   EXPECT_EQ(file.size(), data.size());
+  // 写入文件
+  auto file = FileObj::create_and_write(path, data);
+  EXPECT_EQ(file.size(), data.size());
 
-//   // 重新打开并读取
-//   auto opened_file = FileObj::open(path);
-//   EXPECT_EQ(opened_file.size(), data.size());
+  // 重新打开并读取
+  auto opened_file = FileObj::open(path, false);
+  EXPECT_EQ(opened_file.size(), data.size());
 
-//   auto read_data = opened_file.read_to_slice(0, data.size());
-//   EXPECT_EQ(read_data, data);
-// }
+  auto read_data = opened_file.read_to_slice(0, data.size());
+  EXPECT_EQ(read_data, data);
+}
 
-// // 测试大文件
-// TEST_F(FileTest, LargeFile) {
-//   const std::string path = "test_data/large.dat";
-//   const size_t size = 1024 * 1024; // 1MB
-//   auto data = generate_random_data(size);
+// 测试大文件
+TEST_F(FileTest, LargeFile) {
+  const std::string path = "test_data/large.dat";
+  const size_t size = 1024 * 1024; // 1MB
+  auto data = generate_random_data(size);
 
-//   // 写入大文件
-//   auto file = FileObj::create_and_write(path, data);
-//   EXPECT_EQ(file.size(), size);
+  // 写入大文件
+  auto file = FileObj::create_and_write(path, data);
+  EXPECT_EQ(file.size(), size);
 
-//   // 分块读取并验证
-//   auto opened_file = FileObj::open(path);
-//   const size_t chunk_size = 1024;
+  // 分块读取并验证
+  auto opened_file = FileObj::open(path, false);
+  const size_t chunk_size = 1024;
 
-//   for (size_t offset = 0; offset < size; offset += chunk_size) {
-//     size_t current_chunk = std::min(chunk_size, size - offset);
-//     auto chunk = opened_file.read_to_slice(offset, current_chunk);
+  for (size_t offset = 0; offset < size; offset += chunk_size) {
+    size_t current_chunk = std::min(chunk_size, size - offset);
+    auto chunk = opened_file.read_to_slice(offset, current_chunk);
 
-//     // 验证每个块的数据
-//     for (size_t i = 0; i < current_chunk; ++i) {
-//       EXPECT_EQ(chunk[i], data[offset + i]);
-//     }
-//   }
-// }
+    // 验证每个块的数据
+    for (size_t i = 0; i < current_chunk; ++i) {
+      EXPECT_EQ(chunk[i], data[offset + i]);
+    }
+  }
+}
 
-// // 测试部分读取
-// TEST_F(FileTest, PartialRead) {
-//   const std::string path = "test_data/partial.dat";
-//   std::vector<uint8_t> data = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+// 测试部分读取
+TEST_F(FileTest, PartialRead) {
+  const std::string path = "test_data/partial.dat";
+  std::vector<uint8_t> data = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
-//   auto file = FileObj::create_and_write(path, data);
-//   auto opened_file = FileObj::open(path);
+  auto file = FileObj::create_and_write(path, data);
+  auto opened_file = FileObj::open(path, false);
 
-//   // 读取中间部分
-//   auto middle = opened_file.read_to_slice(2, 3);
-//   EXPECT_EQ(middle.size(), 3);
-//   EXPECT_EQ(middle[0], 3);
-//   EXPECT_EQ(middle[1], 4);
-//   EXPECT_EQ(middle[2], 5);
+  // 读取中间部分
+  auto middle = opened_file.read_to_slice(2, 3);
+  EXPECT_EQ(middle.size(), 3);
+  EXPECT_EQ(middle[0], 3);
+  EXPECT_EQ(middle[1], 4);
+  EXPECT_EQ(middle[2], 5);
 
-//   // 读取开头
-//   auto start = opened_file.read_to_slice(0, 2);
-//   EXPECT_EQ(start[0], 1);
-//   EXPECT_EQ(start[1], 2);
+  // 读取开头
+  auto start = opened_file.read_to_slice(0, 2);
+  EXPECT_EQ(start[0], 1);
+  EXPECT_EQ(start[1], 2);
 
-//   // 读取结尾
-//   auto end = opened_file.read_to_slice(8, 2);
-//   EXPECT_EQ(end[0], 9);
-//   EXPECT_EQ(end[1], 10);
-// }
+  // 读取结尾
+  auto end = opened_file.read_to_slice(8, 2);
+  EXPECT_EQ(end[0], 9);
+  EXPECT_EQ(end[1], 10);
+}
 
-// // 测试错误情况
-// TEST_F(FileTest, ErrorCases) {
-//   const std::string path = "test_data/error.dat";
-//   std::vector<uint8_t> data = {1, 2, 3};
+// 测试错误情况
+TEST_F(FileTest, ErrorCases) {
+  const std::string path = "test_data/error.dat";
+  std::vector<uint8_t> data = {1, 2, 3};
 
-//   auto file = FileObj::create_and_write(path, data);
-//   auto opened_file = FileObj::open(path);
+  auto file = FileObj::create_and_write(path, data);
+  auto opened_file = FileObj::open(path, false);
 
-//   // 测试越界读取
-//   EXPECT_THROW(opened_file.read_to_slice(2, 2), std::out_of_range);
-//   EXPECT_THROW(opened_file.read_to_slice(3, 1), std::out_of_range);
-//   EXPECT_THROW(opened_file.read_to_slice(0, 4), std::out_of_range);
+  // 测试越界读取
+  EXPECT_THROW(opened_file.read_to_slice(2, 2), std::out_of_range);
+  EXPECT_THROW(opened_file.read_to_slice(3, 1), std::out_of_range);
+  EXPECT_THROW(opened_file.read_to_slice(0, 4), std::out_of_range);
 
-//   // 测试打开不存在的文件
-//   EXPECT_THROW(FileObj::open("nonexistent.dat"), std::runtime_error);
-// }
+  // 测试打开不存在的文件
+  EXPECT_THROW(FileObj::open("nonexistent.dat", false), std::runtime_error);
+}
 
-// // 测试移动语义
-// TEST_F(FileTest, MoveSemantics) {
-//   const std::string path = "test_data/move.dat";
-//   std::vector<uint8_t> data = {1, 2, 3};
+// 测试移动语义
+TEST_F(FileTest, MoveSemantics) {
+  const std::string path = "test_data/move.dat";
+  std::vector<uint8_t> data = {1, 2, 3};
 
-//   // 测试移动构造
-//   auto file1 = FileObj::create_and_write(path, data);
-//   FileObj file2 = std::move(file1);
+  // 测试移动构造
+  auto file1 = FileObj::create_and_write(path, data);
+  FileObj file2 = std::move(file1);
 
-//   // 验证移动后的对象可以正常工作
-//   auto read_data = file2.read_to_slice(0, data.size());
-//   EXPECT_EQ(read_data, data);
-// }
+  // 验证移动后的对象可以正常工作
+  auto read_data = file2.read_to_slice(0, data.size());
+  EXPECT_EQ(read_data, data);
+}
+
+TEST_F(FileTest, TruncateFile) {
+  const std::string path = "test_data/truncate.dat";
+  std::vector<uint8_t> data = {10, 20, 30, 40, 50, 60, 70, 80};
+
+  // 创建并写入文件
+  auto file = FileObj::create_and_write(path, data);
+  EXPECT_EQ(file.size(), data.size());
+
+  // 截断到更小
+  size_t new_size = 4;
+  EXPECT_TRUE(file.truncate(new_size));
+  EXPECT_EQ(file.size(), new_size);
+
+  // 重新打开并验证内容
+  auto opened_file = FileObj::open(path, false);
+  EXPECT_EQ(opened_file.size(), new_size);
+  auto truncated_data = opened_file.read_to_slice(0, new_size);
+  EXPECT_EQ(truncated_data.size(), new_size);
+  for (size_t i = 0; i < new_size; ++i) {
+    EXPECT_EQ(truncated_data[i], data[i]);
+  }
+
+  // 截断到0
+  EXPECT_TRUE(file.truncate(0));
+  EXPECT_EQ(file.size(), 0);
+  auto reopened_file = FileObj::open(path, false);
+  EXPECT_EQ(reopened_file.size(), 0);
+}
 
 // 综合测试布隆过滤器的功能
 TEST(BloomFilterTest, ComprehensiveTest) {

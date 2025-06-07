@@ -27,6 +27,18 @@ size_t FileObj::size() const { return m_file->size(); }
 void FileObj::set_size(size_t size) { m_size = size; }
 
 void FileObj::del_file() { m_file->remove(); }
+
+bool FileObj::truncate(size_t offset) {
+  if (offset > m_file->size()) {
+    throw std::out_of_range("Truncate offset beyond file size");
+  }
+  bool ok = m_file->truncate(offset);
+  if (ok) {
+    m_size = offset;
+  }
+  return ok;
+}
+
 FileObj FileObj::create_and_write(const std::string &path,
                                   std::vector<uint8_t> buf) {
   FileObj file_obj;

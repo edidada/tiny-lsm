@@ -142,4 +142,33 @@ bool MmapFile::create_and_map(const std::string &path, size_t size) {
   file_size_ = size;
   return true;
 }
+
+bool MmapFile::truncate(size_t size) {
+  // 解除原有映射
+  if (mapped_data_ != nullptr && mapped_data_ != MAP_FAILED) {
+    munmap(mapped_data_, file_size_);
+    mapped_data_ = nullptr;
+  }
+
+  // 调整文件大小
+  if (ftruncate(fd_, size) == -1) {
+    return false;
+  }
+
+  // 重新映射
+  if (size > 0) {
+    mapped_data_ =
+        mmap(nullptr, size, PROT_READ | PROT_WRITE, MAP_SHARED, fd_, 0);
+    if (mapped_data_ == MAP_FAILED) {
+      mapped_data_ = nullptr;
+      return false;
+    }
+  } else {
+    mapped_data_ = nullptr;
+  }
+
+  file_size_ = size;
+  return true;
+}
+
 } // namespace tiny_lsm

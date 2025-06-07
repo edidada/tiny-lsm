@@ -37,6 +37,8 @@ public:
   // 删除文件
   void del_file();
 
+  bool truncate(size_t offset);
+
   // 创建文件对象, 并写入到磁盘
   static FileObj create_and_write(const std::string &path,
                                   std::vector<uint8_t> buf);

@@ -1,4 +1,5 @@
 #include "../../include/utils/std_file.h"
+#include <unistd.h>
 
 namespace tiny_lsm {
 
@@ -63,4 +64,12 @@ bool StdFile::sync() {
 }
 
 bool StdFile::remove() { return std::remove(filename_.c_str()) == 0; }
+
+bool StdFile::truncate(size_t size) {
+  if (file_.is_open())
+    file_.close();
+  int ret = ::truncate(filename_.c_str(), size);
+  file_.open(filename_, std::ios::in | std::ios::out | std::ios::binary);
+  return ret == 0 && file_.is_open();
+}
 } // namespace tiny_lsm

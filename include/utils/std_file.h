@@ -44,5 +44,7 @@ public:
 
   // 删除文件
   bool remove();
+
+  bool truncate(size_t size);
 };
 } // namespace tiny_lsm

@@ -48,6 +48,8 @@ public:
   // 同步到磁盘
   bool sync();
 
+  bool truncate(size_t size);
+
 private:
   // 禁止拷贝
   MmapFile(const MmapFile &) = delete;
