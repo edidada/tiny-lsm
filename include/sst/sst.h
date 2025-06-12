@@ -64,10 +64,7 @@ public:
   static std::shared_ptr<SST> open(size_t sst_id, FileObj file,
                                    std::shared_ptr<BlockCache> block_cache);
   void del_sst();
-  // 创建一个sst, 只包含首尾key的元数据
-  static std::shared_ptr<SST> create_sst_with_meta_only(
-      size_t sst_id, size_t file_size, const std::string &first_key,
-      const std::string &last_key, std::shared_ptr<BlockCache> block_cache);
+
   // 根据索引读取block
   std::shared_ptr<Block> read_block(size_t block_idx);
 
