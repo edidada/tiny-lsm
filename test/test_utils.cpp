@@ -1,5 +1,6 @@
 #include "../include/logger/logger.h"
 #include "../include/utils/bloom_filter.h"
+#include "../include/utils/cursor.h"
 #include "../include/utils/files.h"
 #include <filesystem>
 #include <gtest/gtest.h>
@@ -204,6 +205,35 @@ TEST_F(FileTest, MixedWriteAndAppendIntegers) {
     ::memcpy(&read_i32, buf.data(), sizeof(int));
     EXPECT_EQ(read_i32, i32);
   }
+}
+
+TEST_F(FileTest, CursorReadWrite) {
+  const std::string path = "test_data/cursor_rw.dat";
+  std::vector<uint8_t> data = {10, 20, 30, 40, 50};
+
+  // 创建文件并写入数据
+  {
+    auto file = FileObj::create_and_write(path, data);
+
+    // 获取Cursor
+    Cursor cursor = file.get_cursor(file);
+
+    // 读取前3个字节
+    std::vector<uint8_t> buf = cursor.read(3);
+    EXPECT_EQ(buf[0], 10);
+    EXPECT_EQ(buf[1], 20);
+    EXPECT_EQ(buf[2], 30);
+
+    // 写入新数据到当前位置（应为offset=3）
+    uint8_t new_val = 99;
+    cursor.write_uint8(new_val);
+  }
+
+  // 重新读取文件验证写入
+  auto reopened = FileObj::open(path, false);
+  auto read_back = reopened.read_to_slice(3, 2);
+  EXPECT_EQ(read_back[0], 99);
+  EXPECT_EQ(read_back[1], 50);
 }
 
 // 综合测试布隆过滤器的功能

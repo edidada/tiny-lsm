@@ -1,4 +1,5 @@
 #include "../../include/utils/files.h"
+#include "../../include/utils/cursor.h"
 #include <cstring>
 #include <stdexcept>
 
@@ -186,4 +187,8 @@ bool FileObj::append_uint64(uint64_t value) {
 }
 
 bool FileObj::sync() { return m_file->sync(); }
+
+Cursor FileObj::get_cursor(FileObj &file_obj) {
+  return Cursor(&file_obj, 0);
+}
 } // namespace tiny_lsm

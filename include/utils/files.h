@@ -10,6 +10,8 @@
 
 namespace tiny_lsm {
 
+class Cursor;
+
 class FileObj {
 private:
   std::unique_ptr<StdFile> m_file;
@@ -76,5 +78,7 @@ public:
   bool append_uint64(uint64_t value);
 
   bool sync();
+
+  Cursor get_cursor(FileObj &file_obj);
 };
 } // namespace tiny_lsm
