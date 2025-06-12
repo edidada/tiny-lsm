@@ -241,8 +241,10 @@ void SSTBuilder::finish_block() {
   auto encoded_block = old_block.encode();
 
   meta_entries.emplace_back(data.size(), first_key, last_key);
-  // 预分配空间并添加数据，hash添加移除
-  data.reserve(data.size() + encoded_block.size());
+
+
+  // 预分配空间并添加数据
+  data.reserve(data.size() + encoded_block.size() ); 
   data.insert(data.end(), encoded_block.begin(), encoded_block.end());
 }
 

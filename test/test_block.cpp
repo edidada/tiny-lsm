@@ -1,7 +1,6 @@
 #include "../include/block/block.h"
 #include "../include/block/block_iterator.h"
 #include "../include/config/config.h"
-#include "../include/consts.h"
 #include "../include/logger/logger.h"
 #include <gtest/gtest.h>
 #include <iomanip>
@@ -186,7 +185,7 @@ TEST_F(BlockTest, LargeDataTest) {
 // 测试错误处理
 TEST_F(BlockTest, ErrorHandlingTest) {
   // 测试解码无效数据
-  std::vector<uint8_t> invalid_data = {1, 2, 3}; // 太短
+  std::vector<uint8_t> invalid_data = {1}; // 太短
   EXPECT_THROW(Block::decode(invalid_data), std::runtime_error);
 
   // 测试空vector

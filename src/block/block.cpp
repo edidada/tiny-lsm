@@ -17,8 +17,8 @@ std::vector<uint8_t> Block::encode(bool with_hash) {
   size_t total_bytes = data.size() * sizeof(uint8_t) +
                        offsets.size() * sizeof(uint16_t) + sizeof(uint16_t);
   if (with_hash) {
-        total_bytes += sizeof(uint32_t); // 预留 hash 空间
-    }
+      total_bytes += sizeof(uint32_t); // 如果需要哈希值, 增加4字节
+                }
   std::vector<uint8_t> encoded(total_bytes, 0);
 
   // 1. 复制数据段
@@ -36,12 +36,12 @@ std::vector<uint8_t> Block::encode(bool with_hash) {
       data.size() * sizeof(uint8_t) + offsets.size() * sizeof(uint16_t);
   uint16_t num_elements = offsets.size();
   memcpy(encoded.data() + num_pos, &num_elements, sizeof(uint16_t));
-  // 4. 如果需要hash, 计算并写入hash值
   if (with_hash) {
+    // 4. 计算哈希值并写入
     uint32_t hash_value = std::hash<std::string_view>{}(
         std::string_view(reinterpret_cast<const char *>(encoded.data()),
-                         total_bytes - sizeof(uint32_t)));
-    memcpy(encoded.data() + total_bytes - sizeof(uint32_t), &hash_value,
+                         encoded.size() - sizeof(uint32_t)));
+    memcpy(encoded.data() + num_pos + sizeof(uint16_t), &hash_value,
            sizeof(uint32_t));
   }
   return encoded;
@@ -53,7 +53,7 @@ std::shared_ptr<Block> Block::decode(const std::vector<uint8_t> &encoded,
   auto block = std::make_shared<Block>();
 
   // 1. 安全性检查
-  if (with_hash && encoded.size() + sizeof(uint32_t) <= sizeof(uint8_t) + sizeof(uint16_t) + sizeof(uint32_t)) {
+  if (with_hash&&encoded.size() <=sizeof(uint16_t)+sizeof(uint32_t)) {
     throw std::runtime_error("Encoded data too small");
   }
 
