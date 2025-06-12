@@ -163,6 +163,49 @@ TEST_F(FileTest, TruncateFile) {
   EXPECT_EQ(reopened_file.size(), 0);
 }
 
+TEST_F(FileTest, MixedWriteAndAppendIntegers) {
+  const std::string path = "test_data/mixed_rw.dat";
+
+  uint8_t u8 = 0x12;
+  uint16_t u16 = 0x3456;
+  uint32_t u32 = 0x789ABCDE;
+  uint64_t u64 = 0x1122334455667788ULL;
+  int i32 = -654321;
+
+  // 先用指定偏移写入
+  {
+    auto file = FileObj::create_and_write(path, {});
+    EXPECT_TRUE(file.write_uint8(0, u8));
+    EXPECT_TRUE(file.write_uint16(1, u16));
+    EXPECT_TRUE(file.write_uint32(3, u32));
+    file.sync();
+
+    // 再追加写入
+    EXPECT_TRUE(file.append_uint64(u64));
+    EXPECT_TRUE(file.append_int(i32));
+    file.sync();
+  }
+
+  // 读取并校验
+  {
+    auto file = FileObj::open(path, false);
+    EXPECT_EQ(file.read_uint8(0), u8);
+    EXPECT_EQ(file.read_uint16(1), u16);
+    EXPECT_EQ(file.read_uint32(3), u32);
+
+    // 追加部分的偏移
+    size_t offset_u64 = 7; // 0+1+2+4=7
+    size_t offset_i32 = offset_u64 + sizeof(uint64_t);
+
+    EXPECT_EQ(file.read_uint64(offset_u64), u64);
+
+    std::vector<uint8_t> buf = file.read_to_slice(offset_i32, sizeof(int));
+    int read_i32;
+    ::memcpy(&read_i32, buf.data(), sizeof(int));
+    EXPECT_EQ(read_i32, i32);
+  }
+}
+
 // 综合测试布隆过滤器的功能
 TEST(BloomFilterTest, ComprehensiveTest) {
   // 创建布隆过滤器，预期插入1000个元素，假阳性率为0.01

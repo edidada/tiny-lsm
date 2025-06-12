@@ -8,23 +8,16 @@ FileObj::FileObj() : m_file(std::make_unique<StdFile>()) {}
 FileObj::~FileObj() = default;
 
 // 实现移动语义
-FileObj::FileObj(FileObj &&other) noexcept
-    : m_file(std::move(other.m_file)), m_size(other.m_size) {
-  other.m_size = 0;
-}
+FileObj::FileObj(FileObj &&other) noexcept : m_file(std::move(other.m_file)) {}
 
 FileObj &FileObj::operator=(FileObj &&other) noexcept {
   if (this != &other) {
     m_file = std::move(other.m_file);
-    m_size = other.m_size;
-    other.m_size = 0;
   }
   return *this;
 }
 
 size_t FileObj::size() const { return m_file->size(); }
-
-void FileObj::set_size(size_t size) { m_size = size; }
 
 void FileObj::del_file() { m_file->remove(); }
 
@@ -33,9 +26,7 @@ bool FileObj::truncate(size_t offset) {
     throw std::out_of_range("Truncate offset beyond file size");
   }
   bool ok = m_file->truncate(offset);
-  if (ok) {
-    m_size = offset;
-  }
+
   return ok;
 }
 
@@ -138,10 +129,60 @@ bool FileObj::append(std::vector<uint8_t> &buf) {
     return false;
   }
 
-  // 更新文件大小
-  m_size += buf.size();
-
   return true;
+}
+
+bool FileObj::write_int(size_t offset, int value) {
+  return m_file->write(offset, reinterpret_cast<const uint8_t *>(&value),
+                       sizeof(int));
+}
+
+bool FileObj::write_uint8(size_t offset, uint8_t value) {
+  return m_file->write(offset, &value, sizeof(uint8_t));
+}
+
+bool FileObj::write_uint16(size_t offset, uint16_t value) {
+  return m_file->write(offset, reinterpret_cast<const uint8_t *>(&value),
+                       sizeof(uint16_t));
+}
+
+bool FileObj::write_uint32(size_t offset, uint32_t value) {
+  return m_file->write(offset, reinterpret_cast<const uint8_t *>(&value),
+                       sizeof(uint32_t));
+}
+
+bool FileObj::write_uint64(size_t offset, uint64_t value) {
+  return m_file->write(offset, reinterpret_cast<const uint8_t *>(&value),
+                       sizeof(uint64_t));
+}
+
+bool FileObj::append_int(int value) {
+  size_t offset = m_file->size();
+  return m_file->write(offset, reinterpret_cast<const uint8_t *>(&value),
+                       sizeof(int));
+}
+
+bool FileObj::append_uint8(uint8_t value) {
+  size_t offset = m_file->size();
+  return m_file->write(offset, &value, sizeof(uint8_t));
+}
+
+bool FileObj::append_uint16(uint16_t value) {
+  size_t offset = m_file->size();
+  return m_file->write(offset, reinterpret_cast<const uint8_t *>(&value),
+                       sizeof(uint16_t));
+}
+
+bool FileObj::append_uint32(uint32_t value) {
+  size_t offset = m_file->size();
+  return m_file->write(offset, reinterpret_cast<const uint8_t *>(&value),
+                       sizeof(uint32_t));
+}
+
+bool FileObj::append_uint64(uint64_t value) {
+  size_t offset = m_file->size();
+  return m_file->write(offset, reinterpret_cast<const uint8_t *>(&value),
+                       sizeof(uint64_t));
 }
 
 bool FileObj::sync() { return m_file->sync(); }

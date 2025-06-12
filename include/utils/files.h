@@ -13,7 +13,6 @@ namespace tiny_lsm {
 class FileObj {
 private:
   std::unique_ptr<StdFile> m_file;
-  size_t m_size;
 
 public:
   FileObj();
@@ -30,9 +29,6 @@ public:
 
   // 文件大小
   size_t size() const;
-
-  // 设置文件大小
-  void set_size(size_t size);
 
   // 删除文件
   void del_file();
@@ -64,8 +60,20 @@ public:
   // 写入到文件
   bool write(size_t offset, std::vector<uint8_t> &buf);
 
+  bool write_int(size_t offset, int value);
+  bool write_uint8(size_t offset, uint8_t value);
+  bool write_uint16(size_t offset, uint16_t value);
+  bool write_uint32(size_t offset, uint32_t value);
+  bool write_uint64(size_t offset, uint64_t value);
+
   // 追加写入到文件
   bool append(std::vector<uint8_t> &buf);
+
+  bool append_int(int value);
+  bool append_uint8(uint8_t value);
+  bool append_uint16(uint16_t value);
+  bool append_uint32(uint32_t value);
+  bool append_uint64(uint64_t value);
 
   bool sync();
 };

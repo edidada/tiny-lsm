@@ -79,20 +79,6 @@ std::shared_ptr<SST> SST::open(size_t sst_id, FileObj file,
 
 void SST::del_sst() { file.del_file(); }
 
-std::shared_ptr<SST> SST::create_sst_with_meta_only(
-    size_t sst_id, size_t file_size, const std::string &first_key,
-    const std::string &last_key, std::shared_ptr<BlockCache> block_cache) {
-  auto sst = std::make_shared<SST>();
-  sst->file.set_size(file_size);
-  sst->sst_id = sst_id;
-  sst->first_key = first_key;
-  sst->last_key = last_key;
-  sst->meta_block_offset = 0;
-  sst->block_cache = block_cache;
-
-  return sst;
-}
-
 std::shared_ptr<Block> SST::read_block(size_t block_idx) {
   if (block_idx >= meta_entries.size()) {
     throw std::out_of_range("Block index out of range");
