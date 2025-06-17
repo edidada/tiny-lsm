@@ -74,7 +74,7 @@ protected:
 // 测试解码
 TEST_F(BlockTest, DecodeTest) {
   auto encoded = getEncodedBlock();
-  auto block = Block::decode(encoded);
+  auto block = Block::decode(encoded,false);
 
   // 验证第一个key
   EXPECT_EQ(block->get_first_key(), "apple");
