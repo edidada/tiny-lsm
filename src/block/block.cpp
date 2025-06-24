@@ -340,9 +340,10 @@ Block::get_monotony_predicate_iters(
       left = mid + 1;
   }
 
-  if (left == -1) {
-    return std::nullopt; // 没有找到满足谓词的元素
+  if (left >= offsets.size() || predicate(get_key_at(offsets[left])) != 0) {
+    return std::nullopt; // 根本没有任何 key 满足谓词
   }
+
 
   first = left; // 保留下找到的第一个的位置
 
