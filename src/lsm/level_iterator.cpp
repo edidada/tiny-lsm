@@ -49,10 +49,10 @@ Level_Iterator::Level_Iterator(std::shared_ptr<LSMEngine> engine,
     for (auto sst_id : sst_id_list) {
       auto sst = engine_->ssts[sst_id];
       ssts.push_back(sst);
-      std::shared_ptr<ConcactIterator> level_i_iter =
-          std::make_shared<ConcactIterator>(ssts, max_tranc_id);
-      iter_vec.push_back(level_i_iter);
     }
+    std::shared_ptr<ConcactIterator> level_i_iter =
+      std::make_shared<ConcactIterator>(ssts, max_tranc_id);
+    iter_vec.push_back(level_i_iter);
   }
 
   while (!is_end()) {
