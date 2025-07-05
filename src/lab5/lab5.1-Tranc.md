@@ -112,4 +112,6 @@ int Block::adjust_idx_by_tranc_id(size_t idx, uint64_t tranc_id) {
 # 3 测试
 由于事务功能的耦合度较高, 因此现在还没有办法进行单元测试, 你可以按照自己的需要编写测试用例进行测试, 测试用例的编写思路和之前的`Lab`类似, 你可以参考`src/test`中的测试用例进行编写。
 
+不过别忘了我们在[Lab 1.3]中先搁置的`SkipListTest.TransactionId`单元测试, 此时你应该可以通过这个单元测试测例。
+
 > TODO: 后续版本中补全这里的阶段性测试, 而不是2个Lab完成后才有一个大测试

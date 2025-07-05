@@ -78,7 +78,7 @@ SkipList::iters_monotony_predicate(
 
 
 # 3 测试
-完成上面的函数后, 你应该可以通过所有的`test/test_skiplist.cpp`的单元测试:
+完成上面的函数后, 你应该可以通过除了`SkipListTest.TransactionId`外所有的`test/test_skiplist.cpp`的单元测试:
 ```cpp
 ✗ xmake
 [100%]: build ok, spent 5.785s
@@ -108,14 +108,11 @@ SkipList::iters_monotony_predicate(
 [       OK ] SkipListTest.ItersPredicate_Base (0 ms)
 [ RUN      ] SkipListTest.ItersPredicate_Large
 [       OK ] SkipListTest.ItersPredicate_Large (5 ms)
-[ RUN      ] SkipListTest.TransactionId
-[       OK ] SkipListTest.TransactionId (0 ms)
-[----------] 12 tests from SkipListTest (25 ms total)
-
-[----------] Global test environment tear-down
-[==========] 12 tests from 1 test suite ran. (25 ms total)
-[  PASSED  ] 12 tests.
+[ RUN      ] SkipListTest.TransactionId^
 ```
+
+> `SkipListTest.TransactionId`单元测试是`Lab 5.1`的内容, 你可以先忽略它。
+
 此外, 单元测试目前并没有规定你的实现的效率, 但你的实现在`release`模式下, 不应该超过`100ms`, (`30ms`以内最佳)
 
 到此为止, `Lab1`的实验结束, 恭喜你完成本实验!
