@@ -55,11 +55,19 @@
 # 5 项目交流与讨论
 如果你对本`Lab`有疑问, 欢迎在[GitHub Issues](https://github.com/Vanilla-Beauty/tiny-lsm/issues)中提出问题。也欢迎加入次实验的[QQ讨论群](https://qm.qq.com/q/wDZQfaNNw6) 。如果你想参与`Lab`的开发, 欢迎通过QQ群或者作者邮件: [📧邮件](mailto:807077266@qq.com)  联系。
 
-# 6 贡献者
+# 6 推荐课程
+这里给出作者推荐的相关开源课程, 供你参考学习:
+1. [mini-lsm](https://github.com/skyzh/mini-lsm) 迟先生用`Rust`实现的`LSM Tree`课程, 其代码质量非常高, 本课程的很多设计也参考了`Mini-LSM`, 适合想用`Rust`实现`LSM Tree`的同学学习。
+2. [TinyCoroLab](https://sakurs2.gitbook.io/tinycorolab-docs/), 基于`io_uring`的现代`C++`协程的开源课程, 适合学习协程及的各种现代C++新特性。
+3. [CMU 15445](https://15445.courses.cs.cmu.edu/fall2024/) 经典CMU的数据库课程, 不解释了。
+4. [MIT 6.824](https://pdos.csail.mit.edu/6.824/) MIT的经典分布式课程。
+5. [Tiny-KV](https://github.com/talent-plan/tinykv) PingCap出品的分布式KV数据库教程, 算是MIT 6.824的升级版。
+
+# 7 贡献者
 非常感谢本项目贡献过源码的网友:
 
 <a href="https://github.com/Vanilla-Beauty/tiny-lsm/contributors">
   <img src="https://contrib.rocks/image?repo=Vanilla-Beauty/tiny-lsm" />
 </a>
-
+  
 如果你在阅读本教程文档中发现错误, 可以直接点击文档右上角的![edit](./images/intro/edit.png), 其会引导你进入对应分支对当前的`md`文件进行编辑和修改, 然后提交`PR`即可。
