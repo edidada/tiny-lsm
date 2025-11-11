@@ -10,3 +10,5 @@ book
 coverage*
 .clangd
 *.log*
+
+.idea
